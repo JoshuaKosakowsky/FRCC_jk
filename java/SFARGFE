@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    console.log('Script started');
+    console.log('TamperMonkey script started');
 
     // JSON data (replace with your actual data)
     const jsonData = [
@@ -9,10 +9,12 @@
 
     // Function to wait for a specific element to be available
     function waitForElement(selector, callback) {
+        console.log(`Waiting for element with selector: ${selector}`);
         const observer = new MutationObserver(() => {
             try {
                 const element = document.querySelector(selector);
                 if (element) {
+                    console.log(`Element found: ${selector}`);
                     observer.disconnect();
                     callback(element);
                 }
@@ -31,19 +33,26 @@
         function fillForm(data) {
             console.log('Filling form with data:', data);
 
-            document.getElementById('KEY_BLOCK_CANVAS_entryType_ac').value = data["'Entry Type'"];
-            document.querySelector('input[id="#frames194"]').value = data["'Sequence Number'"];
-            document.querySelector('input[id="#frames207"]').value = data["'Minimum Charge'"];
-            document.querySelector('input[id="#frames208"]').value = data["'Maximum Charge'"];
-            document.querySelector('input[id="#frames210"]').value = data["'Course Attribute'"];
-            document.querySelector('a[href="#tabSfargfe1TabCanvas-page_studentCourse"]').click();
+            try {
+                document.getElementById('KEY_BLOCK_CANVAS_entryType_ac').value = data["'Entry Type'"];
+                document.querySelector('input[id="#frames194"]').value = data["'Sequence Number'"];
+                document.querySelector('input[id="#frames207"]').value = data["'Minimum Charge'"];
+                document.querySelector('input[id="#frames208"]').value = data["'Maximum Charge'"];
+                document.querySelector('input[id="#frames210"]').value = data["'Course Attribute'"];
+                console.log('Initial form fields filled');
+                
+                document.querySelector('a[href="#tabSfargfe1TabCanvas-page_studentCourse"]').click();
+                console.log('Clicked on Student/Course tab');
 
-            // Wait for the Student/Course tab to load
-            setTimeout(() => {
-                document.getElementById('inp:sfrrgfe_sfrrgfeAttsCode').value = data["'Student Attribute'"] !== undefined ? data["'Student Attribute'"] : '';
-                document.getElementById('inp:sfrrgfe_sfrrgfeResdCode').value = data["'Residence'"] !== undefined ? data["'Residence'"] : '';
-                console.log('Form filled for data:', data);
-            }, 2000);
+                // Wait for the Student/Course tab to load
+                setTimeout(() => {
+                    document.getElementById('inp:sfrrgfe_sfrrgfeAttsCode').value = data["'Student Attribute'"] !== undefined ? data["'Student Attribute'"] : '';
+                    document.getElementById('inp:sfrrgfe_sfrrgfeResdCode').value = data["'Residence'"] !== undefined ? data["'Residence'"] : '';
+                    console.log('Form filled for data:', data);
+                }, 2000);
+            } catch (error) {
+                console.error('Error filling form:', error);
+            }
         }
 
         // Function to iterate over JSON data and fill the form
