@@ -12,13 +12,15 @@ function main(workbook: ExcelScript.Workbook) {
   replaceInColumn(selectedSheet, "G", "D", "Debit");
 
   let lastRow = selectedSheet.getRange("E:E").getLastCell().getRow();
-  let rangeH2 = selectedSheet.getRange("H2:H" + lastRow);
-  rangeH2.setFormulas([["=IF(G2=\"Credit\",-F2,F2)"]]);
+  let rangeH2 = selectedSheet.getRange(`H2:H${lastRow}`);
+  let formulaArray = rangeH2.getValues().map(() => ["=IF(G2=\"Credit\",-F2,F2)"]);
+  rangeH2.setFormulas(formulaArray);
   selectedSheet.getRange("H1").setValue("Amt");
 
-  let columnH = selectedSheet.getRange("H:H");
-  let columnF = selectedSheet.getRange("F:F");
-  columnH.copyTo(columnF, ExcelScript.RangeCopyType.values, false);
+  let columnH = selectedSheet.getRange(`H2:H${lastRow}`);
+  let columnF = selectedSheet.getRange(`F2:F${lastRow}`);
+  let columnHValues = columnH.getValues();
+  columnF.setValues(columnHValues);
 
   selectedSheet.getRange("H:H").delete(ExcelScript.DeleteShiftDirection.left);
 
@@ -32,9 +34,8 @@ function main(workbook: ExcelScript.Workbook) {
 }
 
 function replaceInColumn(sheet: ExcelScript.Worksheet, column: string, oldText: string, newText: string) {
-  let columnRange = sheet.getRange(column + ":" + column);
+  let columnRange = sheet.getRange(column + "1:" + column + sheet.getUsedRange().getLastRow());
   let values = columnRange.getValues();
-
   for (let i = 0; i < values.length; i++) {
     if (values[i][0] !== null && values[i][0] !== undefined) {
       values[i][0] = values[i][0].toString().replace(new RegExp(oldText, 'g'), newText);
