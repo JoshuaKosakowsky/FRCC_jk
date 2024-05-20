@@ -7,6 +7,7 @@
     const jsonData = [
     ];
 
+
     // Function to wait for a specific element to be available
     function waitForElement(selector, callback) {
         console.log(`Waiting for element with selector: ${selector}`);
@@ -16,6 +17,8 @@
                 console.log(`Element found: ${selector}`, element);
                 clearInterval(checkExist);
                 callback(element);
+            } else {
+                console.log(`Element not found yet: ${selector}`);
             }
         }, 100);
 
@@ -38,6 +41,8 @@
 
     // Initial delay to give you time to navigate to the page
     setTimeout(() => {
+        console.log('Starting element detection');
+        
         // Check for the specific div title
         waitForElement('div.ui-collapsiblepanel-title[title="Registration Charges and Fees"]', (element) => {
             console.log('Div with title "Registration Charges and Fees" found:', element);
@@ -88,5 +93,5 @@
         });
 
         console.log('Setup complete, waiting for target element');
-    }, 5000); // Initial delay of 5 seconds to give you time to navigate to the page
+    }, 10000); // Extended initial delay of 10 seconds to give you more time to navigate to the page
 })();
