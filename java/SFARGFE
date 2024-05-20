@@ -36,55 +36,57 @@
         observer.observe(document.body, { childList: true, subtree: true });
     }
 
-    // Check for the specific div title
-    waitForElement('div.ui-collapsiblepanel-title[title="Registration Charges and Fees"]', (element) => {
-        console.log('Div with title "Registration Charges and Fees" found:', element);
+    // Initial delay to give you time to navigate to the page
+    setTimeout(() => {
+        // Check for the specific div title
+        waitForElement('div.ui-collapsiblepanel-title[title="Registration Charges and Fees"]', (element) => {
+            console.log('Div with title "Registration Charges and Fees" found:', element);
 
-        // Function to fill the form fields
-        function fillForm(data) {
-            console.log('Filling form with data:', data);
+            // Function to fill the form fields
+            function fillForm(data) {
+                console.log('Filling form with data:', data);
 
-            try {
-                document.getElementById('KEY_BLOCK_CANVAS_entryType_ac').value = data["'Entry Type'"];
-                document.querySelector('input[id="#frames194"]').value = data["'Sequence Number'"];
-                document.querySelector('input[id="#frames207"]').value = data["'Minimum Charge'"];
-                document.querySelector('input[id="#frames208"]').value = data["'Maximum Charge'"];
-                document.querySelector('input[id="#frames210"]').value = data["'Course Attribute'"];
-                console.log('Initial form fields filled');
-                
-                document.querySelector('a[href="#tabSfargfe1TabCanvas-page_studentCourse"]').click();
-                console.log('Clicked on Student/Course tab');
+                try {
+                    document.getElementById('KEY_BLOCK_CANVAS_entryType_ac').value = data["'Entry Type'"];
+                    document.querySelector('input[id="#frames194"]').value = data["'Sequence Number'"];
+                    document.querySelector('input[id="#frames207"]').value = data["'Minimum Charge'"];
+                    document.querySelector('input[id="#frames208"]').value = data["'Maximum Charge'"];
+                    document.querySelector('input[id="#frames210"]').value = data["'Course Attribute'"];
+                    console.log('Initial form fields filled');
+                    
+                    document.querySelector('a[href="#tabSfargfe1TabCanvas-page_studentCourse"]').click();
+                    console.log('Clicked on Student/Course tab');
 
-                // Wait for the Student/Course tab to load
-                setTimeout(() => {
-                    document.getElementById('inp:sfrrgfe_sfrrgfeAttsCode').value = data["'Student Attribute'"] !== undefined ? data["'Student Attribute'"] : '';
-                    document.getElementById('inp:sfrrgfe_sfrrgfeResdCode').value = data["'Residence'"] !== undefined ? data["'Residence'"] : '';
-                    console.log('Form filled for data:', data);
-                }, 2000);
-            } catch (error) {
-                console.error('Error filling form:', error);
+                    // Wait for the Student/Course tab to load
+                    setTimeout(() => {
+                        document.getElementById('inp:sfrrgfe_sfrrgfeAttsCode').value = data["'Student Attribute'"] !== undefined ? data["'Student Attribute'"] : '';
+                        document.getElementById('inp:sfrrgfe_sfrrgfeResdCode').value = data["'Residence'"] !== undefined ? data["'Residence'"] : '';
+                        console.log('Form filled for data:', data);
+                    }, 2000);
+                } catch (error) {
+                    console.error('Error filling form:', error);
+                }
             }
-        }
 
-        // Function to iterate over JSON data and fill the form
-        let index = 0;
-        function processNext() {
-            if (index < jsonData.length) {
-                console.log('Processing next entry:', index);
-                fillForm(jsonData[index]);
-                index++;
-                // Adjust the delay as necessary to avoid overwhelming the server
-                setTimeout(processNext, 5000);
-            } else {
-                console.log('All entries processed');
+            // Function to iterate over JSON data and fill the form
+            let index = 0;
+            function processNext() {
+                if (index < jsonData.length) {
+                    console.log('Processing next entry:', index);
+                    fillForm(jsonData[index]);
+                    index++;
+                    // Adjust the delay as necessary to avoid overwhelming the server
+                    setTimeout(processNext, 5000);
+                } else {
+                    console.log('All entries processed');
+                }
             }
-        }
 
-        // Start processing the data
-        console.log('Starting to process data entries');
-        processNext();
-    });
+            // Start processing the data
+            console.log('Starting to process data entries');
+            processNext();
+        });
 
-    // Additional logging to verify script execution flow
-    console.log('Setup complete, waiting for target element');
+        console.log('Setup complete, waiting for target element');
+    }, 5000); // Initial delay of 5 seconds to give you time to navigate to the page
 })();
