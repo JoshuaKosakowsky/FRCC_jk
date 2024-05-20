@@ -1,0 +1,67 @@
+(function() {
+    'use strict';
+
+    console.log('Script started');
+
+    // JSON data (replace with your actual data)
+    const jsonData = [
+    ];
+
+    // Function to wait for a specific element to be available
+    function waitForElement(selector, callback) {
+        const observer = new MutationObserver(() => {
+            try {
+                const element = document.querySelector(selector);
+                if (element) {
+                    observer.disconnect();
+                    callback(element);
+                }
+            } catch (error) {
+                console.error('Error querying selector:', selector, error);
+            }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    // Check for the specific div title
+    waitForElement('div.ui-collapsiblepanel-title[title="Registration Charges and Fees"]', (element) => {
+        console.log('Div with title "Registration Charges and Fees" found:', element);
+
+        // Function to fill the form fields
+        function fillForm(data) {
+            console.log('Filling form with data:', data);
+
+            document.getElementById('KEY_BLOCK_CANVAS_entryType_ac').value = data["'Entry Type'"];
+            document.querySelector('input[id="#frames194"]').value = data["'Sequence Number'"];
+            document.querySelector('input[id="#frames207"]').value = data["'Minimum Charge'"];
+            document.querySelector('input[id="#frames208"]').value = data["'Maximum Charge'"];
+            document.querySelector('input[id="#frames210"]').value = data["'Course Attribute'"];
+            document.querySelector('a[href="#tabSfargfe1TabCanvas-page_studentCourse"]').click();
+
+            // Wait for the Student/Course tab to load
+            setTimeout(() => {
+                document.getElementById('inp:sfrrgfe_sfrrgfeAttsCode').value = data["'Student Attribute'"] !== undefined ? data["'Student Attribute'"] : '';
+                document.getElementById('inp:sfrrgfe_sfrrgfeResdCode').value = data["'Residence'"] !== undefined ? data["'Residence'"] : '';
+                console.log('Form filled for data:', data);
+            }, 2000);
+        }
+
+        // Function to iterate over JSON data and fill the form
+        let index = 0;
+        function processNext() {
+            if (index < jsonData.length) {
+                console.log('Processing next entry:', index);
+                fillForm(jsonData[index]);
+                index++;
+                // Adjust the delay as necessary to avoid overwhelming the server
+                setTimeout(processNext, 5000);
+            } else {
+                console.log('All entries processed');
+            }
+        }
+
+        // Start processing the data
+        console.log('Starting to process data entries');
+        processNext();
+    });
+})();
