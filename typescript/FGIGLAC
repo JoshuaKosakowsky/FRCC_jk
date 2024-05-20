@@ -1,24 +1,44 @@
 function main(workbook: ExcelScript.Workbook) {
-    let selectedSheet = workbook.getActiveWorksheet();
-    selectedSheet.getUsedRange().unmerge();
-    selectedSheet.getRange("1:2").delete(ExcelScript.DeleteShiftDirection.up);
-    let columnB = selectedSheet.getRange("B:B");
-    columnB.replace("*", "", ExcelScript.ReplaceCriteria.contains);
-    columnB.setNumberFormat("m/d/yyyy");
-    let columnG = selectedSheet.getRange("G:G");
-    columnG.replace("C", "Credit", ExcelScript.ReplaceCriteria.exact);
-    columnG.replace("D", "Debit", ExcelScript.ReplaceCriteria.exact);
-    let lastRow = selectedSheet.getRange("E:E").getLastCell().getRow();
-    let rangeH2 = selectedSheet.getRange("H2:H" + lastRow);
-    rangeH2.setFormulaLocal("=IF(G2=\"Credit\",-F2,F2)");
-    selectedSheet.getRange("H1").setValue("Amt");
-    let columnH = selectedSheet.getRange("H:H");
-    let columnF = selectedSheet.getRange("F:F");
-    columnH.copyTo(columnF, ExcelScript.RangeCopyType.values, false);
-    selectedSheet.getRange("H:H").delete(ExcelScript.DeleteShiftDirection.left);
-    columnF.setNumberFormat("_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)");
-    let usedRange = selectedSheet.getUsedRange();
-    usedRange.getSort().apply([{key: 1, ascending: true}]); // Assuming Column B is the second column (key: 1)
-    columnB.replace(",", "", ExcelScript.ReplaceCriteria.contains);
-    columnB.getEntireColumn().getFormat().autofitColumns();
+  let selectedSheet = workbook.getActiveWorksheet();
+
+  selectedSheet.getUsedRange().unmerge();
+
+  selectedSheet.getRange("1:2").delete(ExcelScript.DeleteShiftDirection.up);
+
+  replaceInColumn(selectedSheet, "B", "*", "");
+  selectedSheet.getRange("B:B").setNumberFormat("m/d/yyyy");
+
+  replaceInColumn(selectedSheet, "G", "C", "Credit");
+  replaceInColumn(selectedSheet, "G", "D", "Debit");
+
+  let lastRow = selectedSheet.getRange("E:E").getLastCell().getRow();
+  let rangeH2 = selectedSheet.getRange("H2:H" + lastRow);
+  rangeH2.setFormulas([["=IF(G2=\"Credit\",-F2,F2)"]]);
+  selectedSheet.getRange("H1").setValue("Amt");
+
+  let columnH = selectedSheet.getRange("H:H");
+  let columnF = selectedSheet.getRange("F:F");
+  columnH.copyTo(columnF, ExcelScript.RangeCopyType.values, false);
+
+  selectedSheet.getRange("H:H").delete(ExcelScript.DeleteShiftDirection.left);
+
+  columnF.setNumberFormat("_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)");
+
+  let usedRange = selectedSheet.getUsedRange();
+  usedRange.getSort().apply([{key: 1, ascending: true}]); // Assuming Column B is the second column (key: 1)
+
+  replaceInColumn(selectedSheet, "B", ",", "");
+  selectedSheet.getRange("B:B").getEntireColumn().getFormat().autofitColumns();
+}
+
+function replaceInColumn(sheet: ExcelScript.Worksheet, column: string, oldText: string, newText: string) {
+  let columnRange = sheet.getRange(column + ":" + column);
+  let values = columnRange.getValues();
+
+  for (let i = 0; i < values.length; i++) {
+    if (values[i][0] !== null && values[i][0] !== undefined) {
+      values[i][0] = values[i][0].toString().replace(new RegExp(oldText, 'g'), newText);
+    }
+  }
+  columnRange.setValues(values);
 }
