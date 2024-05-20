@@ -1,47 +1,46 @@
-function main(workbook: ExcelScript.Workbook) {
-  let selectedSheet = workbook.getActiveWorksheet();
+async function main(context: Excel.RequestContext) {
+    const sheet = context.workbook.worksheets.getActiveWorksheet();
 
-  selectedSheet.getUsedRange().unmerge();
+    sheet.getUsedRange().unmerge();
 
-  selectedSheet.getRange("1:2").delete(ExcelScript.DeleteShiftDirection.up);
+    sheet.getRange("1:2").delete(Excel.DeleteShiftDirection.up);
 
-  replaceInColumn(selectedSheet, "B", "*", "");
-  selectedSheet.getRange("B:B").setNumberFormat("m/d/yyyy");
+    const columnB = sheet.getRange("B:B");
+    columnB.replaceAll(" *", "", { matchCase: false, completeMatch: false });
+    columnB.replaceAll(",", "", { matchCase: false, completeMatch: false });
 
-  replaceInColumn(selectedSheet, "G", "C", "Credit");
-  replaceInColumn(selectedSheet, "G", "D", "Debit");
+    columnB.numberFormat = [["m/d/yyyy"]];
 
-  let lastRowE = selectedSheet.getRange("E:E").getLastCell().getRow();
-  let rangeH2 = selectedSheet.getRange(`H2:H${lastRowE}`);
-  let formulas = new Array(lastRowE - 1).fill(["=IF(G2=\"Credit\",-F2,F2)"]); // Array starts from H2
-  rangeH2.setFormulas(formulas);
-  selectedSheet.getRange("H1").setValue("Amt");
+    const columnG = sheet.getRange("G:G");
+    columnG.replaceAll("C", "Credit", { completeMatch: true });
+    columnG.replaceAll("D", "Debit", { completeMatch: true });
 
-  let columnH = selectedSheet.getRange(`H2:H${lastRowE}`);
-  let columnF = selectedSheet.getRange(`F2:F${lastRowE}`);
-  let columnHValues = columnH.getValues();
-  columnF.setValues(columnHValues);
+    const lastRow = sheet.getUsedRange().getLastRow().load("rowIndex");
+    await context.sync();
+    const columnH = sheet.getRange("H2:H" + lastRow.rowIndex);
+    columnH.formulasR1C1 = [[`=IF(RC[-1]="Credit",-RC[-2],RC[-2])`]];
+    sheet.getRange("H1").values = [["Amt"]];
 
-  selectedSheet.getRange("H:H").delete(ExcelScript.DeleteShiftDirection.left);
+    columnH.copyFrom(columnH, Excel.RangeCopyType.values, false, false);
+    sheet.getRange("F:F").numberFormat = [['_($* #,##0.00_);_($* (#,##0.00);_($* "-"??_);_(@_)']];
 
-  columnF.setNumberFormat("_($* #,##0.00_);_($* (#,##0.00);_($* \"-\"??_);_(@_)");
+    sheet.getRange("H:H").delete(Excel.DeleteShiftDirection.left);
 
-  let usedRange = selectedSheet.getUsedRange();
-  usedRange.getSort().apply([{key: 1, ascending: true}]); // Assuming Column B is the second column (key: 1)
+    const usedRange = sheet.getUsedRange();
+    usedRange.load("address");
+    await context.sync();
+    usedRange.sort.apply(
+        [
+            {
+                key: 1,
+                ascending: true
+            }
+        ],
+        {
+            matchCase: false,
+            sortBy: Excel.SortBy.pinYin
+        }
+    );
 
-  replaceInColumn(selectedSheet, "B", ",", "");
-  selectedSheet.getRange("B:B").getEntireColumn().getFormat().autofitColumns();
-}
-
-function replaceInColumn(sheet: ExcelScript.Worksheet, column: string, oldText: string, newText: string) {
-  let columnRange = sheet.getRange(column + "1:" + column + sheet.getUsedRange().getLastRow());
-  let values = columnRange.getValues();
-  if (values) {
-    for (let i = 0; i < values.length; i++) {
-      if (values[i][0] !== null && values[i][0] !== undefined) {
-        values[i][0] = values[i][0].toString().replace(new RegExp(oldText, 'g'), newText);
-      }
-    }
-    columnRange.setValues(values);
-  }
+    columnB.getEntireColumn().autoFit();
 }
