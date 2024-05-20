@@ -13,7 +13,7 @@
         const checkExist = setInterval(() => {
             const element = document.querySelector(selector);
             if (element) {
-                console.log(`Element found: ${selector}`);
+                console.log(`Element found: ${selector}`, element);
                 clearInterval(checkExist);
                 callback(element);
             }
@@ -24,7 +24,7 @@
             try {
                 const element = document.querySelector(selector);
                 if (element) {
-                    console.log(`Element found by MutationObserver: ${selector}`);
+                    console.log(`Element found by MutationObserver: ${selector}`, element);
                     observer.disconnect();
                     clearInterval(checkExist);
                     callback(element);
@@ -84,4 +84,7 @@
         console.log('Starting to process data entries');
         processNext();
     });
+
+    // Additional logging to verify script execution flow
+    console.log('Setup complete, waiting for target element');
 })();
