@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    console.log('TamperMonkey script started');
+    console.log('Script started');
 
     // JSON data (replace with your actual data)
     const jsonData = [
@@ -10,12 +10,23 @@
     // Function to wait for a specific element to be available
     function waitForElement(selector, callback) {
         console.log(`Waiting for element with selector: ${selector}`);
+        const checkExist = setInterval(() => {
+            const element = document.querySelector(selector);
+            if (element) {
+                console.log(`Element found: ${selector}`);
+                clearInterval(checkExist);
+                callback(element);
+            }
+        }, 100);
+
+        // Also use MutationObserver as a fallback
         const observer = new MutationObserver(() => {
             try {
                 const element = document.querySelector(selector);
                 if (element) {
-                    console.log(`Element found: ${selector}`);
+                    console.log(`Element found by MutationObserver: ${selector}`);
                     observer.disconnect();
+                    clearInterval(checkExist);
                     callback(element);
                 }
             } catch (error) {
