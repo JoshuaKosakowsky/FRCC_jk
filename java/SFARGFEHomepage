@@ -10,10 +10,13 @@
         if (directNavButton) {
             console.log('Direct Navigation button found:', directNavButton);
 
-            // Click the Direct Navigation button
-            directNavButton.click();
+            // Simulate full mouse click event sequence on the Direct Navigation button
+            directNavButton.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+            directNavButton.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
+            directNavButton.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
+            directNavButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
-            console.log('Clicked the Direct Navigation button');
+            console.log('Simulated click on the Direct Navigation button');
 
             // Wait for 1 second to ensure the search input is ready
             setTimeout(() => {
