@@ -1,0 +1,105 @@
+Sub Student_Account_Detail()
+    ' Remove merged cells and unwanted rows/columns
+    Cells.Select
+    Selection.UnMerge
+    Rows("1:4").Delete Shift:=xlUp
+    Columns("C:C").Delete Shift:=xlToLeft
+    
+    ' Add new sheet for Pivot Table
+    Sheets.Add After:=ActiveSheet
+    ActiveSheet.Name = "PivotSheet"
+    
+    ' Create Pivot Cache and Pivot Table
+    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
+        "Page1!R1C1:R1048576C8", Version:=6).CreatePivotTable TableDestination:= _
+        "PivotSheet!R3C1", TableName:="PivotTable1", DefaultVersion:=6
+    
+    ' Set Pivot Table properties
+    With Sheets("PivotSheet").PivotTables("PivotTable1")
+        .ColumnGrand = True
+        .HasAutoFormat = True
+        .DisplayErrorString = False
+        .DisplayNullString = True
+        .EnableDrilldown = True
+        .ErrorString = ""
+        .MergeLabels = False
+        .NullString = ""
+        .PageFieldOrder = 2
+        .PageFieldWrapCount = 0
+        .PreserveFormatting = True
+        .RowGrand = True
+        .SaveData = True
+        .PrintTitles = False
+        .RepeatItemsOnEachPrintedPage = True
+        .TotalsAnnotation = False
+        .CompactRowIndent = 1
+        .InGridDropZones = False
+        .DisplayFieldCaptions = True
+        .DisplayMemberPropertyTooltips = False
+        .DisplayContextTooltips = True
+        .ShowDrillIndicators = True
+        .PrintDrillIndicators = False
+        .AllowMultipleFilters = False
+        .SortUsingCustomLists = True
+        .FieldListSortAscending = False
+        .ShowValuesRow = False
+        .CalculatedMembersInFilters = False
+        .RowAxisLayout xlCompactRow
+    End With
+    
+    ' Configure Pivot Cache
+    With Sheets("PivotSheet").PivotTables("PivotTable1").PivotCache
+        .RefreshOnFileOpen = False
+        .MissingItemsLimit = xlMissingItemsDefault
+    End With
+    
+    ' Set Pivot Table Fields
+    With Sheets("PivotSheet").PivotTables("PivotTable1").PivotFields("DETAIL_CODE_DESC")
+        .Orientation = xlColumnField
+        .Position = 1
+    End With
+    With Sheets("PivotSheet").PivotTables("PivotTable1").PivotFields("ID")
+        .Orientation = xlRowField
+        .Position = 1
+    End With
+    With Sheets("PivotSheet").PivotTables("PivotTable1").PivotFields("NAME")
+        .Orientation = xlRowField
+        .Position = 2
+    End With
+    Sheets("PivotSheet").PivotTables("PivotTable1").AddDataField Sheets("PivotSheet").PivotTables("PivotTable1").PivotFields("AMOUNT"), "Sum of AMOUNT", xlSum
+    
+    ' Format the Pivot Table
+    Sheets("PivotSheet").PivotTables("PivotTable1").PivotFields("ID").Subtotals = Array(False, False, False, False, False, False, False, False, False, False, False, False)
+    Sheets("PivotSheet").PivotTables("PivotTable1").PivotFields("ID").LayoutForm = xlTabular
+    
+    ' Copy and paste special values to new sheet
+    Sheets("PivotSheet").Rows("3:38").Copy
+    Sheets.Add After:=ActiveSheet
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+    Cells.Select
+    Selection.Columns.AutoFit
+    Columns("C:U").Delete Shift:=xlToLeft
+    Columns("D:AL").Delete Shift:=xlToLeft
+    Columns("C:D").Style = "Comma"
+    Rows("2:2").AutoFilter
+    
+    ' Apply AutoFilter criteria
+    ActiveSheet.Range("$A$2:$BF$33").AutoFilter Field:=4, Criteria1:=Array("(1,058.06)", "14,091.08", "3,449.60", "3,706.00", "7,045.54", "948.00", "="), Operator:=xlFilterValues
+    
+    ' Apply formatting
+    Columns("D:D").Select
+    Selection.FormatConditions.Add Type:=xlCellValue, Operator:=xlLess, Formula1:="=0"
+    Selection.FormatConditions(Selection.FormatConditions.Count).SetFirstPriority
+    With Selection.FormatConditions(1).Font
+        .Color = -16383844
+        .TintAndShade = 0
+    End With
+    With Selection.FormatConditions(1).Interior
+        .PatternColorIndex = xlAutomatic
+        .Color = 13551615
+        .TintAndShade = 0
+    End With
+    Selection.FormatConditions(1).StopIfTrue = False
+End Sub
+
+
