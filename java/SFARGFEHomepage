@@ -23,22 +23,36 @@
         if (searchInput) {
             console.log('Search input found:', searchInput);
 
+            // Focus on the search input
             searchInput.focus();
+            console.log('Focused on search input');
 
-            // Clear any existing value and set the new value
+            // Log initial value
+            console.log('Initial search input value:', searchInput.value);
+
+            // Clear any existing value
             searchInput.value = '';
             searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+            console.log('Cleared search input value');
+
+            // Set the new value
             searchInput.value = 'SFARGFE';
             searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+            console.log('Set search input value to SFARGFE');
 
-            console.log('Entered text into search input');
+            // Log new value
+            console.log('New search input value:', searchInput.value);
+
+            // Force blur and refocus to trigger events
+            searchInput.blur();
+            searchInput.focus();
+            console.log('Blurred and refocused search input');
 
             // Simulate pressing the Enter key
             const enterEvent = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });
             searchInput.dispatchEvent(enterEvent);
             searchInput.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
             searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
-
             console.log('Simulated Enter key press');
 
             // Wait for search results to load and click the result
