@@ -1,4 +1,3 @@
-
 (function() {
     'use strict';
 
@@ -14,16 +13,26 @@
             // Focus on the search input
             searchInput.focus();
 
-            // Simulate typing the text 'SFARGFE'
-            const text = 'SFARGFE';
-            searchInput.value = text;
-            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-            searchInput.dispatchEvent(new Event('change', { bubbles: true }));
-            searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+            // Set the value of the input directly
+            searchInput.value = 'SFARGFE';
+
+            // Manually create and dispatch the input event
+            const inputEvent = new Event('input', { bubbles: true });
+            searchInput.dispatchEvent(inputEvent);
+
+            // Manually create and dispatch the change event
+            const changeEvent = new Event('change', { bubbles: true });
+            searchInput.dispatchEvent(changeEvent);
+
+            console.log('Entered text into search input');
+
+            // Simulate pressing the Enter key
+            const enterEvent = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });
+            searchInput.dispatchEvent(enterEvent);
             searchInput.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
             searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
 
-            console.log('Entered text into search input');
+            console.log('Simulated Enter key press');
 
             // Wait for search results to load and click the result
             waitForElement('#SearchResult .searchItem[data-name="SFARGFE"]', (resultElement) => {
