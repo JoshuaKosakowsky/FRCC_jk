@@ -3,6 +3,8 @@
 
     console.log('TamperMonkey script started');
 
+    // Commented out the Direct Navigation function
+    /*
     function setDirectNavigation() {
         console.log('Setting Direct Navigation state...');
         const directNavRadio = document.querySelector('#directSearchRadio');
@@ -16,6 +18,7 @@
             console.error('Direct Navigation radio input not found');
         }
     }
+    */
 
     function performSearch() {
         console.log('Attempting to find the search input...');
@@ -23,8 +26,9 @@
         if (searchInput) {
             console.log('Search input found:', searchInput);
 
-            // Ensure input is ready to accept new value
-            searchInput.value = '';
+            // Focus on the search input
+            searchInput.focus();
+            console.log('Focused on search input');
 
             // Simulate typing each character
             const text = 'SFARGFE';
@@ -85,12 +89,10 @@
         observer.observe(document.body, { childList: true, subtree: true });
     }
 
+    // Wait for 2 seconds before executing the search action
     setTimeout(() => {
-        setDirectNavigation();
-        setTimeout(() => {
-            performSearch();
-        }, 1000); // 1-second delay to ensure Direct Navigation is set
-    }, 2000); // 2-second initial delay
+        performSearch();
+    }, 2000); // 2-second delay
 
     console.log('Script execution delayed for 2 seconds');
 })();
