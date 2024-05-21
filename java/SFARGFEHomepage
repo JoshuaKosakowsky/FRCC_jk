@@ -1,0 +1,44 @@
+(function() {
+    'use strict';
+
+    console.log('TamperMonkey script started');
+
+    function performSearch() {
+        console.log('Attempting to find the search input...');
+        // Target the search input field
+        const searchInput = document.querySelector('#search-landing');
+        if (searchInput) {
+            console.log('Search input found:', searchInput);
+
+            // Focus on the search input
+            searchInput.focus();
+
+            // Enter the text 'SFARGFE'
+            searchInput.value = 'SFARGFE';
+            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+            console.log('Entered text into search input');
+
+            // Simulate pressing the Enter key
+            const enterEvent = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });
+            searchInput.dispatchEvent(enterEvent);
+
+            console.log('Simulated Enter key press');
+
+            // Wait for 2 seconds for the page to load
+            setTimeout(() => {
+                console.log('2 seconds passed, continuing with next steps...');
+                // You can add any additional actions here
+            }, 2000);
+        } else {
+            console.error('Search input not found');
+        }
+    }
+
+    // Wait for 2 seconds before executing the search action
+    setTimeout(() => {
+        performSearch();
+    }, 2000); // 2-second delay
+
+    console.log('Script execution delayed for 2 seconds');
+})();
