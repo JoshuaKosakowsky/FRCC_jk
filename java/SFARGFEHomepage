@@ -20,79 +20,32 @@
     }
     */
 
-    function performSearch() {
-        console.log('Attempting to find the search input...');
-        const searchInput = document.querySelector('#search-landing');
-        if (searchInput) {
-            console.log('Search input found:', searchInput);
+    function simulateTypingAndEnter() {
+        console.log('Simulating typing "SFARGFE" and pressing Enter');
 
-            // Focus on the search input
-            searchInput.focus();
-            console.log('Focused on search input');
+        const text = 'SFARGFE';
 
-            // Simulate typing each character
-            const text = 'SFARGFE';
-            for (let i = 0; i < text.length; i++) {
-                const char = text.charAt(i);
-                searchInput.value += char;
-                searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: char, bubbles: true }));
-                searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-                searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: char, bubbles: true }));
-            }
-
-            console.log('Entered text into search input:', searchInput.value);
-
-            // Simulate pressing the Enter key
-            searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-            searchInput.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
-            searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
-            searchInput.dispatchEvent(new Event('change', { bubbles: true }));
-
-            console.log('Simulated Enter key press');
-
-            // Wait for search results to load and click the result
-            waitForElement('#SearchResult .searchItem[data-name="SFARGFE"]', (resultElement) => {
-                console.log('Search result found:', resultElement);
-                resultElement.click();
-            });
-        } else {
-            console.error('Search input not found');
+        // Simulate typing each character
+        for (let i = 0; i < text.length; i++) {
+            const char = text.charAt(i);
+            document.dispatchEvent(new KeyboardEvent('keydown', { key: char, bubbles: true }));
+            document.dispatchEvent(new KeyboardEvent('keypress', { key: char, bubbles: true }));
+            document.dispatchEvent(new KeyboardEvent('keyup', { key: char, bubbles: true }));
         }
+
+        // Simulate pressing the Enter key
+        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+        document.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
+        document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
+
+        console.log('Simulated typing and Enter key press');
     }
 
-    function waitForElement(selector, callback) {
-        console.log(`Waiting for element with selector: ${selector}`);
-        const checkExist = setInterval(() => {
-            const element = document.querySelector(selector);
-            if (element) {
-                console.log(`Element found: ${selector}`, element);
-                clearInterval(checkExist);
-                callback(element);
-            } else {
-                console.log(`Element not found yet: ${selector}`);
-            }
-        }, 100);
-
-        const observer = new MutationObserver(() => {
-            try {
-                const element = document.querySelector(selector);
-                if (element) {
-                    console.log(`Element found by MutationObserver: ${selector}`, element);
-                    observer.disconnect();
-                    clearInterval(checkExist);
-                    callback(element);
-                }
-            } catch (error) {
-                console.error('Error querying selector:', selector, error);
-            }
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
-    }
-
-    // Wait for 2 seconds before executing the search action
+    // Wait for 2 seconds before executing the typing action
     setTimeout(() => {
-        performSearch();
+        simulateTypingAndEnter();
     }, 2000); // 2-second delay
 
     console.log('Script execution delayed for 2 seconds');
 })();
+
