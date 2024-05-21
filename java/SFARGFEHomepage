@@ -17,11 +17,24 @@
         }
     }
 
+    function typeCharacter(searchInput, char, callback) {
+        searchInput.value += char;
+        searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: char, bubbles: true }));
+        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+        searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: char, bubbles: true }));
+        console.log(`Typed character: ${char}`);
+        setTimeout(callback, 100); // Delay between keystrokes
+    }
+
     function performSearch() {
         console.log('Attempting to find the search input...');
         const searchInput = document.querySelector('#search-landing');
         if (searchInput) {
             console.log('Search input found:', searchInput);
+
+            // Focus on the search input
+            searchInput.focus();
+            console.log('Focused on search input');
 
             // Ensure input is ready to accept new value
             searchInput.value = '';
@@ -29,62 +42,27 @@
 
             // Simulate typing each character
             const text = 'SFARGFE';
-            for (let i = 0; i < text.length; i++) {
-                const char = text.charAt(i);
-                searchInput.value += char;
-                searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: char, bubbles: true }));
-                searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-                searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: char, bubbles: true }));
-                console.log(`Typed character: ${char}`);
+            let i = 0;
+
+            function typeNextCharacter() {
+                if (i < text.length) {
+                    typeCharacter(searchInput, text.charAt(i), typeNextCharacter);
+                    i++;
+                } else {
+                    // Simulate pressing the Enter key after typing is complete
+                    searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+                    searchInput.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
+                    searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
+                    searchInput.dispatchEvent(new Event('change', { bubbles: true }));
+                    console.log('Simulated Enter key press');
+                }
             }
 
-            console.log('Entered text into search input:', searchInput.value);
-
-            // Simulate pressing the Enter key
-            searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-            searchInput.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
-            searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
-            searchInput.dispatchEvent(new Event('change', { bubbles: true }));
-
-            console.log('Simulated Enter key press');
-
-            // Wait for search results to load and click the result
-            waitForElement('#SearchResult .searchItem[data-name="SFARGFE"]', (resultElement) => {
-                console.log('Search result found:', resultElement);
-                resultElement.click();
-            });
+            // Start typing characters with delay
+            typeNextCharacter();
         } else {
             console.error('Search input not found');
         }
-    }
-
-    function waitForElement(selector, callback) {
-        console.log(`Waiting for element with selector: ${selector}`);
-        const checkExist = setInterval(() => {
-            const element = document.querySelector(selector);
-            if (element) {
-                console.log(`Element found: ${selector}`, element);
-                clearInterval(checkExist);
-                callback(element);
-            } else {
-                console.log(`Element not found yet: ${selector}`);
-            }
-        }, 100);
-
-        const observer = new MutationObserver(() => {
-            try {
-                const element = document.querySelector(selector);
-                if (element) {
-                    console.log(`Element found by MutationObserver: ${selector}`, element);
-                    observer.disconnect();
-                    clearInterval(checkExist);
-                    callback(element);
-                }
-            } catch (error) {
-                console.error('Error querying selector:', selector, error);
-            }
-        });
-        observer.observe(document.body, { childList: true, subtree: true });
     }
 
     setTimeout(() => {
