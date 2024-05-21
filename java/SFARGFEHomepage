@@ -3,35 +3,37 @@
 
     console.log('TamperMonkey script started');
 
-    function performSearch() {
-        const text = 'SFARGFE';
-        const inputEvent = new Event('input', { bubbles: true });
-        
-        // Focus on the body to ensure it captures the keystrokes
-        document.body.focus();
+    function simulateTypingAndEnter() {
+        console.log('Simulating typing "SFARGFE" and pressing Enter');
 
-        // Simulate typing each character
-        for (let i = 0; i < text.length; i++) {
-            const char = text.charAt(i);
-            document.dispatchEvent(new KeyboardEvent('keydown', { key: char, bubbles: true }));
-            document.dispatchEvent(new KeyboardEvent('keypress', { key: char, bubbles: true }));
-            document.dispatchEvent(new KeyboardEvent('keyup', { key: char, bubbles: true }));
+        const text = 'SFARGFE';
+        let i = 0;
+
+        function typeCharacter() {
+            if (i < text.length) {
+                const char = text.charAt(i);
+                document.dispatchEvent(new KeyboardEvent('keydown', { key: char, bubbles: true }));
+                document.dispatchEvent(new KeyboardEvent('keypress', { key: char, bubbles: true }));
+                document.dispatchEvent(new KeyboardEvent('keyup', { key: char, bubbles: true }));
+                console.log(`Typed character: ${char}`);
+                i++;
+                setTimeout(typeCharacter, 100); // Delay between keystrokes
+            } else {
+                // Simulate pressing the Enter key after typing is complete
+                document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+                document.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
+                document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
+                console.log('Simulated Enter key press');
+            }
         }
 
-        console.log('Entered text into search input');
-
-        // Simulate pressing the Enter key
-        document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-        document.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
-        document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
-        document.dispatchEvent(new Event('change', { bubbles: true }));
-
-        console.log('Simulated Enter key press');
+        // Start typing characters with delay
+        typeCharacter();
     }
 
-    // Wait for 2 seconds before executing the search action
+    // Wait for 2 seconds before executing the typing action
     setTimeout(() => {
-        performSearch();
+        simulateTypingAndEnter();
     }, 2000); // 2-second delay
 
     console.log('Script execution delayed for 2 seconds');
