@@ -3,27 +3,12 @@
 
     console.log('TamperMonkey script started');
 
-    // Commented out the Direct Navigation function
-    /*
-    function setDirectNavigation() {
-        console.log('Setting Direct Navigation state...');
-        const directNavRadio = document.querySelector('#directSearchRadio');
-        if (directNavRadio) {
-            console.log('Direct Navigation radio input found:', directNavRadio);
-            directNavRadio.checked = true;
-            const changeEvent = new Event('change', { bubbles: true });
-            directNavRadio.dispatchEvent(changeEvent);
-            console.log('Direct Navigation state set');
-        } else {
-            console.error('Direct Navigation radio input not found');
-        }
-    }
-    */
-
-    function simulateTypingAndEnter() {
-        console.log('Simulating typing "SFARGFE" and pressing Enter');
-
+    function performSearch() {
         const text = 'SFARGFE';
+        const inputEvent = new Event('input', { bubbles: true });
+        
+        // Focus on the body to ensure it captures the keystrokes
+        document.body.focus();
 
         // Simulate typing each character
         for (let i = 0; i < text.length; i++) {
@@ -33,19 +18,21 @@
             document.dispatchEvent(new KeyboardEvent('keyup', { key: char, bubbles: true }));
         }
 
+        console.log('Entered text into search input');
+
         // Simulate pressing the Enter key
         document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
         document.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
         document.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
+        document.dispatchEvent(new Event('change', { bubbles: true }));
 
-        console.log('Simulated typing and Enter key press');
+        console.log('Simulated Enter key press');
     }
 
-    // Wait for 2 seconds before executing the typing action
+    // Wait for 2 seconds before executing the search action
     setTimeout(() => {
-        simulateTypingAndEnter();
+        performSearch();
     }, 2000); // 2-second delay
 
     console.log('Script execution delayed for 2 seconds');
 })();
-
