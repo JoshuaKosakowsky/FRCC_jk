@@ -5,18 +5,12 @@
 
     function setDirectNavigation() {
         console.log('Setting Direct Navigation state...');
-        // Target the Direct Navigation radio input
         const directNavRadio = document.querySelector('#directSearchRadio');
         if (directNavRadio) {
             console.log('Direct Navigation radio input found:', directNavRadio);
-
-            // Set the radio input to checked
             directNavRadio.checked = true;
-
-            // Manually create and dispatch the change event
             const changeEvent = new Event('change', { bubbles: true });
             directNavRadio.dispatchEvent(changeEvent);
-
             console.log('Direct Navigation state set');
         } else {
             console.error('Direct Navigation radio input not found');
@@ -25,29 +19,23 @@
 
     function performSearch() {
         console.log('Attempting to find the search input...');
-        // Target the search input field
         const searchInput = document.querySelector('#search-landing');
         if (searchInput) {
             console.log('Search input found:', searchInput);
 
-            // Focus on the search input
             searchInput.focus();
 
-            // Set the value of the input directly
+            // Clear any existing value and set the new value
+            searchInput.value = '';
+            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
             searchInput.value = 'SFARGFE';
-
-            // Manually create and dispatch the input event
-            const inputEvent = new Event('input', { bubbles: true });
-            searchInput.dispatchEvent(inputEvent);
-
-            // Manually create and dispatch the change event
-            const changeEvent = new Event('change', { bubbles: true });
-            searchInput.dispatchEvent(changeEvent);
+            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
 
             console.log('Entered text into search input');
 
             // Simulate pressing the Enter key
-            searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+            const enterEvent = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });
+            searchInput.dispatchEvent(enterEvent);
             searchInput.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
             searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
 
@@ -63,7 +51,6 @@
         }
     }
 
-    // Function to wait for a specific element to be available
     function waitForElement(selector, callback) {
         console.log(`Waiting for element with selector: ${selector}`);
         const checkExist = setInterval(() => {
@@ -77,7 +64,6 @@
             }
         }, 100);
 
-        // Also use MutationObserver as a fallback
         const observer = new MutationObserver(() => {
             try {
                 const element = document.querySelector(selector);
@@ -94,13 +80,12 @@
         observer.observe(document.body, { childList: true, subtree: true });
     }
 
-    // Execute the script with necessary delays
     setTimeout(() => {
         setDirectNavigation();
         setTimeout(() => {
             performSearch();
-        }, 1000); // 1-second delay after setting Direct Navigation
-    }, 2000); // 2-second initial delay
+        }, 1000);
+    }, 2000);
 
     console.log('Script execution delayed for 2 seconds');
 })();
