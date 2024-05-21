@@ -23,36 +23,27 @@
         if (searchInput) {
             console.log('Search input found:', searchInput);
 
-            // Focus on the search input
-            searchInput.focus();
-            console.log('Focused on search input');
-
-            // Log initial value
-            console.log('Initial search input value:', searchInput.value);
-
-            // Clear any existing value
+            // Ensure input is ready to accept new value
             searchInput.value = '';
-            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-            console.log('Cleared search input value');
 
-            // Set the new value
-            searchInput.value = 'SFARGFE';
-            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
-            console.log('Set search input value to SFARGFE');
+            // Simulate typing each character
+            const text = 'SFARGFE';
+            for (let i = 0; i < text.length; i++) {
+                const char = text.charAt(i);
+                searchInput.value += char;
+                searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: char, bubbles: true }));
+                searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: char, bubbles: true }));
+            }
 
-            // Log new value
-            console.log('New search input value:', searchInput.value);
-
-            // Force blur and refocus to trigger events
-            searchInput.blur();
-            searchInput.focus();
-            console.log('Blurred and refocused search input');
+            console.log('Entered text into search input:', searchInput.value);
 
             // Simulate pressing the Enter key
-            const enterEvent = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });
-            searchInput.dispatchEvent(enterEvent);
+            searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
             searchInput.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
             searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
+            searchInput.dispatchEvent(new Event('change', { bubbles: true }));
+
             console.log('Simulated Enter key press');
 
             // Wait for search results to load and click the result
@@ -98,8 +89,8 @@
         setDirectNavigation();
         setTimeout(() => {
             performSearch();
-        }, 1000);
-    }, 2000);
+        }, 1000); // 1-second delay to ensure Direct Navigation is set
+    }, 2000); // 2-second initial delay
 
     console.log('Script execution delayed for 2 seconds');
 })();
