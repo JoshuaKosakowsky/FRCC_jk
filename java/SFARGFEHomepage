@@ -3,63 +3,63 @@
 
     console.log('TamperMonkey script started');
 
-    function performSearch() {
-        console.log('Attempting to find and click the Direct Navigation button...');
-        // Target the Direct Navigation button
-        const directNavButton = document.querySelector('.rectangle-directSearch.radioRectangle.centerSearchOption.unselectedRactangle');
-        if (directNavButton) {
-            console.log('Direct Navigation button found:', directNavButton);
+    function setDirectNavigation() {
+        console.log('Setting Direct Navigation state...');
+        // Target the Direct Navigation radio input
+        const directNavRadio = document.querySelector('#directSearchRadio');
+        if (directNavRadio) {
+            console.log('Direct Navigation radio input found:', directNavRadio);
 
-            // Simulate full mouse click event sequence on the Direct Navigation button
-            directNavButton.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-            directNavButton.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
-            directNavButton.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
-            directNavButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+            // Set the radio input to checked
+            directNavRadio.checked = true;
 
-            console.log('Simulated click on the Direct Navigation button');
+            // Manually create and dispatch the change event
+            const changeEvent = new Event('change', { bubbles: true });
+            directNavRadio.dispatchEvent(changeEvent);
 
-            // Wait for 1 second to ensure the search input is ready
-            setTimeout(() => {
-                console.log('Attempting to find the search input...');
-                // Target the search input field
-                const searchInput = document.querySelector('#search-landing');
-                if (searchInput) {
-                    console.log('Search input found:', searchInput);
-
-                    // Focus on the search input
-                    searchInput.focus();
-
-                    // Set the value of the input directly
-                    searchInput.value = 'SFARGFE';
-
-                    // Manually create and dispatch the input event
-                    const inputEvent = new Event('input', { bubbles: true });
-                    searchInput.dispatchEvent(inputEvent);
-
-                    // Manually create and dispatch the change event
-                    const changeEvent = new Event('change', { bubbles: true });
-                    searchInput.dispatchEvent(changeEvent);
-
-                    console.log('Entered text into search input');
-
-                    // Simulate pressing the Enter key
-                    searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-                    searchInput.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
-                    searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
-
-                    console.log('Simulated Enter key press');
-
-                    // Wait for search results to load and click the result
-                    waitForElement('#SearchResult .searchItem[data-name="SFARGFE"]', (resultElement) => {
-                        console.log('Search result found:', resultElement);
-                        resultElement.click();
-                    });
-                } else {
-                    console.error('Search input not found');
-                }
-            }, 1000); // 1-second delay after clicking the Direct Navigation button
+            console.log('Direct Navigation state set');
         } else {
-            console.error('Direct Navigation button not found');
+            console.error('Direct Navigation radio input not found');
+        }
+    }
+
+    function performSearch() {
+        console.log('Attempting to find the search input...');
+        // Target the search input field
+        const searchInput = document.querySelector('#search-landing');
+        if (searchInput) {
+            console.log('Search input found:', searchInput);
+
+            // Focus on the search input
+            searchInput.focus();
+
+            // Set the value of the input directly
+            searchInput.value = 'SFARGFE';
+
+            // Manually create and dispatch the input event
+            const inputEvent = new Event('input', { bubbles: true });
+            searchInput.dispatchEvent(inputEvent);
+
+            // Manually create and dispatch the change event
+            const changeEvent = new Event('change', { bubbles: true });
+            searchInput.dispatchEvent(changeEvent);
+
+            console.log('Entered text into search input');
+
+            // Simulate pressing the Enter key
+            searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+            searchInput.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
+            searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
+
+            console.log('Simulated Enter key press');
+
+            // Wait for search results to load and click the result
+            waitForElement('#SearchResult .searchItem[data-name="SFARGFE"]', (resultElement) => {
+                console.log('Search result found:', resultElement);
+                resultElement.click();
+            });
+        } else {
+            console.error('Search input not found');
         }
     }
 
@@ -94,10 +94,13 @@
         observer.observe(document.body, { childList: true, subtree: true });
     }
 
-    // Wait for 2 seconds before executing the search action
+    // Execute the script with necessary delays
     setTimeout(() => {
-        performSearch();
-    }, 2000); // 2-second delay
+        setDirectNavigation();
+        setTimeout(() => {
+            performSearch();
+        }, 1000); // 1-second delay after setting Direct Navigation
+    }, 2000); // 2-second initial delay
 
     console.log('Script execution delayed for 2 seconds');
 })();
