@@ -3,15 +3,20 @@
 
     console.log('TamperMonkey script started');
 
-    function focusAndType() {
-        console.log('Focusing and typing into the search input');
+    function simulateTypingAndEnter() {
+        console.log('Simulating typing "SFARGFE" and pressing Enter');
+
         const searchInput = document.querySelector('#search-landing');
         if (searchInput) {
             console.log('Search input found:', searchInput);
             searchInput.focus();
+            console.log('Focused on search input');
 
             // Clear the input value first
             searchInput.value = '';
+            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+            searchInput.dispatchEvent(new Event('change', { bubbles: true }));
+            console.log('Cleared search input value');
 
             // Type SFARGFE
             const text = 'SFARGFE';
@@ -21,6 +26,7 @@
                 searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: char, bubbles: true }));
                 searchInput.dispatchEvent(new Event('input', { bubbles: true }));
                 searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: char, bubbles: true }));
+                console.log(`Typed character: ${char}`);
             }
 
             console.log('Entered text into search input:', searchInput.value);
@@ -39,7 +45,7 @@
 
     // Wait for the page to load and then run the function
     window.addEventListener('load', () => {
-        setTimeout(focusAndType, 2000);
+        setTimeout(simulateTypingAndEnter, 2000);
     });
 
     console.log('Script execution delayed for 2 seconds');
