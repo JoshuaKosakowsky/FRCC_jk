@@ -3,99 +3,44 @@
 
     console.log('TamperMonkey script started');
 
-    function setDirectNavigation() {
-        console.log('Setting Direct Navigation state...');
-        const directNavRadio = document.querySelector('#directSearchRadio');
-        if (directNavRadio) {
-            console.log('Direct Navigation radio input found:', directNavRadio);
-            directNavRadio.checked = true;
-            const changeEvent = new Event('change', { bubbles: true });
-            directNavRadio.dispatchEvent(changeEvent);
-            console.log('Direct Navigation state set');
-        } else {
-            console.error('Direct Navigation radio input not found');
-        }
-    }
-
-    function typeCharacter(searchInput, char, callback) {
-        searchInput.focus();  // Ensure the input field is focused
-        const inputEvent = new InputEvent('input', { bubbles: true });
-        const changeEvent = new Event('change', { bubbles: true });
-
-        searchInput.value += char;
-        searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: char, bubbles: true }));
-        searchInput.dispatchEvent(inputEvent);
-        searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: char, bubbles: true }));
-        searchInput.dispatchEvent(changeEvent);
-        console.log(`Typed character: ${char}`);
-        setTimeout(callback, 100); // Delay between keystrokes
-    }
-
-    function performSearch() {
-        console.log('Attempting to find the search input...');
+    function focusAndType() {
+        console.log('Focusing and typing into the search input');
         const searchInput = document.querySelector('#search-landing');
         if (searchInput) {
             console.log('Search input found:', searchInput);
-
-            // Focus on the search input
             searchInput.focus();
-            console.log('Focused on search input');
 
-            // Ensure input is ready to accept new value
+            // Clear the input value first
             searchInput.value = '';
-            searchInput.dispatchEvent(new InputEvent('input', { bubbles: true }));
-            searchInput.dispatchEvent(new Event('change', { bubbles: true }));
-            console.log('Cleared search input value');
 
-            // Simulate typing each character
+            // Type SFARGFE
             const text = 'SFARGFE';
-            let i = 0;
-
-            function typeNextCharacter() {
-                if (i < text.length) {
-                    typeCharacter(searchInput, text.charAt(i), typeNextCharacter);
-                    i++;
-                } else {
-                    // Simulate pressing the Enter key after typing is complete
-                    searchInput.focus();  // Ensure the input field is focused
-                    searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
-                    searchInput.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
-                    searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
-                    searchInput.dispatchEvent(new Event('change', { bubbles: true }));
-                    console.log('Simulated Enter key press');
-                }
+            for (let i = 0; i < text.length; i++) {
+                const char = text.charAt(i);
+                searchInput.value += char;
+                searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: char, bubbles: true }));
+                searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: char, bubbles: true }));
             }
 
-            // Start typing characters with delay
-            typeNextCharacter();
+            console.log('Entered text into search input:', searchInput.value);
+
+            // Simulate pressing the Enter key
+            searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+            searchInput.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
+            searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
+            searchInput.dispatchEvent(new Event('change', { bubbles: true }));
+
+            console.log('Simulated Enter key press');
         } else {
             console.error('Search input not found');
         }
     }
 
-    function ensureFocus(selector, callback) {
-        const element = document.querySelector(selector);
-        if (element) {
-            element.focus();
-            setTimeout(() => {
-                if (document.activeElement === element) {
-                    callback();
-                } else {
-                    console.log('Element did not retain focus, retrying...');
-                    ensureFocus(selector, callback);
-                }
-            }, 100);
-        } else {
-            console.error('Element not found:', selector);
-        }
-    }
-
-    setTimeout(() => {
-        setDirectNavigation();
-        setTimeout(() => {
-            ensureFocus('#search-landing', performSearch);
-        }, 1000); // 1-second delay to ensure Direct Navigation is set
-    }, 2000); // 2-second initial delay
+    // Wait for the page to load and then run the function
+    window.addEventListener('load', () => {
+        setTimeout(focusAndType, 2000);
+    });
 
     console.log('Script execution delayed for 2 seconds');
 })();
