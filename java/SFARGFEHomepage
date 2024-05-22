@@ -23,6 +23,7 @@
         const searchInput = document.querySelector('input.form-control.custom-search-box.form-text.search-input');
         if (searchInput) {
             console.log('Search input found:', searchInput);
+            console.log('Search input visibility:', searchInput.offsetParent !== null);
             searchInput.focus();
             console.log('Focused on search input');
 
@@ -54,6 +55,12 @@
             searchInput.dispatchEvent(new Event('blur', { bubbles: true }));
 
             console.log('Simulated Enter key press');
+
+            // Ensure AngularJS detects the changes
+            const angularElement = angular.element(searchInput);
+            const scope = angularElement.scope();
+            console.log('Angular scope:', scope);
+            scope.$apply(); // Manually trigger Angular digest cycle
         } else {
             console.error('Search input not found');
         }
@@ -69,3 +76,45 @@
 
     console.log('Script execution delayed for 3 seconds');
 })();
+
+
+
+const searchInput = document.querySelector('input.form-control.custom-search-box.form-text.search-input');
+console.log(searchInput);
+
+
+console.log('Search input found:', searchInput);
+console.log('Search input visibility:', searchInput.offsetParent !== null);
+
+searchInput.focus();
+searchInput.value = '';
+searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+searchInput.dispatchEvent(new Event('change', { bubbles: true }));
+console.log('Search input cleared:', searchInput.value);
+
+const text = 'SFARGFE';
+for (let i = 0; i < text.length; i++) {
+    const char = text.charAt(i);
+    searchInput.value += char;
+    searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: char, bubbles: true }));
+    searchInput.dispatchEvent(new KeyboardEvent('keypress', { key: char, bubbles: true }));
+    searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+    searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: char, bubbles: true }));
+    console.log(`Typed character: ${char}`);
+}
+
+console.log('Entered text into search input:', searchInput.value);
+searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+searchInput.dispatchEvent(new KeyboardEvent('keypress', { key: 'Enter', bubbles: true }));
+searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter', bubbles: true }));
+searchInput.dispatchEvent(new Event('change', { bubbles: true }));
+searchInput.dispatchEvent(new Event('blur', { bubbles: true }));
+
+
+const angularElement = angular.element(searchInput);
+const scope = angularElement.scope();
+console.log('Angular scope:', scope);
+scope.$apply(); // Manually trigger Angular digest cycle
+
+
+
