@@ -3,6 +3,20 @@
 
     console.log('TamperMonkey script started');
 
+    function setDirectNavigation() {
+        console.log('Setting Direct Navigation state...');
+        const directNavRadio = document.querySelector('#directSearchRadio');
+        if (directNavRadio) {
+            console.log('Direct Navigation radio input found:', directNavRadio);
+            directNavRadio.checked = true;
+            const changeEvent = new Event('change', { bubbles: true });
+            directNavRadio.dispatchEvent(changeEvent);
+            console.log('Direct Navigation state set');
+        } else {
+            console.error('Direct Navigation radio input not found');
+        }
+    }
+
     function simulateTypingAndEnter() {
         console.log('Simulating typing "SFARGFE" and pressing Enter');
 
@@ -45,7 +59,10 @@
 
     // Wait for the page to load and then run the function
     window.addEventListener('load', () => {
-        setTimeout(simulateTypingAndEnter, 2000);
+        setTimeout(() => {
+            setDirectNavigation();
+            setTimeout(simulateTypingAndEnter, 1000); // 1-second delay to ensure Direct Navigation is set
+        }, 2000); // 2-second initial delay
     });
 
     console.log('Script execution delayed for 2 seconds');
