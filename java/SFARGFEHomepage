@@ -78,3 +78,23 @@
 
     console.log('Script execution delayed for 3 seconds');
 })();
+
+
+
+console.log('Entered text into search input:', searchInput.value, searchInput.getAttribute('value'));
+
+
+
+const angularElement = angular.element(searchInput);
+const scope = angularElement.scope();
+console.log('Angular scope:', scope);
+scope.$apply(); // Manually trigger Angular digest cycle
+scope.$digest(); // Additional digest cycle trigger
+
+
+
+const angularElement = angular.element(searchInput);
+const scope = angularElement.scope();
+console.log('Angular scope:', scope);
+scope.term = 'SFARGFE';
+scope.$apply(); // Manually trigger Angular digest cycle
