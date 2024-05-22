@@ -19,10 +19,14 @@
 
     function typeCharacter(searchInput, char, callback) {
         searchInput.focus();  // Ensure the input field is focused
+        const inputEvent = new InputEvent('input', { bubbles: true });
+        const changeEvent = new Event('change', { bubbles: true });
+
         searchInput.value += char;
         searchInput.dispatchEvent(new KeyboardEvent('keydown', { key: char, bubbles: true }));
-        searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+        searchInput.dispatchEvent(inputEvent);
         searchInput.dispatchEvent(new KeyboardEvent('keyup', { key: char, bubbles: true }));
+        searchInput.dispatchEvent(changeEvent);
         console.log(`Typed character: ${char}`);
         setTimeout(callback, 100); // Delay between keystrokes
     }
@@ -39,7 +43,7 @@
 
             // Ensure input is ready to accept new value
             searchInput.value = '';
-            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+            searchInput.dispatchEvent(new InputEvent('input', { bubbles: true }));
             searchInput.dispatchEvent(new Event('change', { bubbles: true }));
             console.log('Cleared search input value');
 
