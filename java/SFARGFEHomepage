@@ -20,7 +20,7 @@
     function simulateTypingAndEnter() {
         console.log('Simulating typing "SFARGFE" and pressing Enter');
 
-        const searchInput = document.querySelector('#search-landing');
+        const searchInput = document.querySelector('#search');
         if (searchInput) {
             console.log('Search input found:', searchInput);
             searchInput.focus();
