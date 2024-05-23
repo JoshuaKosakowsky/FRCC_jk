@@ -1,0 +1,45 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
+import time
+
+chrome_options = Options()
+#chrome_options.add_argument("--headless")
+chrome_options.add_argument("--window-size=1920,1200")
+
+SNum = #ID
+P = #Password
+Search_key = 'SFARGFE'
+
+try:
+    service = Service(executable_path=ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=chrome_options)
+    driver.get('https://banner.cccs.edu/applicationNavigator/seamless')
+
+    wait = WebDriverWait(driver, 10)
+    SNum_box = wait.until(EC.presence_of_element_located(
+        (By.XPATH, "//input[@placeholder='ex: S########']")))
+    SNum_box.send_keys(SNum)
+    P_box = wait.until(EC.presence_of_element_located(
+        (By.XPATH, "//input[@placeholder='Password']")))
+    P_box.send_keys(P)
+    SNum_box.send_keys(Keys.RETURN)
+
+    Search_box = wait.until(EC.presence_of_element_located(
+        (By.XPATH, "//input[@class='search-landing search-placeholder inputSearch ng-pristine ng-valid ng-empty ng-touched' and @id='search-landing' and @name='search' and @placeholder='Pages, Menus, Jobs and Quickflows' and @ ng-placeholder='Pages, Menus, Jobs and Quickflows']")))
+    Search_box.send_keys(Search_key)
+    Search_box.send_keys(Keys.RETURN)
+
+
+
+
+except Exception as e:
+    print(f"An error occured: {e}")
+
+time.sleep(30)
+driver.quit()               
