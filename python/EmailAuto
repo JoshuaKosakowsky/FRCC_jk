@@ -1,4 +1,5 @@
 import os
+import re
 import time
 import pandas as pd
 from selenium import webdriver
@@ -10,7 +11,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
-def download_email_attachment_web(email_user, email_pass, subject_filter, download_path):
+def download_email_attachment_web(email_user, email_pass, download_path):
     try:
         options = Options()
         prefs = {"download.default_directory": download_path}
@@ -25,33 +26,41 @@ def download_email_attachment_web(email_user, email_pass, subject_filter, downlo
         print("Logging in to email account...")
         WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.NAME, "loginfmt"))).send_keys(email_user)
         driver.find_element(By.NAME, "loginfmt").send_keys(Keys.RETURN)
-        time.sleep(2)  # Adjust sleep time as needed for the page to load
+        time.sleep(2)
 
         WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.NAME, "passwd"))).send_keys(email_pass)
         driver.find_element(By.NAME, "passwd").send_keys(Keys.RETURN)
-        time.sleep(2)  # Adjust sleep time as needed for the page to load
+        time.sleep(2)
 
         WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "idSIButton9"))).click()
-        time.sleep(5)  # Wait for redirection
+        time.sleep(5)
 
-        # Search for the email by subject
+        # Search for the email by subject containing "PLUS Loan Report"
         print("Searching for the email...")
         search_box = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//input[@aria-label='Search']")))
-        search_box.send_keys(subject_filter)
+        search_box.send_keys("PLUS Loan Report")
         search_box.send_keys(Keys.RETURN)
-        time.sleep(5)  # Wait for search results
+        time.sleep(5)
 
         # Open the first email in the search results
         print("Opening the email...")
         email_item = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "(//div[@role='option'])[1]")))
         email_item.click()
-        time.sleep(5)  # Wait for the email to open
+        time.sleep(5)
+
+        # Extract date from email subject
+        print("Extracting date from email subject...")
+        subject = driver.find_element(By.XPATH, "//div[@class='gs tC']")  # Adjust this XPath as needed
+        date_match = re.search(r"\d{2}\.\d{2}\.\d{4}", subject.text)
+        if date_match:
+            date_str = date_match.group(0)
+            print(f"Date found: {date_str}")
 
         # Download the attachment
         print("Downloading the attachment...")
         attachment = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//div[@data-icon-name='Download']")))
         attachment.click()
-        time.sleep(5)  # Wait for download to complete
+        time.sleep(5)
 
         # Keep the browser open for debugging
         input("Press Enter to close the browser...")
@@ -118,11 +127,10 @@ def main():
         download_path = '/path/to/save/attachment'
         email_user = 'your_email@company.com'
         email_pass = 'your_password'
-        subject_filter = 'Weekly Report'
         
-        download_email_attachment_web(email_user, email_pass, subject_filter, download_path)
+        download_email_attachment_web(email_user, email_pass, download_path)
         
-        file_path = os.path.join(download_path, 'your_file.xlsx')  # Adjust filename as needed
+        file_path = os.path.join(download_path, 'PLUS Loan Report 05.21.2024.xlsx')  # Adjust filename as needed
         df = read_locked_excel(file_path, 'your_password')
 
         if df is not None:
