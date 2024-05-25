@@ -1,38 +1,25 @@
-import imaplib
-import email
 import os
 import pandas as pd
+from exchangelib import DELEGATE, Account, Credentials, FileAttachment, HTMLBody
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-# Function to download email attachment
-def download_email_attachment(email_user, email_pass, search_criteria):
-    mail = imaplib.IMAP4_SSL('imap.gmail.com')
-    mail.login(email_user, email_pass)
-    mail.select('inbox')
+# Function to download email attachment from Outlook
+def download_email_attachment_outlook(email_user, email_pass, subject_filter, download_path):
+    credentials = Credentials(email_user, email_pass)
+    account = Account(email_user, credentials=credentials, autodiscover=True, access_type=DELEGATE)
 
-    # Search emails based on criteria
-    result, data = mail.search(None, search_criteria)
-    email_ids = data[0].split()
-
-    for e_id in email_ids:
-        result, msg_data = mail.fetch(e_id, '(RFC822)')
-        raw_email = msg_data[0][1]
-        msg = email.message_from_bytes(raw_email)
-        for part in msg.walk():
-            if part.get_content_maintype() == 'multipart':
-                continue
-            if part.get('Content-Disposition') is None:
-                continue
-            filename = part.get_filename()
-            if bool(filename):
-                filepath = os.path.join('/path/to/save/attachment', filename)
-                with open(filepath, 'wb') as f:
-                    f.write(part.get_payload(decode=True))
-    mail.logout()
+    for item in account.inbox.filter(subject__contains=subject_filter).order_by('-datetime_received')[:1]:
+        for attachment in item.attachments:
+            if isinstance(attachment, FileAttachment):
+                local_path = os.path.join(download_path, attachment.name)
+                with open(local_path, 'wb') as f:
+                    f.write(attachment.content)
+                print(f'Saved attachment to {local_path}')
+                return local_path
 
 # Function to unlock and read the Excel file
 def read_locked_excel(file_path, password):
@@ -73,11 +60,15 @@ def process_downloaded_data(file_path):
 
 # Main function to run the entire process
 def main():
-    # Download email attachment
-    download_email_attachment('your_email@gmail.com', 'your_email_password', '(UNSEEN)')
+    # Download email attachment from Outlook
+    download_path = '/path/to/save/attachment'
+    email_user = 'your_email@company.com'
+    email_pass = 'your_password'
+    subject_filter = 'Weekly Report'
+    file_path = download_email_attachment_outlook(email_user, email_pass, subject_filter, download_path)
     
     # Read the downloaded locked Excel file
-    df = read_locked_excel('/path/to/save/attachment/your_file.xlsx', 'your_password')
+    df = read_locked_excel(file_path, 'your_password')
     
     # Filter data and extract IDs
     ids = df['ID'].tolist()  # Replace with actual filtering logic
