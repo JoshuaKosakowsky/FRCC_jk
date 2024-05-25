@@ -1,25 +1,53 @@
 import os
+import time
 import pandas as pd
-from exchangelib import DELEGATE, Account, Credentials, FileAttachment, HTMLBody
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-# Function to download email attachment from Outlook
-def download_email_attachment_outlook(email_user, email_pass, subject_filter, download_path):
-    credentials = Credentials(email_user, email_pass)
-    account = Account(email_user, credentials=credentials, autodiscover=True, access_type=DELEGATE)
+# Function to log into web email and download attachment
+def download_email_attachment_web(email_user, email_pass, subject_filter, download_path):
+    options = webdriver.ChromeOptions()
+    prefs = {"download.default_directory": download_path}
+    options.add_experimental_option("prefs", prefs)
+    
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    driver.get("https://outlook.office.com")
 
-    for item in account.inbox.filter(subject__contains=subject_filter).order_by('-datetime_received')[:1]:
-        for attachment in item.attachments:
-            if isinstance(attachment, FileAttachment):
-                local_path = os.path.join(download_path, attachment.name)
-                with open(local_path, 'wb') as f:
-                    f.write(attachment.content)
-                print(f'Saved attachment to {local_path}')
-                return local_path
+    # Log in to email account
+    username = driver.find_element(By.NAME, "loginfmt")
+    username.send_keys(email_user)
+    username.send_keys(Keys.RETURN)
+    time.sleep(2)  # Adjust sleep time as needed for the page to load
+
+    password = driver.find_element(By.NAME, "passwd")
+    password.send_keys(email_pass)
+    password.send_keys(Keys.RETURN)
+    time.sleep(2)  # Adjust sleep time as needed for the page to load
+
+    driver.find_element(By.ID, "idSIButton9").click()  # Click "Sign in" button
+    time.sleep(5)  # Wait for redirection
+
+    # Search for the email by subject
+    search_box = driver.find_element(By.XPATH, "//input[@aria-label='Search']")
+    search_box.send_keys(subject_filter)
+    search_box.send_keys(Keys.RETURN)
+    time.sleep(5)  # Wait for search results
+
+    # Open the first email in the search results
+    email_item = driver.find_element(By.XPATH, "(//div[@role='option'])[1]")
+    email_item.click()
+    time.sleep(5)  # Wait for the email to open
+
+    # Download the attachment
+    attachment = driver.find_element(By.XPATH, "//div[@data-icon-name='Download']")
+    attachment.click()
+    time.sleep(5)  # Wait for download to complete
+
+    driver.quit()
+    print("Attachment downloaded")
 
 # Function to unlock and read the Excel file
 def read_locked_excel(file_path, password):
@@ -60,14 +88,16 @@ def process_downloaded_data(file_path):
 
 # Main function to run the entire process
 def main():
-    # Download email attachment from Outlook
+    # Download email attachment from web email
     download_path = '/path/to/save/attachment'
     email_user = 'your_email@company.com'
     email_pass = 'your_password'
     subject_filter = 'Weekly Report'
-    file_path = download_email_attachment_outlook(email_user, email_pass, subject_filter, download_path)
+    
+    download_email_attachment_web(email_user, email_pass, subject_filter, download_path)
     
     # Read the downloaded locked Excel file
+    file_path = os.path.join(download_path, 'your_file.xlsx')  # Adjust filename as needed
     df = read_locked_excel(file_path, 'your_password')
     
     # Filter data and extract IDs
