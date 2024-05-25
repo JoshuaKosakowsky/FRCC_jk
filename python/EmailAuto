@@ -7,107 +7,130 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 
-# Function to log into web email and download attachment
 def download_email_attachment_web(email_user, email_pass, subject_filter, download_path):
-    options = webdriver.ChromeOptions()
-    prefs = {"download.default_directory": download_path}
-    options.add_experimental_option("prefs", prefs)
-    
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    driver.get("https://outlook.office.com")
+    try:
+        options = webdriver.ChromeOptions()
+        prefs = {"download.default_directory": download_path}
+        options.add_experimental_option("prefs", prefs)
 
-    # Log in to email account
-    username = driver.find_element(By.NAME, "loginfmt")
-    username.send_keys(email_user)
-    username.send_keys(Keys.RETURN)
-    time.sleep(2)  # Adjust sleep time as needed for the page to load
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        driver.get("https://outlook.office.com")
 
-    password = driver.find_element(By.NAME, "passwd")
-    password.send_keys(email_pass)
-    password.send_keys(Keys.RETURN)
-    time.sleep(2)  # Adjust sleep time as needed for the page to load
+        # Log in to email account
+        print("Logging in to email account...")
+        username = driver.find_element(By.NAME, "loginfmt")
+        username.send_keys(email_user)
+        username.send_keys(Keys.RETURN)
+        time.sleep(2)
 
-    driver.find_element(By.ID, "idSIButton9").click()  # Click "Sign in" button
-    time.sleep(5)  # Wait for redirection
+        password = driver.find_element(By.NAME, "passwd")
+        password.send_keys(email_pass)
+        password.send_keys(Keys.RETURN)
+        time.sleep(2)
 
-    # Search for the email by subject
-    search_box = driver.find_element(By.XPATH, "//input[@aria-label='Search']")
-    search_box.send_keys(subject_filter)
-    search_box.send_keys(Keys.RETURN)
-    time.sleep(5)  # Wait for search results
+        driver.find_element(By.ID, "idSIButton9").click()
+        time.sleep(5)
 
-    # Open the first email in the search results
-    email_item = driver.find_element(By.XPATH, "(//div[@role='option'])[1]")
-    email_item.click()
-    time.sleep(5)  # Wait for the email to open
+        # Search for the email by subject
+        print("Searching for the email...")
+        search_box = driver.find_element(By.XPATH, "//input[@aria-label='Search']")
+        search_box.send_keys(subject_filter)
+        search_box.send_keys(Keys.RETURN)
+        time.sleep(5)
 
-    # Download the attachment
-    attachment = driver.find_element(By.XPATH, "//div[@data-icon-name='Download']")
-    attachment.click()
-    time.sleep(5)  # Wait for download to complete
+        # Open the first email in the search results
+        print("Opening the email...")
+        email_item = driver.find_element(By.XPATH, "(//div[@role='option'])[1]")
+        email_item.click()
+        time.sleep(5)
 
-    driver.quit()
-    print("Attachment downloaded")
+        # Download the attachment
+        print("Downloading the attachment...")
+        attachment = driver.find_element(By.XPATH, "//div[@data-icon-name='Download']")
+        attachment.click()
+        time.sleep(5)
 
-# Function to unlock and read the Excel file
+        # Keep the browser open for debugging
+        input("Press Enter to close the browser...")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+    finally:
+        driver.quit()
+        print("Attachment downloaded")
+
 def read_locked_excel(file_path, password):
-    xl = pd.ExcelFile(file_path, engine='openpyxl', storage_options={'password': password})
-    df = xl.parse(sheet_name=xl.sheet_names[0])
-    return df
+    try:
+        xl = pd.ExcelFile(file_path, engine='openpyxl', storage_options={'password': password})
+        df = xl.parse(sheet_name=xl.sheet_names[0])
+        return df
+    except Exception as e:
+        print(f"An error occurred while reading the Excel file: {e}")
+        return None
 
-# Function to automate website interaction
 def automate_website(ids, download_path):
-    options = webdriver.ChromeOptions()
-    prefs = {"download.default_directory": download_path}
-    options.add_experimental_option("prefs", prefs)
+    try:
+        options = webdriver.ChromeOptions()
+        prefs = {"download.default_directory": download_path}
+        options.add_experimental_option("prefs", prefs)
 
-    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-    driver.get("https://website.com/login")
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+        driver.get("https://website.com/login")
 
-    # Perform login (example, replace with actual login logic)
-    username = driver.find_element(By.NAME, "username")
-    password = driver.find_element(By.NAME, "password")
-    username.send_keys("your_username")
-    password.send_keys("your_password")
-    password.send_keys(Keys.RETURN)
+        # Perform login
+        print("Logging into the website...")
+        username = driver.find_element(By.NAME, "username")
+        password = driver.find_element(By.NAME, "password")
+        username.send_keys("your_username")
+        password.send_keys("your_password")
+        password.send_keys(Keys.RETURN)
 
-    # Navigate to upload page and upload IDs (example, replace with actual upload logic)
-    upload_field = driver.find_element(By.ID, "upload_field")
-    for id in ids:
-        upload_field.send_keys(id)
-        # Perform the upload action here
+        # Navigate to upload page and upload IDs
+        print("Uploading IDs...")
+        upload_field = driver.find_element(By.ID, "upload_field")
+        for id in ids:
+            upload_field.send_keys(id)
+            # Perform the upload action here
 
-    # Wait for download to complete
-    driver.quit()
+        # Keep the browser open for debugging
+        input("Press Enter to close the browser...")
 
-# Function to process the downloaded data
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+    finally:
+        driver.quit()
+
 def process_downloaded_data(file_path):
-    df = pd.read_excel(file_path)
-    filtered_df = df[df['some_column'] == 'some_value']  # Replace with actual filtering logic
-    filtered_df.to_excel('/path/to/save/final_output.xlsx', index=False)
+    try:
+        df = pd.read_excel(file_path)
+        filtered_df = df[df['some_column'] == 'some_value']  # Replace with actual filtering logic
+        filtered_df.to_excel('/path/to/save/final_output.xlsx', index=False)
+    except Exception as e:
+        print(f"An error occurred while processing the downloaded data: {e}")
 
-# Main function to run the entire process
 def main():
-    # Download email attachment from web email
-    download_path = '/path/to/save/attachment'
-    email_user = 'your_email@company.com'
-    email_pass = 'your_password'
-    subject_filter = 'Weekly Report'
-    
-    download_email_attachment_web(email_user, email_pass, subject_filter, download_path)
-    
-    # Read the downloaded locked Excel file
-    file_path = os.path.join(download_path, 'your_file.xlsx')  # Adjust filename as needed
-    df = read_locked_excel(file_path, 'your_password')
-    
-    # Filter data and extract IDs
-    ids = df['ID'].tolist()  # Replace with actual filtering logic
+    try:
+        download_path = '/path/to/save/attachment'
+        email_user = 'your_email@company.com'
+        email_pass = 'your_password'
+        subject_filter = 'Weekly Report'
+        
+        download_email_attachment_web(email_user, email_pass, subject_filter, download_path)
+        
+        file_path = os.path.join(download_path, 'your_file.xlsx')  # Adjust filename as needed
+        df = read_locked_excel(file_path, 'your_password')
 
-    # Automate website interaction and download the resulting file
-    automate_website(ids, '/path/to/download/directory')
+        if df is not None:
+            ids = df['ID'].tolist()  # Replace with actual filtering logic
+            automate_website(ids, '/path/to/download/directory')
+            process_downloaded_data('/path/to/download/directory/resulting_file.xlsx')
+        else:
+            print("Failed to read the Excel file.")
 
-    # Process the downloaded data
-    process_downloaded_data('/path/to/download/directory/resulting_file.xlsx')
+    except Exception as e:
+        print(f"An error occurred in the main function: {e}")
 
 if __name__ == "__main__":
     main()
