@@ -1,0 +1,92 @@
+import imaplib
+import email
+import os
+import pandas as pd
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
+# Function to download email attachment
+def download_email_attachment(email_user, email_pass, search_criteria):
+    mail = imaplib.IMAP4_SSL('imap.gmail.com')
+    mail.login(email_user, email_pass)
+    mail.select('inbox')
+
+    # Search emails based on criteria
+    result, data = mail.search(None, search_criteria)
+    email_ids = data[0].split()
+
+    for e_id in email_ids:
+        result, msg_data = mail.fetch(e_id, '(RFC822)')
+        raw_email = msg_data[0][1]
+        msg = email.message_from_bytes(raw_email)
+        for part in msg.walk():
+            if part.get_content_maintype() == 'multipart':
+                continue
+            if part.get('Content-Disposition') is None:
+                continue
+            filename = part.get_filename()
+            if bool(filename):
+                filepath = os.path.join('/path/to/save/attachment', filename)
+                with open(filepath, 'wb') as f:
+                    f.write(part.get_payload(decode=True))
+    mail.logout()
+
+# Function to unlock and read the Excel file
+def read_locked_excel(file_path, password):
+    xl = pd.ExcelFile(file_path, engine='openpyxl', storage_options={'password': password})
+    df = xl.parse(sheet_name=xl.sheet_names[0])
+    return df
+
+# Function to automate website interaction
+def automate_website(ids, download_path):
+    options = webdriver.ChromeOptions()
+    prefs = {"download.default_directory": download_path}
+    options.add_experimental_option("prefs", prefs)
+
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+    driver.get("https://website.com/login")
+
+    # Perform login (example, replace with actual login logic)
+    username = driver.find_element(By.NAME, "username")
+    password = driver.find_element(By.NAME, "password")
+    username.send_keys("your_username")
+    password.send_keys("your_password")
+    password.send_keys(Keys.RETURN)
+
+    # Navigate to upload page and upload IDs (example, replace with actual upload logic)
+    upload_field = driver.find_element(By.ID, "upload_field")
+    for id in ids:
+        upload_field.send_keys(id)
+        # Perform the upload action here
+
+    # Wait for download to complete
+    driver.quit()
+
+# Function to process the downloaded data
+def process_downloaded_data(file_path):
+    df = pd.read_excel(file_path)
+    filtered_df = df[df['some_column'] == 'some_value']  # Replace with actual filtering logic
+    filtered_df.to_excel('/path/to/save/final_output.xlsx', index=False)
+
+# Main function to run the entire process
+def main():
+    # Download email attachment
+    download_email_attachment('your_email@gmail.com', 'your_email_password', '(UNSEEN)')
+    
+    # Read the downloaded locked Excel file
+    df = read_locked_excel('/path/to/save/attachment/your_file.xlsx', 'your_password')
+    
+    # Filter data and extract IDs
+    ids = df['ID'].tolist()  # Replace with actual filtering logic
+
+    # Automate website interaction and download the resulting file
+    automate_website(ids, '/path/to/download/directory')
+
+    # Process the downloaded data
+    process_downloaded_data('/path/to/download/directory/resulting_file.xlsx')
+
+if __name__ == "__main__":
+    main()
