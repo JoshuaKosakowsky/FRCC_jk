@@ -5,50 +5,53 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 
 def download_email_attachment_web(email_user, email_pass, subject_filter, download_path):
     try:
-        options = webdriver.ChromeOptions()
+        options = Options()
         prefs = {"download.default_directory": download_path}
         options.add_experimental_option("prefs", prefs)
+        options.add_argument("--start-maximized")
+        options.add_argument("--disable-blink-features=AutomationControlled")
 
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         driver.get("https://outlook.office.com")
 
         # Log in to email account
         print("Logging in to email account...")
-        username = driver.find_element(By.NAME, "loginfmt")
-        username.send_keys(email_user)
-        username.send_keys(Keys.RETURN)
-        time.sleep(2)
+        WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.NAME, "loginfmt"))).send_keys(email_user)
+        driver.find_element(By.NAME, "loginfmt").send_keys(Keys.RETURN)
+        time.sleep(2)  # Adjust sleep time as needed for the page to load
 
-        password = driver.find_element(By.NAME, "passwd")
-        password.send_keys(email_pass)
-        password.send_keys(Keys.RETURN)
-        time.sleep(2)
+        WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.NAME, "passwd"))).send_keys(email_pass)
+        driver.find_element(By.NAME, "passwd").send_keys(Keys.RETURN)
+        time.sleep(2)  # Adjust sleep time as needed for the page to load
 
-        driver.find_element(By.ID, "idSIButton9").click()
-        time.sleep(5)
+        WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "idSIButton9"))).click()
+        time.sleep(5)  # Wait for redirection
 
         # Search for the email by subject
         print("Searching for the email...")
-        search_box = driver.find_element(By.XPATH, "//input[@aria-label='Search']")
+        search_box = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//input[@aria-label='Search']")))
         search_box.send_keys(subject_filter)
         search_box.send_keys(Keys.RETURN)
-        time.sleep(5)
+        time.sleep(5)  # Wait for search results
 
         # Open the first email in the search results
         print("Opening the email...")
-        email_item = driver.find_element(By.XPATH, "(//div[@role='option'])[1]")
+        email_item = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "(//div[@role='option'])[1]")))
         email_item.click()
-        time.sleep(5)
+        time.sleep(5)  # Wait for the email to open
 
         # Download the attachment
         print("Downloading the attachment...")
-        attachment = driver.find_element(By.XPATH, "//div[@data-icon-name='Download']")
+        attachment = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.XPATH, "//div[@data-icon-name='Download']")))
         attachment.click()
-        time.sleep(5)
+        time.sleep(5)  # Wait for download to complete
 
         # Keep the browser open for debugging
         input("Press Enter to close the browser...")
@@ -78,17 +81,17 @@ def automate_website(ids, download_path):
         driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         driver.get("https://website.com/login")
 
-        # Perform login
+        # Perform login (example, replace with actual login logic)
         print("Logging into the website...")
-        username = driver.find_element(By.NAME, "username")
+        username = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.NAME, "username")))
         password = driver.find_element(By.NAME, "password")
         username.send_keys("your_username")
         password.send_keys("your_password")
         password.send_keys(Keys.RETURN)
 
-        # Navigate to upload page and upload IDs
+        # Navigate to upload page and upload IDs (example, replace with actual upload logic)
         print("Uploading IDs...")
-        upload_field = driver.find_element(By.ID, "upload_field")
+        upload_field = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "upload_field")))
         for id in ids:
             upload_field.send_keys(id)
             # Perform the upload action here
