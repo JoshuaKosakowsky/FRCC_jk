@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
@@ -30,16 +31,29 @@ try:
     P_box.send_keys(P)
     SNum_box.send_keys(Keys.RETURN)
 
-    Search_box = wait.until(EC.presence_of_element_located(
-        (By.XPATH, "//input[@class='search-landing search-placeholder inputSearch ng-pristine ng-valid ng-empty ng-touched' and @id='search-landing' and @name='search' and @placeholder='Pages, Menus, Jobs and Quickflows' and @ ng-placeholder='Pages, Menus, Jobs and Quickflows']")))
-    Search_box.send_keys(Search_key)
-    Search_box.send_keys(Keys.RETURN)
+    time.sleep(20)
+    search_shortcut = ActionChains(driver)
+    search_shortcut.key_down(Keys.CONTROL).key_down(Keys.SHIFT).send_keys('y').key_up(Keys.SHIFT).key_up(Keys.CONTROL).perform()
+    time.sleep(1)
 
+    screen_input = wait.until(EC.presence_of_element_located(
+        (By.XPATH, "//input[@name = 'search']")))
+    screen_input.send_keys('SSADETL')
+    screen_input.send_keys(Keys.RETURN)
+
+
+    time.sleep(5)
+    term_input = wait.until(EC.presence_of_element_located(
+        (By.ID, "inp:key_block_ssasectTermCode")))
+    term_input.send_keys('202520')
 
 
 
 except Exception as e:
     print(f"An error occured: {e}")
+
+time.sleep(20)
+driver.quit()  
 
 time.sleep(30)
 driver.quit()               
