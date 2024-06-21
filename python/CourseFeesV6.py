@@ -55,9 +55,12 @@ def custom_filter(row):
     else:
         campus_match = (row['CAMPUS_x'] == row['CAMPUS_y']) or (row['CAMPUS_x'] == 'ALL') or (row['CAMPUS_y'] == 'ALL')
     
-    section_match = (row['MODIFIED_SECTION_x'] == row['MODIFIED_SECTION_y']) or \
-                    (row['MODIFIED_SECTION_x'] == 'ALL' and row['SECTION_y'].isdigit()) or \
-                    (row['MODIFIED_SECTION_y'] == 'ALL' and row['SECTION_x'].isdigit())
+    if row['SECTION_x'].isdigit():
+        section_match = row['SECTION_x'] == row['SECTION_y']
+    else:
+        section_match = (row['MODIFIED_SECTION_x'] == row['MODIFIED_SECTION_y']) or \
+                        (row['MODIFIED_SECTION_x'] == 'ALL' and row['SECTION_y'].isdigit()) or \
+                        (row['MODIFIED_SECTION_y'] == 'ALL' and row['SECTION_x'].isdigit())
     
     # All conditions must be true for the row to be included in the final DataFrame
     return crn_match and campus_match and section_match
