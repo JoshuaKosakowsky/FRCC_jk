@@ -39,7 +39,10 @@ Orig_df['MODIFIED_SECTION'] = Orig_df['SECTION'].apply(modify_for_matching)
 WIP_df['MODIFIED_SECTION'] = WIP_df['SECTION'].apply(modify_for_matching)
 WIP_df['ATTR'] = WIP_df['ATTR'].apply(modify_for_hs)
 
+# Inner join to get desired data
 result_df = pd.merge(Orig_df, WIP_df, on=['SUBJECT'], how='inner')
+# Outer join to find unmatched entries
+full_outer_df = pd.merge(Orig_df, WIP_df, on=['SUBJECT'], how='outer')
 
 # Apply a custom filter function to handle modified SECTION matches, 'ALL', campus compatibility, and numeric checks
 def custom_filter(row):
@@ -82,11 +85,18 @@ result_df['DETAIL CODE'] = result_df['EXPLANATION'].apply(detail_code)
 result_df = result_df[result_df.apply(custom_filter, axis=1)]
 print(result_df.columns)
 
+# Filter for unmatched entries (where any join key is NaN)
+unmatched_df = full_outer_df[(full_outer_df['CRN_x'].isna()) | (full_outer_df['CRN_y'].isna())]
+
+unmatched_output = filepath + 'UnmatchedEntries.xlsx'
 final_df = result_df[['SEMESTER', 'SSADETL', 'SUBJECT', 'CRN_x', 'CRN_y', 'SECTION_x', 'SECTION_y', 'CAMPUS_x', 'CAMPUS_y', 'ATTR', 'FY25 FEE AMOUNT', 'FEE TYPE', 'COURSE NAME', 'FREQUENCY', 'DETAIL CODE', 'EXPLANATION']]
 final_df.columns = ['TERM', 'SSADETL CRN', 'SUBJECT', 'Orig CRN', 'WIP CRN', 'Orig SECTION', 'WIP SECTION', 'ORIG CAMPUS', 'WIP CAMPUS', 'ATTR', '202520 FEE AMOUNT', 'FEE TYPE', 'COURSE NAME', 'FREQUENCY','DETAIL CODE', 'EXPLANATION']
 
 # Display the top of the final dataframe
 print(final_df.head())
 print(len(final_df))
+
+
+unmatched_df.to_excel(unmatched_output, index=False)
 
 final_df.to_excel(Output, index=False)
