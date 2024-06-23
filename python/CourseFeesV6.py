@@ -1,10 +1,22 @@
+'''
+This program takes the CLEANED data from CCCS and the CLEANED data from BANNER (Course Fee Listing screen)
+To create two new spreadsheets
+1 is the cleaned version to be used to update SSADETL and the Tuition costs for the upcoming term
+2 is the "Trash" that was not matched for later use to see if any errors occured after uploading and performing recon.
+'''
+
 import pandas as pd
 
 filepath = 'c:/'
-Path_Orig = 'c:/'
-Path_WIP = 'c:/'
 
-output_name = '202520CourseFees_Updated.xlsx'
+# Spreadsheet from SharePoint (SECTION is 1XX, 2XX, 3XX, etc.)
+Path_Orig = filepath + '.xlsx'
+
+# File from BANNER/CourseFee_txt-xlsx.py (SECTION is 101, 205, 317, etc.)
+Path_WIP = filepath + '.xlsx'
+
+output_name = '.xlsx'
+unmatched_output = filepath + '.xlsx'
 Output = filepath + output_name
 
 Orig_df = pd.read_excel(Path_Orig)
@@ -42,7 +54,7 @@ WIP_df['ATTR'] = WIP_df['ATTR'].apply(modify_for_hs)
 # Inner join to get desired data
 result_df = pd.merge(Orig_df, WIP_df, on=['SUBJECT'], how='inner')
 # Outer join to find unmatched entries
-full_outer_df = pd.merge(Orig_df, WIP_df, on=['SUBJECT'], how='outer')
+full_outer_df = pd.merge(Orig_df, WIP_df, on=['SUBJECT'], how='outer', indicator=True)
 
 # Apply a custom filter function to handle modified SECTION matches, 'ALL', campus compatibility, and numeric checks
 def custom_filter(row):
@@ -89,16 +101,16 @@ result_df = result_df[result_df.apply(custom_filter, axis=1)]
 print(result_df.columns)
 
 # Filter for unmatched entries (where any join key is NaN)
-unmatched_df = full_outer_df[(full_outer_df['CRN_x'].isna()) | (full_outer_df['CRN_y'].isna())]
+unmatched_df = full_outer_df[full_outer_df['_merge'] != 'both']
+unmatched_df = unmatched_df[['SEMESTER', 'SSADETL', 'SUBJECT', 'CRN_x', 'CRN_y', 'SECTION_x', 'SECTION_y', 'CAMPUS_x', 'CAMPUS_y', 'ATTR', 'FY25 FEE AMOUNT', 'COURSE NAME', 'FREQUENCY', 'EXPLANATION']]
+unmatched_df.columns = ['TERM', 'SSADETL CRN', 'SUBJECT', 'Orig CRN', 'WIP CRN', 'Orig SECTION', 'WIP SECTION', 'ORIG CAMPUS', 'WIP CAMPUS', 'ATTR', '202520 FEE AMOUNT', 'COURSE NAME', 'FREQUENCY', 'EXPLANATION']
 
-unmatched_output = filepath + 'UnmatchedEntries.xlsx'
 final_df = result_df[['SEMESTER', 'SSADETL', 'SUBJECT', 'CRN_x', 'CRN_y', 'SECTION_x', 'SECTION_y', 'CAMPUS_x', 'CAMPUS_y', 'ATTR', 'FY25 FEE AMOUNT', 'FEE TYPE', 'COURSE NAME', 'FREQUENCY', 'DETAIL CODE', 'EXPLANATION']]
 final_df.columns = ['TERM', 'SSADETL CRN', 'SUBJECT', 'Orig CRN', 'WIP CRN', 'Orig SECTION', 'WIP SECTION', 'ORIG CAMPUS', 'WIP CAMPUS', 'ATTR', '202520 FEE AMOUNT', 'FEE TYPE', 'COURSE NAME', 'FREQUENCY','DETAIL CODE', 'EXPLANATION']
 
 # Display the top of the final dataframe
 print(final_df.head())
 print(len(final_df))
-
 
 unmatched_df.to_excel(unmatched_output, index=False)
 
