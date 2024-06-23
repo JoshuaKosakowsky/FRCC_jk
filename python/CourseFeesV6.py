@@ -64,9 +64,12 @@ def custom_filter(row):
         section_match = (row['MODIFIED_SECTION_x'] == row['MODIFIED_SECTION_y']) or \
                         (row['MODIFIED_SECTION_x'] == 'ALL' and row['SECTION_y'].isdigit()) or \
                         (row['MODIFIED_SECTION_y'] == 'ALL' and row['SECTION_x'].isdigit())
+        
+    # Exclude rows where ATTR is 'CONC' and SECTION is '2XX' or '3XX'
+    hs_attr_section_rule = not ((row['ATTR'] == 'CONC') and ((row['SECTION_x'] == '2XX') or (row['SECTION_x'] == '3XX')))
     
     # All conditions must be true for the row to be included in the final DataFrame
-    return crn_match and campus_match and section_match
+    return crn_match and campus_match and section_match and hs_attr_section_rule
 
 def fee_type(freq):
     if freq in ['Per Course', 'Per Term']:
