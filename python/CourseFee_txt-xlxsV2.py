@@ -1,7 +1,10 @@
 import pandas as pd
 
-file_path = 'c:/Users/Joshu/OneDrive/Job/FRCC/Tuition Test/Course Fees/Course fee listing 5.13.24.txt'
-output_path = 'c:/Users/Joshu/OneDrive/Job/FRCC/Tuition Test/Course Fees/CourseListingFeesV5.xlsx'
+file_path = 'c:/'
+input_file = 'PLACEHOLDER.xlsx'
+output_file 'EXAMPLE.xlsx'
+output = file_path + output_file
+
 # You might need to adjust the separator if your file uses a delimiter other than a comma
 df = pd.read_csv(file_path, delimiter=',', quotechar='"')
 
@@ -47,21 +50,27 @@ df.drop(['COLLEGE', 'SSBSECT_CREDIT_HRS', 'SSBSECT_BILL_HRS', 'SSBSECT_ENRL', 'S
 
 # Drop duplicates based on the 'SSADETL' column
 df.drop_duplicates(subset='SSADETL', inplace=True)
-# Drop rows where "SECTION" matches the regex pattern '38[A-Z]'
+
+# Drop campuses FCX, FCZ, and FZZ
 df = df[~df['CAMPUS'].str.contains('FCX', na=False)]
 df = df[~df['CAMPUS'].str.contains('FCZ', na=False)]
 df = df[~df['CAMPUS'].str.contains('FZZ', na=False)]
 #df = df[~df['CAMPUS'].str.contains('FCW', na=False)] #Return to this later
+
+# Drop HS Sections 37A-Z
 df = df[~df['SECTION'].str.contains(r'37[A-Z]', na=False)]
-#df = df[~((df['SECTION'].str.contains(r'38[A-Z]', na=False)) & ~(df['CAMPUS'].isin(['FWO', 'FWC'])))]
-df = df[~((df['SECTION'].str.contains(r'38[A-Z]', na=False)) & ~((df['CAMPUS'].isin(['FWO', 'FWC'])) & (df['ATTR'] == 'CONC')))]
+# Drop HS Sections 39A-Z
 df = df[~df['SECTION'].str.contains(r'39[A-Z]', na=False)]
 
+# Drop HS Sections 38A-Z UNLESS Campus is FWO or FWC and the Attribute is CONC 
+#df = df[~((df['SECTION'].str.contains(r'38[A-Z]', na=False)) & ~(df['CAMPUS'].isin(['FWO', 'FWC'])))]
+df = df[~((df['SECTION'].str.contains(r'38[A-Z]', na=False)) & ~((df['CAMPUS'].isin(['FWO', 'FWC'])) & (df['ATTR'] == 'CONC')))]
 
+# Sorts values alphabetically by Subject.
 df.sort_values(by='SUBJECT', inplace=True)
-df.to_excel(output_path, index=False)  # index=False ensures that the row indices are not written to the file
+
+# Exports the file as excel to the path and name coded above.
+df.to_excel(output, index=False)  # index=False ensures that the row indices are not written to the file
 
 # Check if the renaming was applied
 print("Renamed Column Names:", df.columns.tolist())
-
-#print(df.head())
