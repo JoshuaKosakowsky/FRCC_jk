@@ -30,6 +30,7 @@ counter = 0
 try:
     service = Service(executable_path=ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service, options=chrome_options)
+    action = ActionChains(driver)
     driver.get('https://banner.cccs.edu/applicationNavigator/seamless')
     print("Found Webpage")
 
@@ -61,11 +62,11 @@ try:
     for index, row in df.iterrows():
         try:
             term = row["TERM"]
-            CRN = row["CRN"]
+            CRN = row["SSADETL CRN"] # SSADETL CRN
             #level = row["LEVEL"]
-            #DC = row["DETAIL CODE"]
-            #amount = row["AMOUNT"]
-            #fee_type = row["FEE TYPE"]
+            DC = row["DETAIL CODE"]
+            amount = row["202520 FEE AMOUNT"]
+            fee_type = row["FEE TYPE"]
             #resident = row["RESIDENCY"]
             #stud_attr = row["STUDENT ATTRIBUTE"]
 
@@ -118,27 +119,54 @@ try:
             print("Found the Level input")
             level_input.click()
 
-            '''
+            time.sleep(0.2)
             detail_code_input = wait.until(EC.presence_of_element_located((
-                By.ID, "#frames66"
+                By.ID, "page_sectionFees_grdSsrfees_col1_0_row"
             )))
             print("Found the Detail Code input")
-            detail_code_input.click()
-
+            action.click(detail_code_input).pause(1).send_keys(DC).perform()
+            print(f"Input Detail Code {DC}")
+            
             amount_input = wait.until(EC.presence_of_element_located((
-                By.ID, "#frames65"
+                By.ID, "page_sectionFees_grdSsrfees_col3_0_row"
             )))
             print("Found the Amount input")
-            amount_input.click()
-
+            action.click(amount_input).pause(1).send_keys(amount).perform()
+            print(f"Input Amount: {amount}")
+            
             fee_type_input = wait.until(EC.presence_of_element_located((
-                By.ID, "slickgrid_179397page_sectionFees_grdSsrfees_col4_lbl"
+                By.ID, "page_sectionFees_grdSsrfees_col4_0_row"
             )))
             print("Found the Fee Type input")
-            fee_type_input.click()
-            '''
+            action.click(fee_type_input).pause(1).send_keys(fee_type).perform()
 
-            time.sleep(0.5)
+            # Handles if there are 2 CRN's in a row, but inputs the same row data twice.
+            if index + 1 < len(df) and df.iloc[index + 1]['SSADETL CRN'] == CRN:
+                insert_button = wait.until(EC.presence_of_element_located((By.XPATH, "(//a[@title='Insert (F6)'])[3]")))
+                insert_button.click()
+                
+                time.sleep(0.2)
+                detail_code_input_1 = wait.until(EC.presence_of_element_located((
+                    By.ID, "page_sectionFees_grdSsrfees_col1_1_row"
+                )))
+                print("Found the Detail Code input")
+                action.click(detail_code_input_1).pause(1).send_keys(DC).perform()
+                print(f"Input Detail Code {DC}")
+            
+                amount_input_1 = wait.until(EC.presence_of_element_located((
+                    By.ID, "page_sectionFees_grdSsrfees_col3_1_row"
+                )))
+                print("Found the Amount input")
+                action.click(amount_input_1).pause(1).send_keys(amount).perform()
+                print(f"Input Amount: {amount}")
+            
+                fee_type_input_1 = wait.until(EC.presence_of_element_located((
+                    By.ID, "page_sectionFees_grdSsrfees_col4_1_row"
+                )))
+                print("Found the Fee Type input")
+                action.click(fee_type_input_1).pause(1).send_keys(fee_type).perform()
+            
+            time.sleep(0.75)
             student_subtab = wait.until(EC.presence_of_element_located((
                 By.ID, "tabSsadetl2TabCanvas_tab1"
             )))
@@ -150,12 +178,23 @@ try:
                 By.ID, "frames27"
             )))
             print("Found the Start Over button")
-        
             start_over_button.click()
+
+            save_changes = wait.until(EC.element_to_be_clickable((
+                # SET THIS ACTIVE FOR TESTING - IT IS THE NO BUTTON
+                By.XPATH, "(//button[normalize-space()='No'])[1]"
+            )))
+            print("Found the No button")
+                # SET THIS ACTIVE FOR LIVE USE - IT IS THE YES BUTTON
+                #By.XPATH, "(//button[normalize-space()='Yes'])[1]"
+            #)))
+            #print("Found the Yes button")
+            save_changes.click()
+
             time.sleep(0.1)
             counter += 1
             print(f"Processed {counter} rows")
-        
+
         except KeyboardInterrupt:
             print("Process interrupted by user.")
             break
