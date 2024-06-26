@@ -59,16 +59,18 @@ try:
     driver.get('https://banner.cccs.edu/BannerAdmin/?form=SSADETL')
     print("Found SSADETL Webpage")
 
-    for index, row in df.iterrows():
+    index = 0
+    while index < len(df):
+        row = df.iloc[index]
         try:
-            term = row["TERM"]
-            CRN = row["SSADETL CRN"] # SSADETL CRN
-            #level = row["LEVEL"]
-            DC = row["DETAIL CODE"]
-            amount = row["202520 FEE AMOUNT"]
-            fee_type = row["FEE TYPE"]
-            #resident = row["RESIDENCY"]
-            #stud_attr = row["STUDENT ATTRIBUTE"]
+            term = str(row["TERM"])
+            CRN = str(row["SSADETL CRN"])
+            #level = str(row["LEVEL"])
+            DC = str(row["DETAIL CODE"])
+            amount = str(row["202520 FEE AMOUNT"])
+            fee_type = str(row["FEE TYPE"])
+            #resident = str(row["RESIDENCY"])
+            #stud_attr = str(row["STUDENT ATTRIBUTE"])
 
             time.sleep(0.5)
             SSADETL_term = wait.until(EC.presence_of_element_located((
@@ -140,32 +142,46 @@ try:
             print("Found the Fee Type input")
             action.click(fee_type_input).pause(1).send_keys(fee_type).perform()
 
-            # Handles if there are 2 CRN's in a row, but inputs the same row data twice.
-            if index + 1 < len(df) and df.iloc[index + 1]['SSADETL CRN'] == CRN:
-                insert_button = wait.until(EC.presence_of_element_located((By.XPATH, "(//a[@title='Insert (F6)'])[3]")))
-                insert_button.click()
+            # Handles if there are 2 CRN's in a row
+            if index + 1 < len(df):
+                next_row = df.iloc[index + 1]
+                next_CRN = str(next_row['SSADETL CRN'])
+                print(f"Next CRN: {next_CRN}")
+                if next_CRN == CRN:
+                    print("Duplicate found")
+                    insert_button = wait.until(EC.presence_of_element_located((By.XPATH, "(//a[@title='Insert (F6)'])[3]")))
+                    insert_button.click()
                 
-                time.sleep(0.2)
-                detail_code_input_1 = wait.until(EC.presence_of_element_located((
-                    By.ID, "page_sectionFees_grdSsrfees_col1_1_row"
-                )))
-                print("Found the Detail Code input")
-                action.click(detail_code_input_1).pause(1).send_keys(DC).perform()
-                print(f"Input Detail Code {DC}")
+                    # Retrieve the next row of data
+                    next_DC = str(next_row['DETAIL CODE'])
+                    next_amount = str(next_row['202520 FEE AMOUNT'])
+                    next_fee_type = str(next_row['FEE TYPE'])
+
+                    time.sleep(0.2)
+                    detail_code_input_1 = wait.until(EC.presence_of_element_located((
+                        By.ID, "page_sectionFees_grdSsrfees_col1_1_row"
+                    )))
+                    print("Found the Detail Code input")
+                    action.click(detail_code_input_1).pause(1).send_keys(next_DC).perform()
+                    print(f"Input Detail Code {next_DC}")
             
-                amount_input_1 = wait.until(EC.presence_of_element_located((
-                    By.ID, "page_sectionFees_grdSsrfees_col3_1_row"
-                )))
-                print("Found the Amount input")
-                action.click(amount_input_1).pause(1).send_keys(amount).perform()
-                print(f"Input Amount: {amount}")
+                    amount_input_1 = wait.until(EC.presence_of_element_located((
+                        By.ID, "page_sectionFees_grdSsrfees_col3_1_row"
+                    )))
+                    print("Found the Amount input")
+                    action.click(amount_input_1).pause(1).send_keys(next_amount).perform()
+                    print(f"Input Amount: {next_amount}")
             
-                fee_type_input_1 = wait.until(EC.presence_of_element_located((
-                    By.ID, "page_sectionFees_grdSsrfees_col4_1_row"
-                )))
-                print("Found the Fee Type input")
-                action.click(fee_type_input_1).pause(1).send_keys(fee_type).perform()
-            
+                    fee_type_input_1 = wait.until(EC.presence_of_element_located((
+                        By.ID, "page_sectionFees_grdSsrfees_col4_1_row"
+                    )))
+                    print("Found the Fee Type input")
+                    action.click(fee_type_input_1).pause(1).send_keys(next_fee_type).perform()
+                    print(f"Input Fee Type: {next_fee_type}")
+
+                    index += 1
+                    print(f"Processed row {index}")
+          
             time.sleep(0.75)
             student_subtab = wait.until(EC.presence_of_element_located((
                 By.ID, "tabSsadetl2TabCanvas_tab1"
@@ -174,7 +190,7 @@ try:
             student_subtab.click()
 
             time.sleep(0.6)
-            start_over_button = wait.until(EC.element_to_be_clickable((
+            start_over_button = wait.until(EC.presence_of_element_located((
                 By.ID, "frames27"
             )))
             print("Found the Start Over button")
@@ -191,7 +207,6 @@ try:
             #print("Found the Yes button")
             save_changes.click()
 
-            time.sleep(0.1)
             counter += 1
             print(f"Processed {counter} rows")
 
@@ -201,6 +216,9 @@ try:
         except Exception as e:
             print(f"An error occurred while processing row {index}: {e}")
             continue
+
+        index += 1
+        print(f"Processed row {index}")
 
     time.sleep(5)
 
