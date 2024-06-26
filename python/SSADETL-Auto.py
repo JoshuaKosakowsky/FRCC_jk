@@ -196,17 +196,21 @@ try:
             print("Found the Start Over button")
             start_over_button.click()
 
-            save_changes = wait.until(EC.element_to_be_clickable((
-                # SET THIS ACTIVE FOR TESTING - IT IS THE NO BUTTON
-                By.XPATH, "(//button[normalize-space()='No'])[1]"
-            )))
-            print("Found the No button")
-                # SET THIS ACTIVE FOR LIVE USE - IT IS THE YES BUTTON
-                #By.XPATH, "(//button[normalize-space()='Yes'])[1]"
-            #)))
-            #print("Found the Yes button")
-            save_changes.click()
-
+            try:
+                save_changes = wait.until(EC.element_to_be_clickable((
+                    # SET THIS ACTIVE FOR TESTING - IT IS THE NO BUTTON
+                    By.XPATH, "(//button[normalize-space()='No'])[1]"
+                )))
+                print("Found the No button")
+                    # SET THIS ACTIVE FOR LIVE USE - IT IS THE YES BUTTON
+                    #By.XPATH, "(//button[normalize-space()='Yes'])[1]"
+                #)))
+                #print("Found the Yes button")
+                save_changes.click()
+                print("Changes saved/not saved")
+            except TimeoutException:
+                print("No changes made, nothing to save")
+            
             counter += 1
             print(f"Processed {counter} rows")
 
