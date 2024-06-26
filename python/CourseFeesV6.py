@@ -23,8 +23,8 @@ Orig_df = pd.read_excel(Path_Orig)
 WIP_df = pd.read_excel(Path_WIP)
 
 # Convert CRN and CAMPUS columns to string in both DataFrames
-for col in ['CRN', 'CAMPUS', 'SECTION']:
-    Orig_df[col] = Orig_df[col].astype(str)
+for col in ['CRN', 'CAMPUS', 'SUBJECT']:
+    #Orig_df[col] = Orig_df[col].astype(str)
     WIP_df[col] = WIP_df[col].astype(str)
 
 # Normalize column names in both dataframes to upper case
@@ -102,17 +102,21 @@ print(result_df.columns)
 
 # Filter for unmatched entries (where any join key is NaN)
 unmatched_df = full_outer_df[full_outer_df['_merge'] != 'both']
-unmatched_df = unmatched_df[['SEMESTER', 'SSADETL', 'SUBJECT', 'CRN_x', 'CRN_y', 'SECTION_x', 'SECTION_y', 'CAMPUS_x', 'CAMPUS_y', 'ATTR', 'FY25 FEE AMOUNT', 'COURSE NAME', 'FREQUENCY', 'EXPLANATION']]
+unmatched_df = unmatched_df[['SEMESTER', 'SSADETL CRN', 'SUBJECT', 'CRN_x', 'CRN_y', 'SECTION_x', 'SECTION_y', 'CAMPUS_x', 'CAMPUS_y', 'ATTR', 'FY25 FEE AMOUNT', 'COURSE NAME', 'FREQUENCY', 'EXPLANATION']]
 unmatched_df.columns = ['TERM', 'SSADETL CRN', 'SUBJECT', 'Orig CRN', 'WIP CRN', 'Orig SECTION', 'WIP SECTION', 'ORIG CAMPUS', 'WIP CAMPUS', 'ATTR', '202520 FEE AMOUNT', 'COURSE NAME', 'FREQUENCY', 'EXPLANATION']
 unmatched_df = unmatched_df.sort_values(by=['SUBJECT', 'SSADETL CRN'], ascending = [True, True])
 
-final_df = result_df[['SEMESTER', 'SSADETL', 'SUBJECT', 'CRN_x', 'CRN_y', 'SECTION_x', 'SECTION_y', 'CAMPUS_x', 'CAMPUS_y', 'ATTR', 'FY25 FEE AMOUNT', 'FEE TYPE', 'COURSE NAME', 'FREQUENCY', 'DETAIL CODE', 'EXPLANATION']]
-final_df.columns = ['TERM', 'SSADETL CRN', 'SUBJECT', 'Orig CRN', 'WIP CRN', 'Orig SECTION', 'WIP SECTION', 'ORIG CAMPUS', 'WIP CAMPUS', 'ATTR', '202520 FEE AMOUNT', 'FEE TYPE', 'COURSE NAME', 'FREQUENCY','DETAIL CODE', 'EXPLANATION']
+final_df = result_df[['SEMESTER', 'SSADETL CRN', 'SUBJECT', 'CRN_x', 'CRN_y', 'SECTION_x', 'SECTION_y', 'CAMPUS_x', 'CAMPUS_y', 'ATTR', 'FY25 FEE AMOUNT', 'COURSE NAME', 'FEE TYPE', 'FREQUENCY', 'DETAIL CODE', 'EXPLANATION']]
+final_df.columns = ['TERM', 'SSADETL CRN', 'SUBJECT', 'Orig CRN', 'WIP CRN', 'Orig SECTION', 'WIP SECTION', 'ORIG CAMPUS', 'WIP CAMPUS', 'ATTR', '202520 FEE AMOUNT', 'COURSE NAME', 'FEE TYPE', 'FREQUENCY','DETAIL CODE', 'EXPLANATION']
 final_df = final_df.sort_values(by=['SUBJECT', 'SSADETL CRN'], ascending = [True, True])
 
 # Display the top of the final dataframe
 print(final_df.head())
-print(len(final_df))
+print(f'Matched DF is {len(final_df)}')
+print(f'Unmatched DF is {len(unmatched_df)}')
+
+result_df.to_excel(filepath + 'Full output.xlsx', index=False)
+full_outer_df.to_excel(filepath + 'Full output O.xlsx', index=False)
 
 unmatched_df.to_excel(unmatched_output, index=False)
 
