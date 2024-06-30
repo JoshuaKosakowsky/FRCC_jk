@@ -81,7 +81,7 @@ try:
             SSADETL_term.clear()
             print("Cleared Term box")
             SSADETL_term.send_keys(term)
-            print(f"Input {term}")
+            print(f"\tInput {term}")
             time.sleep(0.5)
 
             SSADETL_CRN = wait.until(EC.presence_of_element_located((
@@ -99,7 +99,7 @@ try:
             print("Cleared CRN box")
             time.sleep(0.2)
             SSADETL_CRN.send_keys(CRN)
-            print(f"Input {CRN}")
+            print(f"\tInput {CRN}")
 
             time.sleep(0.5)
             GO = wait.until(EC.presence_of_element_located((
@@ -128,14 +128,14 @@ try:
             )))
             print("Found the Detail Code input")
             action.click(detail_code_input).pause(1).send_keys(DC).perform()
-            print(f"Input Detail Code {DC}")
+            print(f"\tInput Detail Code {DC}")
             
             amount_input = wait.until(EC.presence_of_element_located((
                 By.ID, "page_sectionFees_grdSsrfees_col3_0_row"
             )))
             print("Found the Amount input")
             action.click(amount_input).pause(1).send_keys(amount).perform()
-            print(f"Input Amount: {amount}")
+            print(f"\tInput Amount: {amount}")
             
             fee_type_input = wait.until(EC.presence_of_element_located((
                 By.ID, "page_sectionFees_grdSsrfees_col4_0_row"
@@ -171,14 +171,14 @@ try:
                     )))
                     print("Found the Amount input")
                     action.click(amount_input_1).pause(1).send_keys(next_amount).perform()
-                    print(f"Input Amount: {next_amount}")
+                    print(f"\tInput Amount: {next_amount}")
             
                     fee_type_input_1 = wait.until(EC.presence_of_element_located((
                         By.ID, "page_sectionFees_grdSsrfees_col4_1_row"
                     )))
                     print("Found the Fee Type input")
                     action.click(fee_type_input_1).pause(1).send_keys(next_fee_type).perform()
-                    print(f"Input Fee Type: {next_fee_type}")
+                    print(f"\tInput Fee Type: {next_fee_type}")
 
                     index += 1
                     print(f"Processed row {index}")
