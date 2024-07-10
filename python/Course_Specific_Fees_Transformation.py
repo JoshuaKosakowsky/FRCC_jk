@@ -73,6 +73,8 @@ tab7_df['Course # (Current 3 Digit)'] = tab7_df['Course # (Current 3 Digit)'].as
 
 # Functions to clean data
 def course_clean_3digit(df):
+    df['Course # (Current 3 Digit)'] = df['Course # (Current 3 Digit)'].str.upper()
+    df['Course # (New 4 Digit)'] = df['Course # (New 4 Digit)'].str.upper()
     df['SUBJECT'] = df['Course # (Current 3 Digit)'].str[:3]  # First three characters are always the subject
     df['COURSE NUMBER'] = df['Course # (Current 3 Digit)'].apply(lambda x: re.search(r'(?<=\D)\d{4}', x))
     df['COURSE NUMBER'] = df['COURSE NUMBER'].apply(lambda x: x.group() if x else '')
@@ -81,6 +83,7 @@ def course_clean_3digit(df):
         cleaned = re.sub(r'^[A-Z]{3}\s*\d{4}', '', entry).strip()
         if cleaned == entry:
             cleaned = re.sub(r'^[A-Z]{3}', '', entry).strip()
+        cleaned = cleaned.replace('OXX', '0XX')
         if cleaned == '':
             return 'ALL ALL'
         return cleaned
@@ -90,6 +93,7 @@ def course_clean_3digit(df):
     return df
 
 def course_clean_4digit(df):
+    df['Course # (New 4 Digit)'] = df['Course # (New 4 Digit)'].str.upper()
     df['SUBJECT'] = df['Course # (New 4 Digit)'].str[:3]  # First three characters are always the subject
     df['COURSE NUMBER'] = df['Course # (New 4 Digit)'].apply(lambda x: re.search(r'(?<=\D)\d{4}', x))
     df['COURSE NUMBER'] = df['COURSE NUMBER'].apply(lambda x: x.group() if x else '')
@@ -98,6 +102,7 @@ def course_clean_4digit(df):
         cleaned = re.sub(r'^[A-Z]{3}\s*\d{4}', '', entry).strip()
         if cleaned == entry:
             cleaned = re.sub(r'^[A-Z]{3}', '', entry).strip()
+        cleaned = cleaned.replace('OXX', '0XX')
         if cleaned == '':
             return 'ALL ALL'
         return cleaned
@@ -120,7 +125,7 @@ def extract_section_campus(text):
     parts = [part.strip() for part in re.split(r',|/', text) if part.strip()]
     results = []
     # Regex to match campus and section patterns
-    section_pattern = r'(\d{1,2}X{1,2})'
+    section_pattern = r'(\d{1,2}X{1,2}|\d{3})'
     campus_pattern = r'([A-Z]{2,3})$'
     for part in parts:
         # Find all section codes
@@ -165,14 +170,14 @@ tab4_COPS_df_part1['PROCESSED'] = tab4_COPS_df_part1['REMAINING'].apply(extract_
 tab4_COPS_df_part2 = expand_processed_data(tab4_COPS_df_part1, 'PROCESSED')
 print("Tab 4 CO Online New Fees")
 print(tab4_COPS_df_part2.head())
-'''
+
 # TAB 4 DATA CLEANING AND OUTPUT
 df4_part1 = course_clean_4digit(tab4_df)
 df4_part1['PROCESSED'] = df4_part1['REMAINING'].apply(extract_section_campus)
 df4_part2 = expand_processed_data(df4_part1, 'PROCESSED')
 print(df4_part2.head())
 df4_part2.to_excel(t4_output, index=False)
-'''
+
 # TAB 5 FRCC DATA CLEANING AND OUTPUT
 tab5_frcc_df_part1 = course_clean_4digit(tab5_frcc_df)
 tab5_frcc_df_part1['PROCESSED'] = tab5_frcc_df_part1['REMAINING'].apply(extract_section_campus)
@@ -185,14 +190,14 @@ tab5_COPS_df_part1['PROCESSED'] = tab5_COPS_df_part1['REMAINING'].apply(extract_
 tab5_COPS_df_part2 = expand_processed_data(tab5_COPS_df_part1, 'PROCESSED')
 print("Tab 5 CO Online New Fees")
 print(tab5_COPS_df_part2.head())
-'''
+
 # TAB 5 DATA CLEANING AND OUPUT
 df5_part1 = course_clean_3digit(tab5_df)
 df5_part1['PROCESSED'] = df5_part1['REMAINING'].apply(extract_section_campus)
 df5_part2 = expand_processed_data(df5_part1, 'PROCESSED')
 print(df5_part2.head())
 df5_part2.to_excel(t5_output, index=False)
-'''
+
 
 # TAB 6 FRCC DATA CLEANING AND OUTPUT
 tab6_frcc_df_part1 = course_clean_4digit(tab6_frcc_df)
@@ -207,14 +212,14 @@ tab6_COPS_df_part2 = expand_processed_data(tab6_COPS_df_part1, 'PROCESSED')
 print("Tab 6 CO Online New Fees")
 print(tab6_COPS_df_part2.head())
 
-'''
+
 # TAB 6 DATA CLEANING AND OUPUT
 df6_part1 = course_clean_3digit(tab6_df)
 df6_part1['PROCESSED'] = df6_part1['REMAINING'].apply(extract_section_campus)
 df6_part2 = expand_processed_data(df6_part1, 'PROCESSED')
 print(df6_part2.head())
 df6_part2.to_excel(t6_output, index=False)
-'''
+
 
 '''
 # NO DATA FROM TAB 7 AT THIS TIME
@@ -229,7 +234,11 @@ print(df7_part2.head())
 frcc_output = pd.concat([tab4_frcc_df_part2, tab5_frcc_df_part2, tab6_frcc_df_part2], ignore_index=True)
 COPS_ouptut = pd.concat([tab4_COPS_df_part2, tab5_COPS_df_part2, tab6_COPS_df_part2], ignore_index=True)
 
+# Drop rows where "CAMPUS" is 'BR' - Campus shut down as of 2023
+frcc_output = frcc_output[~frcc_output['CAMPUS'].str.contains('BR', na=False)]
+
 frcc_output = frcc_output.sort_values(by=['SUBJECT', 'COURSE NUMBER'], ascending = [True, True])
+#frcc_output = frcc_output.sort_values(by=['SUBJECT', 'COURSE NUMBER', 'SECTION'], ascending = [True, True, True]) # For manual data comparison
 COPS_ouptut = COPS_ouptut.sort_values(by=['SUBJECT', 'COURSE NUMBER'], ascending = [True, True])
 
 frcc_output = frcc_output[['College', 'SUBJECT', 'COURSE NUMBER', 'SECTION', 'CAMPUS', 'Course Name', 'New FY25 Fee Amount', 'Frequency', 'Explanation', 'Course # (Current 3 Digit)', 'Course # (New 4 Digit)']]
