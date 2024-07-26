@@ -231,29 +231,43 @@ def df_transform(df,df_name):
 
     return df
 
-print("FGIGLACs being read into Python")
-df_keyed = pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_001010_111010_{csv_doc}', skiprows=2)
-df_FUPLOAD = pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_011010_113400_{csv_doc}', skiprows=2)
-df_YB_1 = pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_011042_113070_{csv_doc}', skiprows=2)
-df_YB_2 = pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_011043_113070_{csv_doc}', skiprows=2)
-df_YB_3 = pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_026011_113080_{csv_doc}', skiprows=2)
-df_YB_4 = pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_026012_113080_{csv_doc}', skiprows=2)
-print("FGIGLACs now in Python")
+def apply_accounting_style(excel_file, sheet_name='Sheet1'):
+    wb = load_workbook(excel_file)
+    ws = wb[sheet_name]
 
-print('Data now being transformed to correct output')
-df_keyed = df_transform(df_keyed, f'FGIGLAC_001010_111010_{csv_doc}')
-df_FUPLOAD = df_transform(df_FUPLOAD, f'FGIGLAC_011010_113400_{csv_doc}')
-df_YB_1 = df_transform(df_YB_1, f'FGIGLAC_011042_113070_{csv_doc}')
-df_YB_2 = df_transform(df_YB_2, f'FGIGLAC_011043_113070_{csv_doc}')
-df_YB_3 = df_transform(df_YB_3, f'FGIGLAC_026011_113080_{csv_doc}')
-df_YB_4 = df_transform(df_YB_4, f'FGIGLAC_026012_113080_{csv_doc}')
+    # Define the "Accounting" format style
+    accounting_style = NamedStyle(name="accounting_style", number_format="_(* #,##0.00_);_(* (#,##0.00);_(* -??_);_(@_)")
+
+    # Apply the "Accounting" format to the Amt column
+    for cell in ws['F'][1:]:  # Assuming 'Amt' is in column F
+        cell.style = accounting_style
+
+    wb.save(excel_file)
+    print(f"Applied accounting style to {excel_file}")
+
+print("FGIGLACs being read into Python and transformed")
+df_keyed = df_transform(pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_001010_111010_{csv_doc}', skiprows=2), f'FGIGLAC_001010_111010_{csv_doc}')
+df_FUPLOAD = df_transform(pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_011010_113400_{csv_doc}', skiprows=2), f'FGIGLAC_011010_113400_{csv_doc}')
+df_YB_1 = df_transform(pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_011042_113070_{csv_doc}', skiprows=2), f'FGIGLAC_011042_113070_{csv_doc}')
+df_YB_2 = df_transform(pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_011043_113070_{csv_doc}', skiprows=2), f'FGIGLAC_011043_113070_{csv_doc}')
+df_YB_3 = df_transform(pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_026011_113080_{csv_doc}', skiprows=2), f'FGIGLAC_026011_113080_{csv_doc}')
+df_YB_4 = df_transform(pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_026012_113080_{csv_doc}', skiprows=2), f'FGIGLAC_026012_113080_{csv_doc}')
+
 print('Data transformation complete')
 
-df_keyed.to_excel(FGIGLAC_filepath + f'001010 111010 Keyed/FGIGLAC_001010_111010_{xlsx_doc}')
-df_FUPLOAD.to_excel(FGIGLAC_filepath + f'011010 113400 FUPLOAD/FGIGLAC_011010_113400_{xlsx_doc}')
-df_YB_1.to_excel(FGIGLAC_filepath + f'Y BATCH/FGIGLAC_011042_113070_{xlsx_doc}')
-df_YB_2.to_excel(FGIGLAC_filepath + f'Y BATCH/FGIGLAC_011043_113070_{xlsx_doc}')
-df_YB_3.to_excel(FGIGLAC_filepath + f'Y BATCH/FGIGLAC_026011_113080_{xlsx_doc}')
-df_YB_4.to_excel(FGIGLAC_filepath + f'Y BATCH/FGIGLAC_026012_113080_{xlsx_doc}')
+file_paths = [
+    (df_keyed, FGIGLAC_filepath + f'001010 111010 Keyed/FGIGLAC_001010_111010_{xlsx_doc}'),
+    (df_FUPLOAD, FGIGLAC_filepath + f'011010 113400 FUPLOAD/FGIGLAC_011010_113400_{xlsx_doc}'),
+    (df_YB_1, FGIGLAC_filepath + f'Y BATCH/FGIGLAC_011042_113070_{xlsx_doc}'),
+    (df_YB_2, FGIGLAC_filepath + f'Y BATCH/FGIGLAC_011043_113070_{xlsx_doc}'),
+    (df_YB_3, FGIGLAC_filepath + f'Y BATCH/FGIGLAC_026011_113080_{xlsx_doc}'),
+    (df_YB_4, FGIGLAC_filepath + f'Y BATCH/FGIGLAC_026012_113080_{xlsx_doc}')
+]
+
+for df, path in file_paths:
+    df.to_excel(path, index=False)
+    apply_accounting_style(path)
+
+print("Data formatting complete")
 
 print(df_keyed.head())
