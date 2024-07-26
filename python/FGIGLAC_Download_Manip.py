@@ -1,5 +1,5 @@
 '''
-This code snippet is being used to download FGIGLAC reports from Banner and manipulate their data.
+This code snippet is being used to download the Y Batch FGIGLAC reports from Banner
 '''
 
 from selenium import webdriver
@@ -13,6 +13,9 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from datetime import datetime
+from openpyxl import load_workbook
+from openpyxl.styles import NamedStyle
+from decimal import Decimal, getcontext
 import time
 import pandas as pd
 import numpy as np
@@ -55,6 +58,7 @@ def get_current_date():
 
 current_date = get_current_date()
 csv_doc = current_date + '.csv'
+xlsx_doc = current_date + '.xlsx'
 
 def move_and_rename_file(source_folder, destination_folder):
     source_file = os.path.join(source_folder, 'FGIGLAC.csv')
@@ -208,10 +212,14 @@ print("Closing browser")
 driver.quit()
 print("Beginning data manipulation")
 
+getcontext().prec = 10
+
 def df_transform(df,df_name):
     df["'Trans Amt'"] = np.where(df["'Dr Cr Ind'"] == 'Credit', -df["'Trans Amt'"], df["'Trans Amt'"])
+    
+    df["'Trans Amt'"] = df["'Trans Amt'"].apply(lambda x: Decimal(str(x)).quantize(Decimal('0.01')))
 
-    df["'Trans Date'"] = pd.to_datetime(df["'Trans Date'"]).dt.strftime('%m-%d-%y')
+    df["'Trans Date'"] = pd.to_datetime(df["'Trans Date'"]).dt.strftime('%m/%d/%Y')
 
     if df_name == f'FGIGLAC_011010_11400_{csv_doc}':
         df = df.sort_values(by="'Trans Date'", ascending=False)
@@ -225,7 +233,7 @@ def df_transform(df,df_name):
 
 print("FGIGLACs being read into Python")
 df_keyed = pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_001010_111010_{csv_doc}', skiprows=2)
-df_FUPLOAD = pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_011010_112400_{csv_doc}', skiprows=2)
+df_FUPLOAD = pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_011010_113400_{csv_doc}', skiprows=2)
 df_YB_1 = pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_011042_113070_{csv_doc}', skiprows=2)
 df_YB_2 = pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_011043_113070_{csv_doc}', skiprows=2)
 df_YB_3 = pd.read_csv(FGIGLAC_filepath + f'FGIGLAC_026011_113080_{csv_doc}', skiprows=2)
@@ -240,5 +248,12 @@ df_YB_2 = df_transform(df_YB_2, f'FGIGLAC_011043_113070_{csv_doc}')
 df_YB_3 = df_transform(df_YB_3, f'FGIGLAC_026011_113080_{csv_doc}')
 df_YB_4 = df_transform(df_YB_4, f'FGIGLAC_026012_113080_{csv_doc}')
 print('Data transformation complete')
+
+df_keyed.to_excel(FGIGLAC_filepath + f'001010 111010 Keyed/FGIGLAC_001010_111010_{xlsx_doc}')
+df_FUPLOAD.to_excel(FGIGLAC_filepath + f'011010 113400 FUPLOAD/FGIGLAC_011010_113400_{xlsx_doc}')
+df_YB_1.to_excel(FGIGLAC_filepath + f'Y BATCH/FGIGLAC_011042_113070_{xlsx_doc}')
+df_YB_2.to_excel(FGIGLAC_filepath + f'Y BATCH/FGIGLAC_011043_113070_{xlsx_doc}')
+df_YB_3.to_excel(FGIGLAC_filepath + f'Y BATCH/FGIGLAC_026011_113080_{xlsx_doc}')
+df_YB_4.to_excel(FGIGLAC_filepath + f'Y BATCH/FGIGLAC_026012_113080_{xlsx_doc}')
 
 print(df_keyed.head())
