@@ -68,6 +68,9 @@ Sub FUPLOAD_FGIGLAC()
     newSheet.Range("B1").Value = "Fund"
     newSheet.Range("C1").Value = "Org"
     
+    ' Format 'Fund' column to retain leading zeros
+    newSheet.Columns("B:B").NumberFormat = "000000"
+    
     ' Add 'Prog' column after 'Acct Code' (which is now the 4th column)
     newSheet.Columns("E:E").Insert Shift:=xlToRight
     newSheet.Range("E1").Value = "Prog"
