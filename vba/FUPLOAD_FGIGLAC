@@ -72,8 +72,8 @@ Sub FUPLOAD_FGIGLAC()
     newSheet.Columns("E:E").Insert Shift:=xlToRight
     newSheet.Range("E1").Value = "Prog"
     
-    ' Wipe data and headers of 'Rucl Code' and 'Doc Code' columns (now the 6th and 7th columns)
+    ' Wipe data and headers of 'Rucl Code' (6th column) and 'Doc Code' (7th column)
+    newSheet.Range("F:F").ClearContents
     newSheet.Range("G:G").ClearContents
-    newSheet.Range("H:H").ClearContents
     
 End Sub
