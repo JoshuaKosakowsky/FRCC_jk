@@ -79,10 +79,10 @@ Sub FUPLOAD_FGIGLAC()
     newSheet.Range("F:F").ClearContents
     newSheet.Range("G:G").ClearContents
     
-    ' Switch columns I and H, and rename column H to "Amt"
+    ' Switch columns I and H, and rename the header of column H to "Amt"
     newSheet.Columns("I:I").Cut
     newSheet.Columns("H:H").Insert Shift:=xlToRight
-    newSheet.Columns("H:H").Value = "Amt"
+    newSheet.Cells(1, "H").Value = "Amt"
     
     ' Add and populate 'Trans Code' column (column K)
     newSheet.Columns("K:K").Insert Shift:=xlToRight
