@@ -96,4 +96,17 @@ Sub FUPLOAD_FGIGLAC()
         newSheet.Cells(i, "K").Value = Replace(Left(newSheet.Cells(i, "I").Value, 9), "-", "")
     Next i
     
+    ' Replace the first 10 characters in column I for each row with data
+    For i = 2 To lastRow
+        newSheet.Cells(i, "I").Value = Replace(newSheet.Cells(i, "I").Value, Left(newSheet.Cells(i, "I").Value, 10), "")
+    Next i
+    
+    ' Add a column L named "Desc Length" and populate it with the length of the text in column I
+    newSheet.Columns("L:L").Insert Shift:=xlToRight
+    newSheet.Range("L1").Value = "Desc Length"
+    
+    For i = 2 To lastRow
+        newSheet.Cells(i, "L").Value = Len(newSheet.Cells(i, "I").Value)
+    Next i
+    
 End Sub
