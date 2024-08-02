@@ -1,0 +1,54 @@
+Sub FUPLOAD_FGIGLAC()
+'
+' FUPLOAD_FGIGLAC Macro
+'
+
+'
+    Cells.Select
+    Selection.UnMerge
+    Rows("1:2").Select
+    Selection.Delete Shift:=xlUp
+    Columns("B:B").Select
+    Selection.Replace What:=" *", Replacement:="", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False
+    Selection.NumberFormat = "m/d/yyyy"
+    ' Removed credit/debit replacement feature
+    
+    ' Removed calculations related to credit/debit
+    Columns("F:F").Select
+    Selection.NumberFormat = "_($* #,##0.00_);_($* (#,##0.00);_($* ""-""??_);_(@_)"
+    Cells.Select
+    ActiveWorkbook.ActiveSheet.Sort.SortFields.Clear
+    ActiveWorkbook.ActiveSheet.Sort.SortFields.Add2 Key:=Range("B2:B" & Range("E" & Rows.Count).End(xlUp).Row), _
+        SortOn:=xlSortOnValues, Order:=xlDescending, DataOption:=xlSortNormal ' Changed to sort from newest to oldest
+    With ActiveWorkbook.ActiveSheet.Sort
+        .SetRange Range("A1:H" & Range("E" & Rows.Count).End(xlUp).Row)
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    Range("A1").Select
+    
+    Columns("B:B").Select
+    Selection.Replace What:=",", Replacement:="", LookAt:=xlPart, _
+        SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+        ReplaceFormat:=False
+    Cells.Select
+    ActiveWorkbook.ActiveSheet.Sort.SortFields.Clear
+    ActiveWorkbook.ActiveSheet.Sort.SortFields.Add2 Key:=Range("B2:B" & Range("E" & Rows.Count).End(xlUp).Row), _
+        SortOn:=xlSortOnValues, Order:=xlDescending, DataOption:=xlSortNormal ' Changed to sort from newest to oldest
+    With ActiveWorkbook.ActiveSheet.Sort
+        .SetRange Range("A1:H" & Range("E" & Rows.Count).End(xlUp).Row)
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+    Columns("B:B").Select
+    Columns("B:B").EntireColumn.AutoFit
+    Range("A1").Select
+End Sub
