@@ -51,4 +51,29 @@ Sub FUPLOAD_FGIGLAC()
     Columns("B:B").Select
     Columns("B:B").EntireColumn.AutoFit
     Range("A1").Select
+    
+    ' Copy data to a new sheet and rename the new sheet
+    Dim newSheet As Worksheet
+    Sheets("FGIGLAC").Copy After:=Sheets(Sheets.Count)
+    Set newSheet = ActiveSheet
+    newSheet.Name = "FGIGLAC for FYxx FUPxxxx"
+    
+    ' Move 'Trans' column to the first column
+    newSheet.Columns("B:B").Cut
+    newSheet.Columns("A:A").Insert Shift:=xlToRight
+    
+    ' Add 'Fund' and 'Org' columns after the first column
+    newSheet.Columns("B:B").Insert Shift:=xlToRight
+    newSheet.Columns("C:C").Insert Shift:=xlToRight
+    newSheet.Range("B1").Value = "Fund"
+    newSheet.Range("C1").Value = "Org"
+    
+    ' Add 'Prog' column after 'Acct Code' (which is now the 4th column)
+    newSheet.Columns("E:E").Insert Shift:=xlToRight
+    newSheet.Range("E1").Value = "Prog"
+    
+    ' Wipe data and headers of 'Rucl Code' and 'Doc Code' columns (now the 6th and 7th columns)
+    newSheet.Range("G:G").ClearContents
+    newSheet.Range("H:H").ClearContents
+    
 End Sub
