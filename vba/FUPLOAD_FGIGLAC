@@ -109,4 +109,12 @@ Sub FUPLOAD_FGIGLAC()
         newSheet.Cells(i, "L").Formula = "=LEN(I" & i & ")"
     Next i
     
+    ' Add a blank row after each row with data
+    For i = lastRow To 2 Step -1
+        newSheet.Rows(i + 1).Insert Shift:=xlDown
+    Next i
+    
+    ' Add a blank column after column H, pushing data to the right
+    newSheet.Columns("I:I").Insert Shift:=xlToRight
+    
 End Sub
