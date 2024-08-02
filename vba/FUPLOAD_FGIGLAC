@@ -79,4 +79,16 @@ Sub FUPLOAD_FGIGLAC()
     newSheet.Range("F:F").ClearContents
     newSheet.Range("G:G").ClearContents
     
+    ' Add and populate 'Trans Code' column (column K)
+    newSheet.Columns("K:K").Insert Shift:=xlToRight
+    newSheet.Range("K1").Value = "Trans Code"
+    
+    Dim lastRow As Long
+    lastRow = newSheet.Cells(newSheet.Rows.Count, "I").End(xlUp).Row
+    
+    Dim i As Long
+    For i = 2 To lastRow
+        newSheet.Cells(i, "K").Value = Replace(Left(newSheet.Cells(i, "I").Value, 9), "-", "")
+    Next i
+    
 End Sub
