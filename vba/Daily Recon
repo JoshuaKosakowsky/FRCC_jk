@@ -1,10 +1,35 @@
 Sub Daily_Recon()
+    Dim wbNetwork As Workbook
+    Dim wsNetwork As Worksheet
     Dim wsYesterday As Worksheet, wsToday As Worksheet, wsDest As Worksheet
     Dim lastRowYesterday As Long, lastRowToday As Long, lastCol As Long, i As Long, j As Long
     Dim colValues As New Collection
     Dim value As Variant
     Dim sheetName As String
-
+    Dim networkPath As String
+    
+    ' Folder path to DNR excel file
+    Path = "C:\"
+    
+    ' Open DNR and set source worksheet
+    Set wbNetwork = Workbooks.Open(Path)
+    Set wsNetwork = wbNetwork.Sheets("DNR List")
+    
+    ' Ensure "DNR" sheet exists in workbook
+    On Error Resume Next
+    Set wsDNR = ThisWorkbook.Sheets("DNR")
+    If wsDNR Is Nothing Then
+        Set wsDNR = ThisWorkbook.Sheets.Add(AFter:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count))
+        wsDNR.Name = "DNR"
+    End If
+    On Error GoTo 0
+    
+    ' Clear exsisting contents in "DNR" and copy info from Sharepoint DNR list and close without saving
+    wsDNR.Cells.Clear
+    wsNetwork.Cells.Copy Destination:=wsDNR.Cells(1, 1)
+    wbNetwork.Close SaveChanges:=False
+    
+    
     ' Set the source worksheets
     Set wsYesterday = ThisWorkbook.Sheets("Net Credit Yesterday") ' Yesterday's data
     Set wsToday = ThisWorkbook.Sheets("Net Credit Today")         ' Today's data
@@ -46,7 +71,7 @@ Sub Daily_Recon()
     For Each value In sortedValues
         sheetName = "Term " & value
         On Error Resume Next ' Ignore error if sheet already exists
-        Set wsDest = ThisWorkbook.Sheets.Add(After:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count))
+        Set wsDest = ThisWorkbook.Sheets.Add(AFter:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count))
         wsDest.Name = sheetName
         On Error GoTo 0
         
@@ -99,3 +124,4 @@ Sub Daily_Recon()
            "If ID is not a duplicate (not highlighted red) and Balance is less than 0 (highlighted green)" & vbCrLf & _
            "Research the account in TSAAREV and find why there is now a Credit on the account."
 End Sub
+
