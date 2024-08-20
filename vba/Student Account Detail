@@ -25,17 +25,17 @@ Sub Student_Account_Detail()
     ' Define the source data range dynamically
     Dim lastRow As Long
     lastRow = wsSource.Cells(wsSource.Rows.Count, 1).End(xlUp).Row
-    Dim sourceRange As String
-    sourceRange = "Page1!R5C1:R" & lastRow & "C8"
+    Dim sourceRange As Range
+    Set sourceRange = wsSource.Range("A5:H" & lastRow)
     
     ' Create the Pivot Table
     ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
         sourceRange, Version:=6).CreatePivotTable TableDestination:= _
-        "Pivot Table!R3C1", TableName:="PivotTable1", DefaultVersion:=6
+        wsPivot.Range("A3"), TableName:="PivotTable1", DefaultVersion:=6
         
     Sheets("Pivot Table").Select
-    Cells(3, 1).Select
-    With ActiveSheet.PivotTables("PivotTable1")
+    wsPivot.Cells(3, 1).Select
+    With wsPivot.PivotTables("PivotTable1")
         .ColumnGrand = True
         .HasAutoFormat = True
         .DisplayErrorString = False
@@ -66,31 +66,31 @@ Sub Student_Account_Detail()
         .CalculatedMembersInFilters = False
         .RowAxisLayout xlCompactRow
     End With
-    With ActiveSheet.PivotTables("PivotTable1").PivotCache
+    With wsPivot.PivotTables("PivotTable1").PivotCache
         .RefreshOnFileOpen = False
         .MissingItemsLimit = xlMissingItemsDefault
     End With
-    ActiveSheet.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
-    With ActiveSheet.PivotTables("PivotTable1").PivotFields("ID")
+    wsPivot.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
+    With wsPivot.PivotTables("PivotTable1").PivotFields("ID")
         .Orientation = xlRowField
         .Position = 1
     End With
-    With ActiveSheet.PivotTables("PivotTable1").PivotFields("NAME")
+    With wsPivot.PivotTables("PivotTable1").PivotFields("NAME")
         .Orientation = xlRowField
         .Position = 2
     End With
-    With ActiveSheet.PivotTables("PivotTable1").PivotFields("DETAIL_CODE_DESC")
+    With wsPivot.PivotTables("PivotTable1").PivotFields("DETAIL_CODE_DESC")
         .Orientation = xlColumnField
         .Position = 1
     End With
-    ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+    wsPivot.PivotTables("PivotTable1").AddDataField wsPivot.PivotTables( _
         "PivotTable1").PivotFields("AMOUNT"), "Sum of AMOUNT", xlSum
-    ActiveSheet.PivotTables("PivotTable1").PivotFields("ID").Subtotals = Array( _
+    wsPivot.PivotTables("PivotTable1").PivotFields("ID").Subtotals = Array( _
         False, False, False, False, False, False, False, False, False, False, False, False)
-    ActiveSheet.PivotTables("PivotTable1").PivotFields("ID").LayoutForm = xlTabular
+    wsPivot.PivotTables("PivotTable1").PivotFields("ID").LayoutForm = xlTabular
     
     ' Select the entire Pivot Table and copy it
-    ActiveSheet.PivotTables("PivotTable1").TableRange2.Select
+    wsPivot.PivotTables("PivotTable1").TableRange2.Select
     Selection.Copy
     
     ' Add a new sheet and rename it to "Working"
