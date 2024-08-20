@@ -112,19 +112,25 @@ Sub Student_Account_Detail()
     lastCol = wsWorking.Cells(1, wsWorking.Columns.Count).End(xlToLeft).Column
     wsWorking.Range(wsWorking.Cells(2, 1), wsWorking.Cells(wsWorking.Rows.Count, lastCol)).NumberFormat = "_(* #,##0.00_);_(* (#,##0.00);_(* -??_);_(@_)"
     
-    ' Apply conditional formatting to the "Grand Total" column
-    Dim grandTotalCol As Range
-    Set grandTotalCol = wsWorking.Range("G:G") ' Assuming "Grand Total" is in column G
+    ' Locate the "Grand Total" column
+    Dim grandTotalColumn As Range
+    Set grandTotalColumn = Nothing
+    On Error Resume Next
+    Set grandTotalColumn = wsWorking.Rows(1).Find(What:="Grand Total", LookIn:=xlValues, LookAt:=xlWhole)
+    On Error GoTo 0
     
-    With grandTotalCol
-        .FormatConditions.Add Type:=xlCellValue, Operator:=xlLess, Formula1:="=0"
-        .FormatConditions(.FormatConditions.Count).SetFirstPriority
-        With .FormatConditions(1).Interior
-            .PatternColorIndex = xlAutomatic
-            .Color = 255 ' Light red color
-            .TintAndShade = 0
+    If Not grandTotalColumn Is Nothing Then
+        ' Apply conditional formatting to the "Grand Total" column
+        With wsWorking.Range(wsWorking.Cells(2, grandTotalColumn.Column), wsWorking.Cells(wsWorking.Rows.Count, grandTotalColumn.Column))
+            .FormatConditions.Add Type:=xlCellValue, Operator:=xlLess, Formula1:="=0"
+            .FormatConditions(.FormatConditions.Count).SetFirstPriority
+            With .FormatConditions(1).Interior
+                .PatternColorIndex = xlAutomatic
+                .Color = 255 ' Light red color
+                .TintAndShade = 0
+            End With
+            .FormatConditions(1).StopIfTrue = False
         End With
-        .FormatConditions(1).StopIfTrue = False
-    End With
+    End If
     
 End Sub
