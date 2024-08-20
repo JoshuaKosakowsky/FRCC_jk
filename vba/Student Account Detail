@@ -106,4 +106,11 @@ Sub Student_Account_Detail()
     wsWorking.Cells.Select
     Application.CutCopyMode = False
     Selection.Columns.AutoFit
+    
+    ' Format all the numeric columns as Accounting
+    Dim lastCol As Long
+    lastCol = wsWorking.Cells(1, wsWorking.Columns.Count).End(xlToLeft).Column
+    wsWorking.Range(wsWorking.Cells(2, 1), wsWorking.Cells(wsWorking.Rows.Count, lastCol)).Select
+    Selection.Style = "Accounting"
+    
 End Sub
