@@ -12,12 +12,27 @@ Sub Student_Account_Detail()
     Range(Selection, Selection.End(xlToRight)).Select
     Range(Selection, Selection.End(xlDown)).Select
     Application.CutCopyMode = False
-    Sheets.Add
-    ActiveSheet.Name = "Pivot Table"
     
+    ' Ensure the current sheet is "Page1" before creating the pivot table
+    Dim wsSource As Worksheet
+    Set wsSource = Sheets("Page1")
+    
+    ' Create a new sheet for the pivot table and name it
+    Dim wsPivot As Worksheet
+    Set wsPivot = Sheets.Add
+    wsPivot.Name = "Pivot Table"
+    
+    ' Define the source data range dynamically
+    Dim lastRow As Long
+    lastRow = wsSource.Cells(wsSource.Rows.Count, 1).End(xlUp).Row
+    Dim sourceRange As String
+    sourceRange = "Page1!R5C1:R" & lastRow & "C8"
+    
+    ' Create the Pivot Table
     ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
-        "Page1!R5C1:R152C8", Version:=6).CreatePivotTable TableDestination:= _
+        sourceRange, Version:=6).CreatePivotTable TableDestination:= _
         "Pivot Table!R3C1", TableName:="PivotTable1", DefaultVersion:=6
+        
     Sheets("Pivot Table").Select
     Cells(3, 1).Select
     With ActiveSheet.PivotTables("PivotTable1")
@@ -79,15 +94,16 @@ Sub Student_Account_Detail()
     Selection.Copy
     
     ' Add a new sheet and rename it to "Working"
-    Sheets.Add After:=ActiveSheet
-    ActiveSheet.Name = "Working"
+    Dim wsWorking As Worksheet
+    Set wsWorking = Sheets.Add(After:=wsPivot)
+    wsWorking.Name = "Working"
     
     ' Paste the Pivot Table as values into "Working"
-    Range("A1").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+    wsWorking.Range("A1").PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
         :=False, Transpose:=False
         
     ' Autofit the columns in "Working"
-    Cells.Select
+    wsWorking.Cells.Select
     Application.CutCopyMode = False
     Selection.Columns.AutoFit
 End Sub
