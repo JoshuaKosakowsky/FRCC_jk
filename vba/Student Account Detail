@@ -1,21 +1,24 @@
 Sub Student_Account_Detail()
-    ' Remove merged cells and unwanted rows/columns
+'
+' Student_Account_Detail Macro
+'
+
+'
     Cells.Select
     Selection.UnMerge
-    Rows("1:4").Delete Shift:=xlUp
-    Columns("C:C").Delete Shift:=xlToLeft
-    
-    ' Add new sheet for Pivot Table
-    Sheets.Add After:=ActiveSheet
-    ActiveSheet.Name = "PivotSheet"
-    
-    ' Create Pivot Cache and Pivot Table
+    Columns("C:C").Select
+    Selection.Delete Shift:=xlToLeft
+    Range("A5").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Application.CutCopyMode = False
+    Sheets.Add
     ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
-        "Page1!R1C1:R1048576C8", Version:=6).CreatePivotTable TableDestination:= _
-        "PivotSheet!R3C1", TableName:="PivotTable1", DefaultVersion:=6
-    
-    ' Set Pivot Table properties
-    With Sheets("PivotSheet").PivotTables("PivotTable1")
+        "Page1!R5C1:R152C8", Version:=6).CreatePivotTable TableDestination:= _
+        "Sheet1!R3C1", TableName:="PivotTable1", DefaultVersion:=6
+    Sheets("Sheet1").Select
+    Cells(3, 1).Select
+    With ActiveSheet.PivotTables("PivotTable1")
         .ColumnGrand = True
         .HasAutoFormat = True
         .DisplayErrorString = False
@@ -46,60 +49,38 @@ Sub Student_Account_Detail()
         .CalculatedMembersInFilters = False
         .RowAxisLayout xlCompactRow
     End With
-    
-    ' Configure Pivot Cache
-    With Sheets("PivotSheet").PivotTables("PivotTable1").PivotCache
+    With ActiveSheet.PivotTables("PivotTable1").PivotCache
         .RefreshOnFileOpen = False
         .MissingItemsLimit = xlMissingItemsDefault
     End With
-    
-    ' Set Pivot Table Fields
-    With Sheets("PivotSheet").PivotTables("PivotTable1").PivotFields("DETAIL_CODE_DESC")
-        .Orientation = xlColumnField
-        .Position = 1
-    End With
-    With Sheets("PivotSheet").PivotTables("PivotTable1").PivotFields("ID")
+    ActiveSheet.PivotTables("PivotTable1").RepeatAllLabels xlRepeatLabels
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("ID")
         .Orientation = xlRowField
         .Position = 1
     End With
-    With Sheets("PivotSheet").PivotTables("PivotTable1").PivotFields("NAME")
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("NAME")
         .Orientation = xlRowField
         .Position = 2
     End With
-    Sheets("PivotSheet").PivotTables("PivotTable1").AddDataField Sheets("PivotSheet").PivotTables("PivotTable1").PivotFields("AMOUNT"), "Sum of AMOUNT", xlSum
-    
-    ' Format the Pivot Table
-    Sheets("PivotSheet").PivotTables("PivotTable1").PivotFields("ID").Subtotals = Array(False, False, False, False, False, False, False, False, False, False, False, False)
-    Sheets("PivotSheet").PivotTables("PivotTable1").PivotFields("ID").LayoutForm = xlTabular
-    
-    ' Copy and paste special values to new sheet
-    Sheets("PivotSheet").Rows("3:38").Copy
+    With ActiveSheet.PivotTables("PivotTable1").PivotFields("DETAIL_CODE_DESC")
+        .Orientation = xlColumnField
+        .Position = 1
+    End With
+    ActiveSheet.PivotTables("PivotTable1").AddDataField ActiveSheet.PivotTables( _
+        "PivotTable1").PivotFields("AMOUNT"), "Sum of AMOUNT", xlSum
+    ActiveSheet.PivotTables("PivotTable1").PivotFields("ID").Subtotals = Array( _
+        False, False, False, False, False, False, False, False, False, False, False, False)
+    ActiveSheet.PivotTables("PivotTable1").PivotFields("ID").LayoutForm = xlTabular
+    Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.Copy
     Sheets.Add After:=ActiveSheet
-    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
     Cells.Select
+    Application.CutCopyMode = False
     Selection.Columns.AutoFit
-    Columns("C:U").Delete Shift:=xlToLeft
-    Columns("D:AL").Delete Shift:=xlToLeft
-    Columns("C:D").Style = "Comma"
-    Rows("2:2").AutoFilter
-    
-    ' Apply AutoFilter criteria
-    ActiveSheet.Range("$A$2:$BF$33").AutoFilter Field:=4, Criteria1:=Array("(1,058.06)", "14,091.08", "3,449.60", "3,706.00", "7,045.54", "948.00", "="), Operator:=xlFilterValues
-    
-    ' Apply formatting
-    Columns("D:D").Select
-    Selection.FormatConditions.Add Type:=xlCellValue, Operator:=xlLess, Formula1:="=0"
-    Selection.FormatConditions(Selection.FormatConditions.Count).SetFirstPriority
-    With Selection.FormatConditions(1).Font
-        .Color = -16383844
-        .TintAndShade = 0
-    End With
-    With Selection.FormatConditions(1).Interior
-        .PatternColorIndex = xlAutomatic
-        .Color = 13551615
-        .TintAndShade = 0
-    End With
-    Selection.FormatConditions(1).StopIfTrue = False
+    Columns("C:I").Select
 End Sub
-
-
