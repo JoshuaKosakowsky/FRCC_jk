@@ -122,7 +122,8 @@ Sub Student_Account_Detail()
     If Not grandTotalColumn Is Nothing Then
         ' Apply conditional formatting to the "Grand Total" column
         With wsWorking.Range(wsWorking.Cells(2, grandTotalColumn.Column), wsWorking.Cells(wsWorking.Rows.Count, grandTotalColumn.Column))
-            .FormatConditions.Add Type:=xlCellValue, Operator:=xlLess, Formula1:="=0"
+            .FormatConditions.Delete ' Remove any existing conditional formats
+            .FormatConditions.Add Type:=xlCellValue, Operator:=xlLess, Formula1:="0"
             .FormatConditions(.FormatConditions.Count).SetFirstPriority
             With .FormatConditions(1).Interior
                 .PatternColorIndex = xlAutomatic
