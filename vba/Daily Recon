@@ -1,15 +1,16 @@
 Sub Daily_Recon()
     Dim wbNetwork As Workbook
     Dim wsNetwork As Worksheet
-    Dim wsYesterday As Worksheet, wsToday As Worksheet, wsDest As Worksheet
+    Dim wsYesterday As Worksheet, wsToday As Worksheet, wsDNR As Worksheet, wsDest As Worksheet
     Dim lastRowYesterday As Long, lastRowToday As Long, lastCol As Long, i As Long, j As Long
     Dim colValues As New Collection
     Dim value As Variant
     Dim sheetName As String
-    Dim networkPath As String
+    Dim Path As String
     
     ' Folder path to DNR excel file
-    Path = "C:\Users\"
+    ' Update this to your filepath where the DNR list is.
+    Path = "C:\Users\Y"  
     
     ' Open DNR and set source worksheet
     Set wbNetwork = Workbooks.Open(Path)
@@ -19,16 +20,15 @@ Sub Daily_Recon()
     On Error Resume Next
     Set wsDNR = ThisWorkbook.Sheets("DNR")
     If wsDNR Is Nothing Then
-        Set wsDNR = ThisWorkbook.Sheets.Add(AFter:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count))
+        Set wsDNR = ThisWorkbook.Sheets.Add(After:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count))
         wsDNR.Name = "DNR"
     End If
     On Error GoTo 0
     
-    ' Clear exsisting contents in "DNR" and copy info from Sharepoint DNR list and close without saving
+    ' Clear existing contents in "DNR" and copy info from DNR list and close without saving
     wsDNR.Cells.Clear
     wsNetwork.Cells.Copy Destination:=wsDNR.Cells(1, 1)
     wbNetwork.Close SaveChanges:=False
-    
     
     ' Set the source worksheets
     Set wsYesterday = ThisWorkbook.Sheets("Net Credit Yesterday") ' Yesterday's data
@@ -41,7 +41,7 @@ Sub Daily_Recon()
     ' Collect unique values from column D in yesterday's data sheet
     On Error Resume Next ' Ignore errors if trying to add a duplicate item to the collection
     For i = 2 To lastRowYesterday ' Assume row 1 has headers
-        colValues.Add wsYesterday.Cells(i, "D").value, CStr(wsYesterday.Cells(i, "D").value)
+        colValues.Add wsYesterday.Cells(i, "D").Value, CStr(wsYesterday.Cells(i, "D").Value)
     Next i
     On Error GoTo 0 ' Turn back on regular error handling
 
@@ -71,7 +71,7 @@ Sub Daily_Recon()
     For Each value In sortedValues
         sheetName = "Term " & value
         On Error Resume Next ' Ignore error if sheet already exists
-        Set wsDest = ThisWorkbook.Sheets.Add(AFter:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count))
+        Set wsDest = ThisWorkbook.Sheets.Add(After:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count))
         wsDest.Name = sheetName
         On Error GoTo 0
         
@@ -80,24 +80,26 @@ Sub Daily_Recon()
         
         ' Add a Notes column
         lastCol = wsYesterday.Cells(1, Columns.Count).End(xlToLeft).Column
-        wsDest.Cells(1, lastCol + 1).value = "Notes"
+        wsDest.Cells(1, lastCol - 1).Value = "Amount"
+        wsDest.Cells(1, lastCol).Value = "DNR"
+        wsDest.Cells(1, lastCol + 1).Value = "Notes"
         
         j = 2 ' Start from row 2 in destination sheet
         ' Copy from yesterday's source
         For i = 2 To lastRowYesterday
-            If wsYesterday.Cells(i, "D").value = value Then
+            If wsYesterday.Cells(i, "D").Value = value Then
                 wsYesterday.Rows(i).Copy Destination:=wsDest.Rows(j)
                 j = j + 1
             End If
         Next i
         
         ' Insert a row to signify new data
-        wsDest.Cells(j, 1).value = "New Data Below"
+        wsDest.Cells(j, 1).Value = "New Data Below"
         j = j + 1
         
         ' Copy from today's data source
         For i = 2 To lastRowToday
-            If wsToday.Cells(i, "D").value = value Then
+            If wsToday.Cells(i, "D").Value = value Then
                 wsToday.Rows(i).Copy Destination:=wsDest.Rows(j)
                 j = j + 1
             End If
@@ -106,14 +108,20 @@ Sub Daily_Recon()
         ' Autofit columns for the entire sheet
         wsDest.Columns.AutoFit
         
+        ' VLOOKUP to check for "ID" in "DNR"
+        Dim lastRowDest As Long
+        lastRowDest = wsDest.Cells(wsDest.Rows.Count, "B").End(xlUp).Row
+        wsDest.Range(wsDest.Cells(2, lastCol), wsDest.Cells(lastRowDest, lastCol)).Formula = _
+        "=IF(ISNA(VLOOKUP(B2, '" & wsDNR.Name & "'!B:B, 1, FALSE)), ""No"", ""Yes"")"
+        
         ' Add conditional formatting for duplicates in Column B ("ID")
-        With wsDest.Range("B2:B" & wsDest.Cells(wsDest.Rows.Count, "B").End(xlUp).Row)
-            .FormatConditions.Add Type:=xlExpression, Formula1:="=COUNTIF($B$2:$B$" & wsDest.Cells(wsDest.Rows.Count, "B").End(xlUp).Row & ", B2)>1"
+        With wsDest.Range("B2:B" & lastRowDest)
+            .FormatConditions.Add Type:=xlExpression, Formula1:="=COUNTIF($B$2:$B$" & lastRowDest & ", B2)>1"
             .FormatConditions(.FormatConditions.Count).Interior.Color = 13551615 ' Light pink
         End With
         
         ' Add conditional formatting for negative values in Column F ("Balance")
-        With wsDest.Range("F2:F" & wsDest.Cells(wsDest.Rows.Count, "F").End(xlUp).Row)
+        With wsDest.Range("F2:F" & lastRowDest)
             .FormatConditions.Add Type:=xlExpression, Formula1:="=F2<0"
             .FormatConditions(.FormatConditions.Count).Interior.Color = RGB(144, 238, 144)  ' Light green
         End With
@@ -124,4 +132,3 @@ Sub Daily_Recon()
            "If ID is not a duplicate (not highlighted red) and Balance is less than 0 (highlighted green) " & vbCrLf & vbCrLf & _
            "Research the account in TSAAREV and find why there is now a Credit on the account.            " & VBA.String$(25, 32), vbInformation, "Daily Recon ran, research necessary accounts."
 End Sub
-
