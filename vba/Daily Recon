@@ -8,10 +8,6 @@ Sub Daily_Recon()
     Dim sheetName As String
     Dim Path As String
     
-    ' Folder path to DNR excel file
-    ' Update this to your filepath where the DNR list is.
-    Path = "C:\Users\Y"  
-    
     ' Open DNR and set source worksheet
     Set wbNetwork = Workbooks.Open(Path)
     Set wsNetwork = wbNetwork.Sheets("DNR List")
@@ -78,11 +74,10 @@ Sub Daily_Recon()
         ' Copy headers from the source
         wsYesterday.Rows(1).Copy Destination:=wsDest.Rows(1)
         
-        ' Assume "Balance" is before "Notes", adjust column indices as needed
-        lastCol = wsYesterday.Cells(1, Columns.Count).End(xlToLeft).Column
-        wsDest.Cells(1, lastCol - 1).Value = "Balance"
-        wsDest.Cells(1, lastCol).Value = "DNR"
-        wsDest.Cells(1, lastCol + 1).Value = "Notes"
+        ' Add "DNR" and "Notes" columns at the end
+        lastCol = wsDest.Cells(1, Columns.Count).End(xlToLeft).Column
+        wsDest.Cells(1, lastCol + 1).Value = "DNR"
+        wsDest.Cells(1, lastCol + 2).Value = "Notes"
         
         j = 2 ' Start from row 2 in destination sheet
         ' Copy from yesterday's source
@@ -111,7 +106,7 @@ Sub Daily_Recon()
         ' VLOOKUP to check for "ID" in "DNR"
         Dim lastRowDest As Long
         lastRowDest = wsDest.Cells(wsDest.Rows.Count, "B").End(xlUp).Row
-        wsDest.Range(wsDest.Cells(2, lastCol), wsDest.Cells(lastRowDest, lastCol)).Formula = _
+        wsDest.Range(wsDest.Cells(2, lastCol + 1), wsDest.Cells(lastRowDest, lastCol + 1)).Formula = _
         "=IF(ISNA(VLOOKUP(B2, '" & wsDNR.Name & "'!B:B, 1, FALSE)), ""No"", ""Yes"")"
         
         ' Add conditional formatting for duplicates in Column B ("ID")
