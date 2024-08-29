@@ -78,9 +78,9 @@ Sub Daily_Recon()
         ' Copy headers from the source
         wsYesterday.Rows(1).Copy Destination:=wsDest.Rows(1)
         
-        ' Add a Notes column
+        ' Assume "Balance" is before "Notes", adjust column indices as needed
         lastCol = wsYesterday.Cells(1, Columns.Count).End(xlToLeft).Column
-        wsDest.Cells(1, lastCol - 1).Value = "Amount"
+        wsDest.Cells(1, lastCol - 1).Value = "Balance"
         wsDest.Cells(1, lastCol).Value = "DNR"
         wsDest.Cells(1, lastCol + 1).Value = "Notes"
         
