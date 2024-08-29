@@ -9,7 +9,7 @@ Sub Daily_Recon()
     Dim networkPath As String
     
     ' Folder path to DNR excel file
-    Path = "C:\"
+    Path = "C:\Users\"
     
     ' Open DNR and set source worksheet
     Set wbNetwork = Workbooks.Open(Path)
@@ -120,8 +120,8 @@ Sub Daily_Recon()
 
     Next value
     
-    MsgBox "Sheets created and data appended for each term!" & vbCrLf & _
-           "If ID is not a duplicate (not highlighted red) and Balance is less than 0 (highlighted green)" & vbCrLf & _
-           "Research the account in TSAAREV and find why there is now a Credit on the account."
+    MsgBox "Sheets created and data appended for each term!" & vbCrLf & vbCrLf & _
+           "If ID is not a duplicate (not highlighted red) and Balance is less than 0 (highlighted green) " & vbCrLf & vbCrLf & _
+           "Research the account in TSAAREV and find why there is now a Credit on the account.            " & VBA.String$(25, 32), vbInformation, "Daily Recon ran, research necessary accounts."
 End Sub
 
