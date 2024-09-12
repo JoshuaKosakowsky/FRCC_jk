@@ -1,0 +1,69 @@
+Sub Cred_Over_14D()
+
+    ' Define variables
+    Dim ws As Worksheet
+    Dim lastRow As Long
+    Dim wbNetwork As Workbook
+    Dim wsNetwork As Worksheet
+    Dim wsDNR As Worksheet
+    Dim Path As String
+    
+    ' Set worksheet Page1
+    Set ws = ThisWorkbook.Sheets("Page1")
+    
+    ' Find the last row with data in column C (ID column)
+    lastRow = ws.Cells(ws.Rows.Count, 3).End(xlUp).Row
+    
+    ' Add "DNR" header in column J
+    ws.Cells(2, 10).Value = "DNR"
+    
+    ' Add "Notes" header in column K
+    ws.Cells(2, 11).Value = "Notes"
+    
+    ' Folder path to DNR excel file
+    Path = "C:\Users\S03112819\OneDrive - Colorado Community College System\Refunds\Auto and Manual Refunds\Reversals- DO NOT REFUND PA.xlsx"
+    
+    ' Open DNR file and set source worksheet
+    Set wbNetwork = Workbooks.Open(Path)
+    Set wsNetwork = wbNetwork.Sheets("DNR List")
+    
+    ' Ensure "DNR" sheet exists in this workbook
+    On Error Resume Next
+    Set wsDNR = ThisWorkbook.Sheets("DNR")
+    
+    If wsDNR Is Nothing Then
+        Set wsDNR = ThisWorkbook.Sheets.Add(After:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count))
+        wsDNR.Name = "DNR"
+    End If
+    
+    On Error GoTo 0
+
+    ' Clear existing contents in "DNR" sheet and copy data from DNR List
+    wsDNR.Cells.Clear
+    wsNetwork.Cells.Copy Destination:=wsDNR.Cells(1, 1)
+    
+    ' Close the external workbook without saving changes
+    wbNetwork.Close SaveChanges:=False
+    
+    ' Add VLOOKUP formula in the DNR column for each row
+    For i = 3 To lastRow
+        ws.Cells(i, 10).Formula = "=VLOOKUP(C" & i & ",DNR!B:E,4,FALSE)"
+    Next i
+
+    ' Unmerge all cells in Page1
+    ws.Cells.UnMerge
+    
+    ' Apply autofilter to the headers (row 2)
+    ws.Rows(2).AutoFilter
+    
+    ' Filter column I ("Days Old") for values >= 14
+    ws.AutoFilterMode = False
+    ws.Rows(2).AutoFilter Field:=9, Criteria1:=">=14"
+    
+    ' Filter the "DNR" column (J) to show only #N/A
+    ws.Rows(2).AutoFilter Field:=10, Criteria1:="#N/A"
+
+    ' Inform the user that the task is complete
+    MsgBox "Cred_Over_14D macro completed successfully!", vbInformation
+    
+End Sub
