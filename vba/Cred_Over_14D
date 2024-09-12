@@ -45,13 +45,16 @@ Sub Cred_Over_14D()
     ' Clear existing contents in the "DNR" sheet
     wsDNR.Cells.Clear
     
-    ' Copy data from the DNR List and paste into the new DNR sheet
+    ' Copy data from the DNR List and paste into the new DNR sheet as values
     wsNetwork.UsedRange.Copy
     wsDNR.Cells(1, 1).PasteSpecial Paste:=xlPasteValues
     
     ' Autofit the row heights and column widths in the DNR sheet
     wsDNR.Cells.EntireRow.AutoFit
     wsDNR.Cells.EntireColumn.AutoFit
+    
+    ' Ensure Clipboard is cleared after pasting
+    Application.CutCopyMode = False
     
     ' Close the external workbook without saving changes
     wbNetwork.Close SaveChanges:=False
