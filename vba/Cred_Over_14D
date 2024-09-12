@@ -63,7 +63,10 @@ Sub Cred_Over_14D()
     ' Filter the "DNR" column (J) to show only #N/A
     ws.Rows(2).AutoFilter Field:=10, Criteria1:="#N/A"
 
+    ' Return to Page1
+    ws.Activate
+
     ' Inform the user that the task is complete
-    MsgBox "Cred_Over_14D macro completed successfully!", vbInformation
+    MsgBox "Macro completed successfully, investigate accounts over 14 days and not on DNR.", vbInformation
     
 End Sub
