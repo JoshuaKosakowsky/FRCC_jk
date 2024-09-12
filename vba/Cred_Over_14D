@@ -48,6 +48,10 @@ Sub Cred_Over_14D()
     
     ' Close the external workbook without saving changes
     wbNetwork.Close SaveChanges:=False
+
+    ' Autofit row height and width of "DNR"
+    wsDNR.Cells.EntireRow.AutoFit
+    wsDNR.Cells.EntireColumn.AutoFit
     
     ' Add VLOOKUP formula in the DNR column for each row
     For i = 3 To lastRow
