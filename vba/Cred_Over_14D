@@ -1,15 +1,18 @@
 Sub Cred_Over_14D()
 
     ' Define variables
+    Dim wb As Workbook
     Dim ws As Worksheet
     Dim lastRow As Long
     Dim wbNetwork As Workbook
     Dim wsNetwork As Worksheet
     Dim wsDNR As Worksheet
     Dim Path As String
+    Dim destWb As Workbook
     
-    ' Set worksheet Page1
-    Set ws = ThisWorkbook.Sheets("Page1")
+    ' Set workbook and worksheet Page1
+    Set destWb = ActiveWorkbook ' This refers to the workbook where the macro is being used
+    Set ws = destWb.Sheets("Page1")
     
     ' Find the last row with data in column C (ID column)
     lastRow = ws.Cells(ws.Rows.Count, 3).End(xlUp).Row
@@ -23,24 +26,25 @@ Sub Cred_Over_14D()
     ' Folder path to DNR excel file
     Path = "C:\Users\S03112819\OneDrive - Colorado Community College System\Refunds\Auto and Manual Refunds\Reversals- DO NOT REFUND PA.xlsx"
     
-    ' Open DNR file and set source worksheet
+    ' Open the DNR file and set source worksheet
     Set wbNetwork = Workbooks.Open(Path)
     Set wsNetwork = wbNetwork.Sheets("DNR List")
     
-    ' Ensure "DNR" sheet exists in this workbook
+    ' Ensure "DNR" sheet exists in the active workbook
     On Error Resume Next
-    Set wsDNR = ThisWorkbook.Sheets("DNR")
+    Set wsDNR = destWb.Sheets("DNR")
     
     If wsDNR Is Nothing Then
-        Set wsDNR = ThisWorkbook.Sheets.Add(After:=ThisWorkbook.Sheets(ThisWorkbook.Sheets.Count))
+        ' Create the "DNR" sheet if it doesn't exist
+        Set wsDNR = destWb.Sheets.Add(After:=destWb.Sheets(destWb.Sheets.Count))
         wsDNR.Name = "DNR"
     End If
     
     On Error GoTo 0
-
-    ' Clear existing contents in "DNR" sheet and copy data from DNR List
+    
+    ' Clear existing contents in the "DNR" sheet and copy data from the DNR List
     wsDNR.Cells.Clear
-    wsNetwork.Cells.Copy Destination:=wsDNR.Cells(1, 1)
+    wsNetwork.UsedRange.Copy Destination:=wsDNR.Cells(1, 1) ' Explicit copy of the UsedRange
     
     ' Close the external workbook without saving changes
     wbNetwork.Close SaveChanges:=False
@@ -62,10 +66,10 @@ Sub Cred_Over_14D()
     
     ' Filter the "DNR" column (J) to show only #N/A
     ws.Rows(2).AutoFilter Field:=10, Criteria1:="#N/A"
-
-    ' Return to Page1
+    
+    ' Activate Page1 sheet
     ws.Activate
-
+    
     ' Inform the user that the task is complete
     MsgBox "Macro completed successfully, investigate accounts over 14 days and not on DNR.", vbInformation
     
