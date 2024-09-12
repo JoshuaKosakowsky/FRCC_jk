@@ -42,9 +42,12 @@ Sub Cred_Over_14D()
     
     On Error GoTo 0
     
-    ' Clear existing contents in the "DNR" sheet and copy data from the DNR List
+    ' Clear existing contents in the "DNR" sheet
     wsDNR.Cells.Clear
-    wsNetwork.UsedRange.Copy Destination:=wsDNR.Cells(1, 1) ' Explicit copy of the UsedRange
+    
+    ' Copy data from the DNR List and paste into the new DNR sheet
+    wsNetwork.UsedRange.Copy
+    wsDNR.Cells(1, 1).PasteSpecial Paste:=xlPasteValues
     
     ' Autofit the row heights and column widths in the DNR sheet
     wsDNR.Cells.EntireRow.AutoFit
