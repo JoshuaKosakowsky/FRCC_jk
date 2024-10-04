@@ -49,10 +49,20 @@ def modify_for_hs(value):
 
 Orig_df['MODIFIED_SECTION'] = Orig_df['SECTION'].apply(modify_for_matching)
 WIP_df['MODIFIED_SECTION'] = WIP_df['SECTION'].apply(modify_for_matching)
+
+# Removing MED & HIGH attributes with cost 8.55
+#    Verify this works
+WIP_df = WIP_df[~((WIP_df['ATTR'].isin(['HIGH', 'MED'])) & (WIP_df['FY25 FEE AMOUNT'] == 8.55))]
+
 WIP_df['ATTR'] = WIP_df['ATTR'].apply(modify_for_hs)
 
 # Inner join to get desired data
 result_df = pd.merge(Orig_df, WIP_df, on=['SUBJECT'], how='inner')
+
+# Filter out rows where the fee amount matches between the two datasets
+# This is not the solution but should be close.
+result_df = result_df[result_df['FY25 FEE AMOUNT_x'] != result_df['FY25 FEE AMOUNT_y']]
+
 # Outer join to find unmatched entries
 full_outer_df = pd.merge(Orig_df, WIP_df, on=['SUBJECT'], how='outer', indicator=True)
 
