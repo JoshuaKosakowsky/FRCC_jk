@@ -81,6 +81,8 @@ WIP_df['MODIFIED_SECTION'] = WIP_df['SECTION'].apply(modify_for_matching)
 
 # Inner join to get desired data
 result_df = pd.merge(Orig_df, WIP_df, on=['SUBJECT'], how='inner')
+result_df['UNCHANGED'] = result_df['FY25 FEE AMOUNT'] == result_df['AMOUNT']
+print('result df columns\n',result_df.columns,'\n')
 
 outer_df =  pd.merge(Orig_df, WIP_df, on=['SUBJECT'], how='outer')
 outer_df = outer_df[outer_df['AMOUNT'] > 0]
@@ -167,8 +169,8 @@ result_df['DETAIL CODE'] = result_df.apply(lambda row: online_detail_code(row['E
 result_df = result_df[result_df.apply(custom_filter, axis=1)]
 print('Resulting Columns\n',result_df.columns)
 
-final_df = result_df[['SEMESTER', 'SSADETL CRN', 'SUBJECT', 'CRN_x', 'CRN_y', 'SECTION_x', 'SECTION_y', 'CAMPUS_x', 'CAMPUS_y', 'ATTR', 'FY25 FEE AMOUNT', 'COURSE NAME', 'FEE TYPE', 'FREQUENCY', 'DETAIL CODE', 'EXPLANATION']]
-final_df.columns = ['TERM', 'SSADETL CRN', 'SUBJECT', 'Orig CRN', 'WIP CRN', 'Orig SECTION', 'WIP SECTION', 'ORIG CAMPUS', 'WIP CAMPUS', 'ATTR', f'{term} FEE AMOUNT', 'COURSE NAME', 'FEE TYPE', 'FREQUENCY','DETAIL CODE', 'EXPLANATION']
+final_df = result_df[['SEMESTER', 'SSADETL CRN', 'SUBJECT', 'CRN_x', 'CRN_y', 'SECTION_x', 'SECTION_y', 'CAMPUS_x', 'CAMPUS_y', 'ATTR', 'FY25 FEE AMOUNT', 'COURSE NAME', 'FEE TYPE', 'FREQUENCY', 'DETAIL CODE', 'EXPLANATION', 'UNCHANGED']]
+final_df.columns = ['TERM', 'SSADETL CRN', 'SUBJECT', 'Orig CRN', 'WIP CRN', 'Orig SECTION', 'WIP SECTION', 'ORIG CAMPUS', 'WIP CAMPUS', 'ATTR', f'{term} FEE AMOUNT', 'COURSE NAME', 'FEE TYPE', 'FREQUENCY','DETAIL CODE', 'EXPLANATION', 'UNCHANGED']
 final_df = final_df.sort_values(by=['SUBJECT', 'SSADETL CRN'], ascending = [True, True])
 print('Final Fees Columns\n',final_df.columns)
 print('WIP FEES Columns\n', WIPfees_df.columns)
@@ -189,10 +191,11 @@ unmatched_wFees_df.columns = ['TERM', 'SSADETL CRN', 'COURSE NUM', 'SECTION','WI
 
 unmatched_wFees_df.to_excel(unmatched_output, index=False)
 
+
 final_df, unfiltered_highMed_df = filter_high_med_attr(final_df)
 
-
-#final_df['ATTR'] = final_df['ATTR'].apply(modify_for_hs)
+final_df['ATTR'] = final_df['ATTR'].apply(modify_for_hs)
+final_df = final_df[~final_df['UNCHANGED']]
 
 
 with pd.ExcelWriter(Output, engine='openpyxl') as writer:
