@@ -19,7 +19,6 @@ csv_doc = current_date + '.csv'
 xlsx_doc = current_date + '.xlsx'
 term = '202530'
 
-
 filepath = 'c:/'
 
 # Spreadsheet from SharePoint or Dina (SECTION is 1XX, 2XX, 3XX, etc.)
@@ -55,6 +54,19 @@ def modify_for_matching(value):
         else:
             return section_str[0] + 'XX'
     
+
+# Function to seperate HIGH and MED Attributes with a cost of 8.85 into two dateframes (Since they are attribute costs, not course costs)
+def filter_high_med_attr(df):
+    
+    #without HIGH or MED and equal to 8.85
+    filtered_df = df[~((df['ATTR'].isin(['HIGH', 'MED'])) & (df[f'{term} FEE AMOUNT'] == 8.85))]
+    
+    # The base dataframe
+    unmodified_df = df.copy()
+
+    return filtered_df, unmodified_df
+
+
 # ADD MODIFY FOR ATTR here - Concurrent
 
 def modify_for_hs(value):
@@ -65,7 +77,7 @@ def modify_for_hs(value):
 
 Orig_df['MODIFIED_SECTION'] = Orig_df['SECTION'].apply(modify_for_matching)
 WIP_df['MODIFIED_SECTION'] = WIP_df['SECTION'].apply(modify_for_matching)
-WIP_df['ATTR'] = WIP_df['ATTR'].apply(modify_for_hs)
+
 
 # Inner join to get desired data
 result_df = pd.merge(Orig_df, WIP_df, on=['SUBJECT'], how='inner')
@@ -81,9 +93,6 @@ print('outer_df columns', outer_df.columns)
 # Course Fee Listing filtered to only include items with Fees for later comparison
 WIPfees_df = WIP_df[WIP_df['AMOUNT'] > 0]
 
-# delete FCZ campus from output 
-##
-#
 
 # Apply a custom filter function to handle modified SECTION matches, 'ALL', campus compatibility, and numeric checks
 def custom_filter(row):
@@ -180,7 +189,16 @@ unmatched_wFees_df.columns = ['TERM', 'SSADETL CRN', 'COURSE NUM', 'SECTION','WI
 
 unmatched_wFees_df.to_excel(unmatched_output, index=False)
 
-final_df.to_excel(Output, index=False)
+final_df, unfiltered_highMed_df = filter_high_med_attr(final_df)
+
+
+#final_df['ATTR'] = final_df['ATTR'].apply(modify_for_hs)
+
+
+with pd.ExcelWriter(Output, engine='openpyxl') as writer:
+    final_df.to_excel(writer, sheet_name='Working CFL', index=False)
+    unfiltered_highMed_df.to_excel(writer, sheet_name='Full Listing', index=False)
+
 
 print(final_df.head())
 print(f'Matched DF is {len(final_df)}')
