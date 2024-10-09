@@ -131,17 +131,8 @@ def fee_type(freq):
     else:
         return 'CRED'
     
-# Matches detail codes for FRCC Campus (all but FCY)
+# Matches detail codes for FRCC and CO Online
 def detail_code(det, campus):
-    if det in ['Digital Content Fee'] and campus != 'FCY':
-        return 'A393' # A392 - FALL, A393 - SPRING
-    else:
-        return 'A384' # A383 - FALL, A384 - SPRING # Course Specific Fee
-
-
-# Matches Detail Codes for CO Online (FCY)
-def online_detail_code(det, campus):
-    # This only runs the below code on FCY Campus
     if campus == 'FCY' or campus == 'FON':
         # CO Online Lab Kit Fee 'Lab Kit Fee'
         if 'Lab Kit Fee' in det or 'Lab Fee Kit' in det:
@@ -150,22 +141,30 @@ def online_detail_code(det, campus):
         elif 'Lab Supplies' in det:
             return 'B731' 
         # CO Online Digital Content Fee 'Digital Content Fee'
-        elif 'Digital Content Fee'in det:
+        elif 'Digital Content Fee' in det:
             return 'B733'
         # CO Online Materials Fee # this is the else:
         else:
             return 'B732' 
     else:
-        return "Review for accuracy"
+        if det == 'Digital Content Fee':
+            return 'A393' # A392 - FALL, A393 - SPRING
+        else:
+            return 'A384' # A383 - FALL, A384 - SPRING # Course Specific Fee
+
 
 
 result_df['FEE TYPE'] = result_df['FREQUENCY'].apply(fee_type)
 #result_df['DETAIL CODE'] = result_df['EXPLANATION'].apply(detail_code)
 # applying FRCC Detail code matching
 result_df['DETAIL CODE'] = result_df.apply(lambda row: detail_code(row['EXPLANATION'], row['CAMPUS_y']), axis=1)
+
+# TESTING
+
+
 # applying CO ONline Detail code matching
 # 
-result_df['DETAIL CODE'] = result_df.apply(lambda row: online_detail_code(row['EXPLANATION'], row['CAMPUS_y']) if row['CAMPUS_y'] == 'FCY' else row ['DETAIL CODE'], axis=1)
+#result_df['DETAIL CODE'] = result_df.apply(lambda row: online_detail_code(row['EXPLANATION'], row['CAMPUS_y']) if row['CAMPUS_y'] == 'FCY' else row ['DETAIL CODE'], axis=1)
 result_df = result_df[result_df.apply(custom_filter, axis=1)]
 print('Resulting Columns\n',result_df.columns)
 
