@@ -27,7 +27,9 @@ Sub Cred_Over_14D()
     ws.Cells(2, 11).Value = "Notes"
     
     ' Folder path to DNR excel file
-    Path = "C:\Users\S03112819\OneDrive - Colorado Community College System\Refunds\Auto and Manual Refunds\Reversals- DO NOT REFUND PA.xlsx"
+    Path = "C:\Users\" & Environ("USERNAME") & "\OneDrive - Colorado Community College System\Refunds\Auto and Manual Refunds\Reversals- DO NOT REFUND PA.xlsx"
+    
+    ' Path = "C:\Users\S03112819\OneDrive - Colorado Community College System\Refunds\Auto and Manual Refunds\Reversals- DO NOT REFUND PA.xlsx"
     
     ' Open the DNR file and set source worksheet
     Set wbNetwork = Workbooks.Open(Path)
@@ -64,7 +66,7 @@ Sub Cred_Over_14D()
     
     ' Add VLOOKUP formula in the DNR column for each row
     For i = 3 To lastRow
-        ws.Cells(i, 10).Formula = "=VLOOKUP(C" & i & ",DNR!B:E,4,FALSE)"
+        ws.Cells(i, 10).Formula = "=VLOOKUP(C" & i & ",DNR!C:F,4,FALSE)"
     Next i
 
     ' Unmerge all cells in Page1
@@ -110,7 +112,7 @@ Sub Cred_Over_14D()
     Next i
     
     ' Apply filter to show only rows where column E = 1
-    wsRemoveDNR.Rows(1).AutoFilter Field:=5, Criteria1:="=1"
+    wsRemoveDNR.Rows(1).AutoFilter Field:=5, Criteria1:="=0"
     
     ' Autofit the entire Remove DNR sheet
     wsRemoveDNR.Cells.EntireRow.AutoFit
@@ -120,6 +122,6 @@ Sub Cred_Over_14D()
     ws.Activate
     
     ' Inform the user that the task is complete
-    MsgBox "Macro completed successfully, investigate accounts over 14 days and not on DNR.", vbInformation
+    MsgBox "Macro completed successfully." & vbNewLine & "investigate accounts over 14 days and not on DNR (Info from Page 1)" & vbNewLine & "Investigate accounts that are on the DNR but not the Net Credit Report (Info from Remove DNR where Column E = 0)", vbInformation
     
 End Sub
