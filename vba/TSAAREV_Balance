@@ -1,33 +1,65 @@
-Sub TSAAREV_Balance()
-'
-' TSAAREV_Balance Macro
-'
+Sub TSAAREV_Balance_Updated()
+    ' Hide columns G to Z
+    Columns("G:Z").EntireColumn.Hidden = True
+    
+    ' Autofit all columns
+    Cells.EntireColumn.AutoFit
 
-'
-    Columns("G:Z").Select
-    Selection.EntireColumn.Hidden = True
-    Range("AA1").Select
-    Application.CutCopyMode = False
-    ActiveCell.FormulaR1C1 = "Charges"
-    Range("AB1").Select
-    ActiveCell.FormulaR1C1 = "Payments"
-    Range("AC1").Select
-    ActiveCell.FormulaR1C1 = "Difference"
-    Columns("AA:AA").Select
-    Selection.ColumnWidth = 8.22
-    Columns("AA:AA").EntireColumn.AutoFit
-    Columns("AB:AB").Select
-    Columns("AB:AB").EntireColumn.AutoFit
-    Columns("AC:AC").Select
-    Selection.ColumnWidth = 8.22
-    Columns("AC:AC").EntireColumn.AutoFit
-    Range("AA2").Select
-    ActiveCell.FormulaR1C1 = "=SUM(C[-23])"
-    Range("AB2").Select
-    ActiveCell.FormulaR1C1 = "=SUM(C[-23])"
-    Range("AC2").Select
-    Application.CutCopyMode = False
-    ActiveCell.FormulaR1C1 = "=RC[-1]-RC[-2]"
-    Range("AC1").Select
-    Selection.Font.Bold = True
+    ' Add headers for Charges, Payments, and Difference in AA1, AB1, and AC1
+    Range("AA1").Value = "Charges"
+    Range("AB1").Value = "Payments"
+    Range("AC1").Value = "Difference"
+    Range("AD1").Value = "Total"
+
+    ' Set "Total" label in AA2
+    Range("AA2").Value = "Total"
+
+    ' Perform SUM functions in AB2 and AC2, and AB2 - AC2 in AD2
+    Range("AB2").Formula = "=SUM(D:D)"
+    Range("AC2").Formula = "=SUM(E:E)"
+    Range("AD2").Formula = "=AB2-AC2"
+
+    ' Get unique values from Column C, sort them in descending order, and add them under "Total" in AA column
+    Dim uniqueValues As Collection
+    Set uniqueValues = New Collection
+    Dim cell As Range
+    Dim outputRow As Integer
+    outputRow = 3 ' Start from row 3 under "Total"
+    
+    ' Loop through Column C to get unique values
+    On Error Resume Next ' Ignore errors for duplicate entries
+    For Each cell In Range("C2:C" & Cells(Rows.Count, "C").End(xlUp).Row)
+        If cell.Value <> "" Then
+            uniqueValues.Add cell.Value, CStr(cell.Value)
+        End If
+    Next cell
+    On Error GoTo 0 ' Resume normal error handling
+    
+    ' Sort unique values in descending order
+    Dim i As Integer, j As Integer
+    Dim temp As Variant
+    For i = 1 To uniqueValues.Count - 1
+        For j = i + 1 To uniqueValues.Count
+            If uniqueValues(i) < uniqueValues(j) Then
+                temp = uniqueValues(i)
+                uniqueValues(i) = uniqueValues(j)
+                uniqueValues(j) = temp
+            End If
+        Next j
+    Next i
+
+    ' Place unique values in Column AA starting from AA3
+    For i = 1 To uniqueValues.Count
+        Cells(outputRow, "AA").Value = uniqueValues(i)
+        
+        ' Insert SUMIF formulas in AB, AC, and calculate Difference in AD
+        Cells(outputRow, "AB").Formula = "=SUMIF(C:C, AA" & outputRow & ", D:D)"
+        Cells(outputRow, "AC").Formula = "=SUMIF(C:C, AA" & outputRow & ", E:E)"
+        Cells(outputRow, "AD").Formula = "=AB" & outputRow & "-AC" & outputRow
+        
+        outputRow = outputRow + 1
+    Next i
+
+    ' Make headers bold for Charges, Payments, Difference, and Total
+    Range("AA1:AD1").Font.Bold = True
 End Sub
