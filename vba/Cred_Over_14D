@@ -9,6 +9,7 @@ Sub Cred_Over_14D()
     Dim wbNetwork As Workbook
     Dim wsNetwork As Worksheet
     Dim wsDNR As Worksheet
+    Dim wsRemoveDNR As Worksheet
     Dim Path As String
     Dim destWb As Workbook
     
@@ -78,6 +79,42 @@ Sub Cred_Over_14D()
     
     ' Filter the "DNR" column (J) to show only #N/A
     ws.Rows(2).AutoFilter Field:=10, Criteria1:="#N/A"
+    
+    ' Create the "Remove DNR" sheet if it doesn't exist
+    On Error Resume Next
+    Set wsRemoveDNR = destWb.Sheets("Remove DNR")
+    
+    If wsRemoveDNR Is Nothing Then
+        ' Create the "Remove DNR" sheet
+        Set wsRemoveDNR = destWb.Sheets.Add(After:=destWb.Sheets(destWb.Sheets.Count))
+        wsRemoveDNR.Name = "Remove DNR"
+    End If
+    
+    On Error GoTo 0
+    
+    ' Clear existing contents in the "Remove DNR" sheet
+    wsRemoveDNR.Cells.Clear
+    
+    ' Copy columns C, D, E, and F from DNR to Remove DNR
+    wsDNR.Range("C:F").Copy
+    wsRemoveDNR.Cells(1, 1).PasteSpecial Paste:=xlPasteValues
+    
+    ' Add headers in the Remove DNR sheet
+    wsRemoveDNR.Cells(1, 5).Value = "DNR =/= Credit"
+    wsRemoveDNR.Cells(1, 6).Value = "Notes"
+    
+    ' Add COUNTIF formula in column E to check for matches in Page1!C:C
+    lastRow = wsRemoveDNR.Cells(wsRemoveDNR.Rows.Count, 1).End(xlUp).Row
+    For i = 2 To lastRow
+        wsRemoveDNR.Cells(i, 5).Formula = "=COUNTIF(Page1!C:C, A" & i & ")"
+    Next i
+    
+    ' Apply filter to show only rows where column E = 1
+    wsRemoveDNR.Rows(1).AutoFilter Field:=5, Criteria1:="=1"
+    
+    ' Autofit the entire Remove DNR sheet
+    wsRemoveDNR.Cells.EntireRow.AutoFit
+    wsRemoveDNR.Cells.EntireColumn.AutoFit
     
     ' Activate Page1 sheet
     ws.Activate
