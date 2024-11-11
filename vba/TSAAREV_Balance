@@ -1,11 +1,11 @@
-Sub TSAAREV_Balance_Updated()
-    ' Hide columns G to Z
-    Columns("G:Z").EntireColumn.Hidden = True
-    
+Sub TSAAREV_Balance()
     ' Autofit all columns
     Cells.EntireColumn.AutoFit
 
-    ' Add headers for Charges, Payments, and Difference in AA1, AB1, and AC1
+    ' Hide columns G to Z
+    Columns("G:Z").EntireColumn.Hidden = True
+    
+    ' Add headers for Charges, Payments, Difference, and Total in AA1, AB1, AC1, and AD1
     Range("AA1").Value = "Charges"
     Range("AB1").Value = "Payments"
     Range("AC1").Value = "Difference"
@@ -18,6 +18,11 @@ Sub TSAAREV_Balance_Updated()
     Range("AB2").Formula = "=SUM(D:D)"
     Range("AC2").Formula = "=SUM(E:E)"
     Range("AD2").Formula = "=AB2-AC2"
+
+    ' Format columns D, E, F, AA, AB, AC, and AD to Accounting format
+    Columns("D:E").NumberFormat = "_($* #,##0.00_);_($* (#,##0.00);_($* ""-""??_);_(@_)"
+    Columns("F:F").NumberFormat = "_($* #,##0.00_);_($* (#,##0.00);_($* ""-""??_);_(@_)"
+    Columns("AA:AD").NumberFormat = "_($* #,##0.00_);_($* (#,##0.00);_($* ""-""??_);_(@_)"
 
     ' Get unique values from Column C, sort them in descending order, and add them under "Total" in AA column
     Dim uniqueValues As Collection
