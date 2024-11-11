@@ -1,0 +1,33 @@
+Sub TSAAREV_Balance()
+'
+' TSAAREV_Balance Macro
+'
+
+'
+    Columns("G:Z").Select
+    Selection.EntireColumn.Hidden = True
+    Range("AA1").Select
+    Application.CutCopyMode = False
+    ActiveCell.FormulaR1C1 = "Charges"
+    Range("AB1").Select
+    ActiveCell.FormulaR1C1 = "Payments"
+    Range("AC1").Select
+    ActiveCell.FormulaR1C1 = "Difference"
+    Columns("AA:AA").Select
+    Selection.ColumnWidth = 8.22
+    Columns("AA:AA").EntireColumn.AutoFit
+    Columns("AB:AB").Select
+    Columns("AB:AB").EntireColumn.AutoFit
+    Columns("AC:AC").Select
+    Selection.ColumnWidth = 8.22
+    Columns("AC:AC").EntireColumn.AutoFit
+    Range("AA2").Select
+    ActiveCell.FormulaR1C1 = "=SUM(C[-23])"
+    Range("AB2").Select
+    ActiveCell.FormulaR1C1 = "=SUM(C[-23])"
+    Range("AC2").Select
+    Application.CutCopyMode = False
+    ActiveCell.FormulaR1C1 = "=RC[-1]-RC[-2]"
+    Range("AC1").Select
+    Selection.Font.Bold = True
+End Sub
