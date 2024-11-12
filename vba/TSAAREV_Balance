@@ -1,9 +1,9 @@
 Sub TSAAREV_Balance()
     ' Add headers for Charges, Payments, Difference, and Total in AB1, AC1, AD1, and AE1
-    Range("AB1").Value = "Charges"
-    Range("AC1").Value = "Payments"
-    Range("AD1").Value = "Difference"
-    Range("AE1").Value = "Total"
+    Range("AB1").Value = "Balance Breakdown"
+    Range("AC1").Value = "Charges"
+    Range("AD1").Value = "Payments"
+    Range("AE1").Value = "Difference"
 
     ' Set "Total" label in AB2
     Range("AB2").Value = "Total"
