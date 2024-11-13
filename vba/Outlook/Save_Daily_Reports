@@ -11,41 +11,46 @@ Sub Save_Daily_Reports()
     Dim MainFolderPath As String
     Dim DateStr As String
     Dim SubFolderPath As String
+    Dim Items As Outlook.Items
     
     ' Main folder path and date format
     MainFolderPath = "C:\Users\" & Environ("USERNAME") & "\OneDrive - Colorado Community College System\AR\Daily Reports\"
     DateStr = Format(Date, "yyyy-mm-dd") ' Format date as "yyyy-mm-dd"
     
     ' Set up Outlook application
-    Set OutlookApp = CreateObject("Outlook.Application")
-    Set OutlookNamespace = OutlookApp.GetNamespace("MAPI")
+    Set OutlookNamespace = Application.GetNamespace("MAPI")
     Set Inbox = OutlookNamespace.GetDefaultFolder(6).Folders("Reports") ' 6 is the code for the Inbox, then acess the "Reports" subfolder in Inbox
+    Set Items = Inbox.Items
+    Items.Sort "[ReceivedTime]", True ' Sorts by ReceivedTime in descending order
     
     ' Loop through each mail item in the Reports folder
-    For Each Item In Inbox.Items
-        If Item.Attachments.Count > 0 Then
-            ' Process each attachment based on its exact name
-            For Each Attachment In Item.Attachments
-                Select Case Attachment.DisplayName
-                    Case "Refund by Check or Credit Card.xlsx"
-                        SubFolderPath = MainFolderPath & "Refund by Check or Credit Card\"
-                    Case "Net Credit by Term and SID.xlsx"
-                        SubFolderPath = MainFolderPath & "Net Credit by Term and SID\"
-                    Case "Remaining Credits by VPDI.xlsx"
-                        SubFolderPath = MainFolderPath & "Remaining Credits by VPDI\"
-                    Case Else
-                        SubFolderPath = MainFolderPath & "Other\"
-                End Select
+    For Each Item In Items
+        ' Only procees emails received today
+        If Item.ReceivedTime >= Date Then
+            If Item.Attachments.Count > 0 Then
+                ' Process each attachment based on its exact name
+                For Each Attachment In Item.Attachments
+                    Select Case Attachment.DisplayName
+                        Case "Refund by Check or Credit Card.xlsx"
+                            SubFolderPath = MainFolderPath & "Refund by Check or Credit Card\"
+                        Case "Net Credit By Term and SID.xlsx"
+                            SubFolderPath = MainFolderPath & "Net Credit by Term and SID\"
+                        Case "Remaining Credits by VPDI.xlsx"
+                            SubFolderPath = MainFolderPath & "Remaining Credits by VPDI\"
+                        Case Else
+                            SubFolderPath = MainFolderPath & "Other\"
+                    End Select
                 
-                ' Ensure the subfolder exists
-                If Dir(SubFolderPath, vbDirectory) = "" Then
-                    MkDir SubFolderPath
-                End If
+                    ' Ensure the subfolder exists
+                    If Dir(SubFolderPath, vbDirectory) = "" Then
+                        MkDir SubFolderPath
+                    End If
                 
-                ' Save the attachment with the date appended
-                Attachment.SaveAsFile SubFolderPath & Attachment.DisplayName & "_" & DateStr & ".xlsx"
-                MsgBox "Attachment saved as " & Attachment.DisplayName & "_" & DateStr & ".xlsx in " & SubFolderPath
-            Next
+                    ' Save the attachment with the date appended
+                    Attachment.SaveAsFile SubFolderPath & Attachment.DisplayName & "_" & DateStr & ".xlsx"
+                    ' MsgBox "Attachment saved as " & Attachment.DisplayName & "_" & DateStr & ".xlsx in " & SubFolderPath
+                Next
+            End If
         End If
     Next
     
