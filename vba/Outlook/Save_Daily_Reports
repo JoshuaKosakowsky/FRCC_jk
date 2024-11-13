@@ -33,8 +33,8 @@ Sub Save_Daily_Reports()
                     Select Case Attachment.DisplayName
                         Case "Refund by Check or Credit Card.xlsx"
                             SubFolderPath = MainFolderPath & "Refund by Check or Credit Card\"
-                        Case "Net Credit By Term and SID.xlsx"
-                            SubFolderPath = MainFolderPath & "Net Credit by Term and SID\"
+                        Case "Net Credit By Term And SID.xlsx"
+                            SubFolderPath = MainFolderPath & "Net Credit By Term And SID\"
                         Case "Remaining Credits by VPDI.xlsx"
                             SubFolderPath = MainFolderPath & "Remaining Credits by VPDI\"
                         Case Else
