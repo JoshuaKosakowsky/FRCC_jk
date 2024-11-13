@@ -1,15 +1,5 @@
-Dim WithEvents ReportsFolderItems As Outlook.Items
-
 Private Sub Application_Startup()
-    ' Initialize the event when Outlook starts
-    Set ReportsFolderItems = Session.GetDefaultFolder(olFolderInbox).Folders("Reports").Items
-End Sub
-
-Private Sub ReportsFolderItems_ItemAdd(ByVal Item As Object)
-    ' Run the save code only if the new item is an email
-    If TypeOf Item Is Outlook.MailItem Then
-        Save_Daily_ReportsFromReportsFolder
-    End If
+    Save_Daily_Reports
 End Sub
 
 Sub Save_Daily_Reports()
@@ -32,7 +22,7 @@ Sub Save_Daily_Reports()
     Set Inbox = OutlookNamespace.GetDefaultFolder(6).Folders("Reports") ' 6 is the code for the Inbox, then acess the "Reports" subfolder in Inbox
     
     ' Loop through each mail item in the Reports folder
-    For Each Item In ReportsFolder.Items
+    For Each Item In Inbox.Items
         If Item.Attachments.Count > 0 Then
             ' Process each attachment based on its exact name
             For Each Attachment In Item.Attachments
