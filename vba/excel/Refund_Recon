@@ -3,16 +3,21 @@ Sub Refund_Recon()
     Dim NetCreditFilePath As String
     Dim CCRefundsFilePath As String
     Dim DNRFilePath As String
+    Dim TodayDate As String
     Dim wbSource As Workbook
     Dim wsSource As Worksheet
     Dim wsDest As Worksheet
-    
-    ' Define main folder path and specific file paths
+
+    ' Define main folder path and today's date in the format used for files
     MainFolderPath = "C:\Users\" & Environ("USERNAME") & "\OneDrive - Colorado Community College System\AR\Daily Reports\"
-    NetCreditFilePath = MainFolderPath & "Net Credit By Term And SID\Net Credit By Term And SID.xlsx"
-    CCRefundsFilePath = MainFolderPath & "Refund by Check or Credit Card\Refund by Check or Credit Card.xlsx"
+    TodayDate = Format(Date, "yyyy-mm-dd")
+
+    ' Set file paths with today's date appended
+    NetCreditFilePath = MainFolderPath & "Net Credit By Term And SID\Net Credit By Term And SID_" & TodayDate & ".xlsx"
+    CCRefundsFilePath = MainFolderPath & "Refund by Check or Credit Card\Refund by Check or Credit Card_" & TodayDate & ".xlsx"
     DNRFilePath = "C:\Users\" & Environ("USERNAME") & "\OneDrive - Colorado Community College System\Refunds\Auto and Manual Refunds\Reversals- DO NOT REFUND PA.xlsx"
     
+
     ' Locate the TGACREV sheet to insert tabs after it
     Dim tgacrevSheet As Worksheet
     Set tgacrevSheet = ThisWorkbook.Sheets("TGACREV")
