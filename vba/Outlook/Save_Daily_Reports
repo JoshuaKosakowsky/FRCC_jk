@@ -3,7 +3,6 @@ Private Sub Application_Startup()
 End Sub
 
 Sub Save_Daily_Reports()
-    Dim OutlookApp As Object
     Dim OutlookNamespace As Object
     Dim Inbox As Object
     Dim Item As Object
@@ -19,13 +18,13 @@ Sub Save_Daily_Reports()
     
     ' Set up Outlook application
     Set OutlookNamespace = Application.GetNamespace("MAPI")
-    Set Inbox = OutlookNamespace.GetDefaultFolder(6).Folders("Reports") ' 6 is the code for the Inbox, then acess the "Reports" subfolder in Inbox
+    Set Inbox = OutlookNamespace.GetDefaultFolder(6).Folders("Reports") ' Access the "Reports" subfolder in Inbox
     Set Items = Inbox.Items
     Items.Sort "[ReceivedTime]", True ' Sorts by ReceivedTime in descending order
     
     ' Loop through each mail item in the Reports folder
     For Each Item In Items
-        ' Only procees emails received today
+        ' Only process emails received today
         If Item.ReceivedTime >= Date Then
             If Item.Attachments.Count > 0 Then
                 ' Process each attachment based on its exact name
@@ -45,10 +44,13 @@ Sub Save_Daily_Reports()
                     If Dir(SubFolderPath, vbDirectory) = "" Then
                         MkDir SubFolderPath
                     End If
-                
+
+                    ' Remove the ".xlsx" extension before appending the date
+                    Dim FileNameWithoutExtension As String
+                    FileNameWithoutExtension = Left(Attachment.DisplayName, Len(Attachment.DisplayName) - 5) ' Removes the last 5 characters (.xlsx)
+
                     ' Save the attachment with the date appended
-                    Attachment.SaveAsFile SubFolderPath & Attachment.DisplayName & "_" & DateStr & ".xlsx"
-                    ' MsgBox "Attachment saved as " & Attachment.DisplayName & "_" & DateStr & ".xlsx in " & SubFolderPath
+                    Attachment.SaveAsFile SubFolderPath & FileNameWithoutExtension & "_" & DateStr & ".xlsx"
                 Next
             End If
         End If
@@ -59,5 +61,4 @@ Sub Save_Daily_Reports()
     Set Item = Nothing
     Set Inbox = Nothing
     Set OutlookNamespace = Nothing
-    Set OutlookApp = Nothing
 End Sub
