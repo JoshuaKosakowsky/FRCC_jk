@@ -78,6 +78,29 @@ Sub Refund_Recon()
         End If
     Next ws
 
+    ' Add formulas to TGACREV sheet
+    With tgacrevSheet
+        .Range("N1").Value = "DNR Count"
+        .Range("O1").Value = "Manual Count"
+        .Range("P1").Value = "Net Credit Sum"
+        .Range("Q1").Value = "CC Refunds Sum"
+        .Range("R1").Value = "FA Count"
+        .Range("S1").Value = "Total"
+
+        .Range("N2").Formula = "=COUNTIF(DNR!C:C, TGACREV!E2)"
+        .Range("O2").Formula = "=COUNTIF(MANUAL!B:B, TGACREV!E2)"
+        .Range("P2").Formula = "=SUMIF('Net Credit'!B:B, TGACREV!E2, 'Net Credit'!F:F)"
+        .Range("Q2").Formula = "=SUMIF('CC Refunds'!C:C, TGACREV!E2, 'CC Refunds'!K:K)"
+        .Range("R2").Formula = "=COUNTIF(FA!A:A, TGACREV!E2)"
+        .Range("S2").Formula = "=P2+Q2"
+
+        Dim lastRow As Long
+        lastRow = .Cells(.Rows.Count, "E").End(xlUp).Row ' Find last row based on column E
+
+        .Range("N2:S2").AutoFill Destination:=.Range("N2:S" & lastRow)
+        .Columns("N:S").EntireColumn.AutoFit ' Autofit the new columns
+    End With
+
     ' Clean up
     Set wsSource = Nothing
     Set wsDest = Nothing
