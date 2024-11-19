@@ -80,12 +80,13 @@ Sub Refund_Recon()
 
     ' Add formulas to TGACREV sheet
     With tgacrevSheet
-        .Range("N1").Value = "DNR Count"
-        .Range("O1").Value = "Manual Count"
-        .Range("P1").Value = "Net Credit Sum"
-        .Range("Q1").Value = "CC Refunds Sum"
-        .Range("R1").Value = "FA Count"
-        .Range("S1").Value = "Total"
+        .Range("N1").Value = "DNR"
+        .Range("O1").Value = "MANUAL"
+        .Range("P1").Value = "NET CREDIT"
+        .Range("Q1").Value = "CC REF"
+        .Range("R1").Value = "FA"
+        .Range("S1").Value = "DIFF"
+        .Range("T1").Value = "Notes"
 
         .Range("N2").Formula = "=COUNTIF(DNR!C:C, TGACREV!E2)"
         .Range("O2").Formula = "=COUNTIF(MANUAL!B:B, TGACREV!E2)"
