@@ -24,7 +24,7 @@ Sub TSAAREV_Balance()
     Dim cell As Range
     Dim outputRow As Integer
     outputRow = 3 ' Start from row 3 under "Total"
-    
+
     ' Loop through Column C to get unique values
     On Error Resume Next ' Ignore errors for duplicate entries
     For Each cell In Range("C2:C" & Cells(Rows.Count, "C").End(xlUp).Row)
@@ -33,23 +33,32 @@ Sub TSAAREV_Balance()
         End If
     Next cell
     On Error GoTo 0 ' Resume normal error handling
-    
-    ' Sort unique values in descending order
+
+    ' Sort unique values in descending order using an array
+    Dim uniqueArray() As Variant
+    ReDim uniqueArray(1 To uniqueValues.Count)
+
+    ' Copy items from Collection to Array
     Dim i As Integer, j As Integer
+    For i = 1 To uniqueValues.Count
+        uniqueArray(i) = uniqueValues(i)
+    Next i
+
+    ' Sort the array in descending order
     Dim temp As Variant
-    For i = 1 To uniqueValues.Count - 1
-        For j = i + 1 To uniqueValues.Count
-            If uniqueValues(i) < uniqueValues(j) Then
-                temp = uniqueValues(i)
-                uniqueValues(i) = uniqueValues(j)
-                uniqueValues(j) = temp
+    For i = LBound(uniqueArray) To UBound(uniqueArray) - 1
+        For j = i + 1 To UBound(uniqueArray)
+            If uniqueArray(i) < uniqueArray(j) Then
+                temp = uniqueArray(i)
+                uniqueArray(i) = uniqueArray(j)
+                uniqueArray(j) = temp
             End If
         Next j
     Next i
 
     ' Place unique values in Column AB starting from AB3
-    For i = 1 To uniqueValues.Count
-        Cells(outputRow, "AB").Value = uniqueValues(i)
+    For i = LBound(uniqueArray) To UBound(uniqueArray)
+        Cells(outputRow, "AB").Value = uniqueArray(i)
         
         ' Insert SUMIF formulas in AC, AD, and calculate Difference in AE
         Cells(outputRow, "AC").Formula = "=SUMIF(C:C, AB" & outputRow & ", D:D)"
