@@ -1,4 +1,4 @@
-Sub Refund_Recon()
+Sub Refund_Recon_Combined()
     Dim MainFolderPath As String
     Dim NetCreditFilePath As String
     Dim CCRefundsFilePath As String
@@ -7,6 +7,7 @@ Sub Refund_Recon()
     Dim wbSource As Workbook
     Dim wsSource As Worksheet
     Dim wsDest As Worksheet
+    Dim tgacrevSheet As Worksheet
 
     ' Define main folder path and today's date in the format used for files
     MainFolderPath = "C:\Users\" & Environ("USERNAME") & "\OneDrive - Colorado Community College System\AR\Daily Reports\"
@@ -16,17 +17,15 @@ Sub Refund_Recon()
     NetCreditFilePath = MainFolderPath & "Net Credit By Term And SID\Net Credit By Term And SID_" & TodayDate & ".xlsx"
     CCRefundsFilePath = MainFolderPath & "Refund by Check or Credit Card\Refund by Check or Credit Card_" & TodayDate & ".xlsx"
     DNRFilePath = "C:\Users\" & Environ("USERNAME") & "\OneDrive - Colorado Community College System\Refunds\Auto and Manual Refunds\Reversals- DO NOT REFUND PA.xlsx"
-    
 
     ' Locate the TGACREV sheet to insert tabs after it
-    Dim tgacrevSheet As Worksheet
     Set tgacrevSheet = ThisWorkbook.Sheets("TGACREV")
 
     ' Insert and populate Net Credit tab
     Set wsDest = ThisWorkbook.Sheets.Add(After:=tgacrevSheet)
     wsDest.Name = "Net Credit"
     Set wbSource = Workbooks.Open(NetCreditFilePath)
-    Set wsSource = wbSource.Sheets(1) ' Assuming data is in the first sheet of the Net Credit report
+    Set wsSource = wbSource.Sheets(1)
     wsSource.UsedRange.Copy wsDest.Range("A1")
     wbSource.Close False
 
@@ -34,7 +33,7 @@ Sub Refund_Recon()
     Set wsDest = ThisWorkbook.Sheets.Add(After:=ThisWorkbook.Sheets("Net Credit"))
     wsDest.Name = "CC Refunds"
     Set wbSource = Workbooks.Open(CCRefundsFilePath)
-    Set wsSource = wbSource.Sheets(1) ' Assuming data is in the first sheet of the CC Refunds report
+    Set wsSource = wbSource.Sheets(1)
     wsSource.UsedRange.Copy wsDest.Range("A1")
     wbSource.Close False
 
@@ -42,14 +41,46 @@ Sub Refund_Recon()
     Set wsDest = ThisWorkbook.Sheets.Add(After:=ThisWorkbook.Sheets("CC Refunds"))
     wsDest.Name = "DNR"
     Set wbSource = Workbooks.Open(DNRFilePath)
-    Set wsSource = wbSource.Sheets(1) ' Assuming data is in the first sheet of the DNR report
+    Set wsSource = wbSource.Sheets(1)
     wsSource.UsedRange.Copy wsDest.Range("A1")
     wbSource.Close False
+
+    ' Apply formatting and column additions
+    Dim ws As Worksheet
+    For Each ws In ThisWorkbook.Sheets
+        If ws.Name <> "TGACREV" Then
+            ' Unmerge all cells
+            ws.Cells.UnMerge
+            ' Autofit all columns and rows
+            ws.Cells.EntireColumn.AutoFit
+            ws.Cells.EntireRow.AutoFit
+
+            ' Additional formatting for specific sheets
+            If ws.Name = "Net Credit" Then
+                ' Delete header rows (adjust as needed)
+                ws.Rows("1:3").Delete
+                ' Add formulas (adjust the ranges/formulas as required)
+                ws.Range("G1").Value = "DNR"
+                ws.Range("H1").Value = "CC Refunds"
+                ws.Range("I1").Value = "Manual"
+                ws.Range("J1").Value = "TGACREV"
+                ws.Range("K1").Value = "FA"
+                ws.Range("L1").Value = "Notes"
+                ws.Range("G2").Formula = "=COUNTIF(DNR!A:A, 'Net Credit'!A2)"
+                ws.Range("H2").Formula = "=SUMIF('CC Refunds'!A:A, 'Net Credit'!A2, 'CC Refunds'!D:D)"
+                ws.Range("I2").Formula = "=COUNTIF(Manual!A:A, 'Net Credit'!A2)"
+                ws.Range("J2").Formula = "=SUMIF(TGACREV!A:A, 'Net Credit'!A2, TGACREV!D:D)"
+                ws.Range("K2").Formula = "=COUNTIF(FA!A:A, 'Net Credit'!A2)"
+                ws.Range("L2").Formula = "=RC[-3]+RC[-7]"
+                ws.Range("G2:L2").AutoFill Destination:=ws.Range("G2:L" & ws.Cells(ws.Rows.Count, "A").End(xlUp).Row)
+            End If
+        End If
+    Next ws
 
     ' Clean up
     Set wsSource = Nothing
     Set wsDest = Nothing
     Set wbSource = Nothing
 
-    MsgBox "Net Credit, CC Refunds, and DNR tabs inserted and populated between TGACREV and Manual."
+    MsgBox "Refund Recon process completed successfully."
 End Sub
