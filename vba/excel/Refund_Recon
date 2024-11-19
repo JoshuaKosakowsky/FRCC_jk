@@ -1,4 +1,4 @@
-Sub Refund_Recon_Combined()
+Sub Refund_Recon()
     Dim MainFolderPath As String
     Dim NetCreditFilePath As String
     Dim CCRefundsFilePath As String
@@ -66,11 +66,11 @@ Sub Refund_Recon_Combined()
                 ws.Range("J1").Value = "TGACREV"
                 ws.Range("K1").Value = "FA"
                 ws.Range("L1").Value = "Notes"
-                ws.Range("G2").Formula = "=COUNTIF(DNR!A:A, 'Net Credit'!A2)"
-                ws.Range("H2").Formula = "=SUMIF('CC Refunds'!A:A, 'Net Credit'!A2, 'CC Refunds'!D:D)"
-                ws.Range("I2").Formula = "=COUNTIF(Manual!A:A, 'Net Credit'!A2)"
-                ws.Range("J2").Formula = "=SUMIF(TGACREV!A:A, 'Net Credit'!A2, TGACREV!D:D)"
-                ws.Range("K2").Formula = "=COUNTIF(FA!A:A, 'Net Credit'!A2)"
+                ws.Range("G2").Formula = "=COUNTIF(DNR!C:C, 'Net Credit'!B2)"
+                ws.Range("H2").Formula = "=SUMIF('CC Refunds'!C:C, 'Net Credit'!B2, 'CC Refunds'!K:K)"
+                ws.Range("I2").Formula = "=COUNTIF(Manual!B:B, 'Net Credit'!B2)"
+                ws.Range("J2").Formula = "=SUMIF(TGACREV!E:E, 'Net Credit'!B2, TGACREV!C:C)"
+                ws.Range("K2").Formula = "=COUNTIF(FA!A:A, 'Net Credit'!B2)"
                 ws.Range("L2").Formula = "=RC[-3]+RC[-7]"
                 ws.Range("G2:L2").AutoFill Destination:=ws.Range("G2:L" & ws.Cells(ws.Rows.Count, "A").End(xlUp).Row)
             End If
