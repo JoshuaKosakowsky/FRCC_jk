@@ -2,7 +2,7 @@ Sub D4C()
 
     Dim wsD4C As Worksheet, wsAmtTermSID As Worksheet, wsNonPymt As Worksheet
     Dim lastRow As Long
-    Dim headerStyle As Range
+    Dim pasteRange As Range
 
     ' Set worksheet references
     Set wsD4C = ThisWorkbook.Sheets("D4C")
@@ -17,15 +17,22 @@ Sub D4C()
         ws.Cells.EntireRow.AutoFit
     Next ws
     
-    ' Step 2: Remove blank cells in A1 and B1 on D4C if present
-    wsD4C.Range("A1:B1").ClearContents
-
-    ' Step 3: Copy ID (Column C) and Name (Column D) from AmtTermSID to D4C (Columns A & B)
+    ' Step 2: Copy ID (Column C) and Name (Column D) from AmtTermSID to D4C (Columns A & B)
     With wsAmtTermSID
         lastRow = .Cells(.Rows.Count, "C").End(xlUp).Row ' Find the last row with data in Column C
         .Range("C8:D" & lastRow).Copy ' Copy relevant rows starting after header (row 7)
     End With
-    wsD4C.Range("A2").PasteSpecial Paste:=xlPasteValues ' Paste values into D4C starting at row 2
+    Set pasteRange = wsD4C.Range("A2")
+    pasteRange.PasteSpecial Paste:=xlPasteValues ' Paste values into D4C starting at row 2
+    
+    ' Step 3: Remove blank rows from the pasted data in Columns A and B
+    lastRow = wsD4C.Cells(wsD4C.Rows.Count, "A").End(xlUp).Row ' Find last row in column A
+    Dim i As Long
+    For i = lastRow To 2 Step -1 ' Iterate backwards to avoid skipping rows
+        If wsD4C.Cells(i, "A").Value = "" And wsD4C.Cells(i, "B").Value = "" Then
+            wsD4C.Rows(i).Delete
+        End If
+    Next i
 
     ' Step 4: Add header "Phone No." in C1 in D4C and copy style from A1
     wsD4C.Range("C1").Value = "Phone No."
