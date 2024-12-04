@@ -56,7 +56,13 @@ Sub D4C()
     ' Step 10: Add VLOOKUP formula for "Attribute" in Column E
     wsD4C.Range("E2:E" & lastRow).Formula = "=IFERROR(VLOOKUP(A2,FSA!B:E,4,FALSE),""None"")"
 
-    ' Step 11: Enable filtering for all rows
+    ' Step 11: Add "Amt>500" header in Column F
+    wsD4C.Range("F1").Value = "Amt>500"
+
+    ' Step 12: Add formula for "Amt>500" in Column F
+    wsD4C.Range("F2:F" & lastRow).Formula = "=IF(D2>500,""TRUE"",""FALSE"")"
+
+    ' Step 13: Enable filtering for all rows
     wsD4C.Rows(1).AutoFilter
 
     ' Autofit height and width for the D4C sheet
