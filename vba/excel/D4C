@@ -1,9 +1,9 @@
 Sub D4C()
 
     Dim wsD4C As Worksheet, wsAmtTermSID As Worksheet, wsNonPymt As Worksheet
-    Dim lastRow As Long
-    Dim pasteRange As Range
-
+    Dim lastRow As Long, targetRow As Long
+    Dim dataRange As Range
+    
     ' Set worksheet references
     Set wsD4C = ThisWorkbook.Sheets("D4C")
     Set wsAmtTermSID = ThisWorkbook.Sheets("AmtTermSID")
@@ -16,39 +16,41 @@ Sub D4C()
         ws.Cells.EntireColumn.AutoFit
         ws.Cells.EntireRow.AutoFit
     Next ws
-    
-    ' Step 2: Copy ID (Column C) and Name (Column D) from AmtTermSID to D4C (Columns A & B)
+
+    ' Step 2: Clear the D4C sheet to prepare for new data
+    wsD4C.Cells.ClearContents
+
+    ' Step 3: Add headers to D4C sheet
+    wsD4C.Range("A1").Value = "ID"
+    wsD4C.Range("B1").Value = "Name"
+    wsD4C.Range("C1").Value = "Phone No."
+    wsD4C.Range("D1").Value = "NonPayment"
+
+    ' Format headers
+    wsD4C.Rows(1).Font.Bold = True
+
+    ' Step 4: Copy data from AmtTermSID (excluding headers)
     With wsAmtTermSID
         lastRow = .Cells(.Rows.Count, "C").End(xlUp).Row ' Find the last row with data in Column C
-        .Range("C8:D" & lastRow).Copy ' Copy relevant rows starting after header (row 7)
+        Set dataRange = .Range("C8:D" & lastRow) ' Skip rows 1-7, copy Columns C and D
+        dataRange.Copy
     End With
-    Set pasteRange = wsD4C.Range("A2")
-    pasteRange.PasteSpecial Paste:=xlPasteValues ' Paste values into D4C starting at row 2
-    
-    ' Step 3: Remove blank rows from the pasted data in Columns A and B
-    lastRow = wsD4C.Cells(wsD4C.Rows.Count, "A").End(xlUp).Row ' Find last row in column A
+    wsD4C.Range("A2").PasteSpecial Paste:=xlPasteValues ' Paste values into D4C starting at row 2
+
+    ' Step 5: Remove any blank rows in D4C (Columns A and B)
+    lastRow = wsD4C.Cells(wsD4C.Rows.Count, "A").End(xlUp).Row ' Find the last row in Column A
     Dim i As Long
-    For i = lastRow To 2 Step -1 ' Iterate backwards to avoid skipping rows
+    For i = lastRow To 2 Step -1
         If wsD4C.Cells(i, "A").Value = "" And wsD4C.Cells(i, "B").Value = "" Then
             wsD4C.Rows(i).Delete
         End If
     Next i
 
-    ' Step 4: Add header "Phone No." in C1 in D4C and copy style from A1
-    wsD4C.Range("C1").Value = "Phone No."
-    wsD4C.Range("C1").Interior.Color = wsD4C.Range("A1").Interior.Color ' Copy style (background color)
-    wsD4C.Range("C1").Font.Bold = wsD4C.Range("A1").Font.Bold ' Copy font style
-
-    ' Step 5: Add VLOOKUP formula for Phone No. in Column C starting from C2 (lookup in Column A)
-    lastRow = wsD4C.Cells(wsD4C.Rows.Count, "A").End(xlUp).Row ' Find last row in column A
+    ' Step 6: Add VLOOKUP formula for "Phone No." in Column C
+    lastRow = wsD4C.Cells(wsD4C.Rows.Count, "A").End(xlUp).Row ' Recalculate last row in Column A
     wsD4C.Range("C2:C" & lastRow).Formula = "=IFERROR(VLOOKUP(A2,NonPymt!D:E,2,FALSE),""Number Not Listed"")"
 
-    ' Step 6: Add header "NonPayment" in D1 in D4C and copy style from A1
-    wsD4C.Range("D1").Value = "NonPayment"
-    wsD4C.Range("D1").Interior.Color = wsD4C.Range("A1").Interior.Color ' Copy style (background color)
-    wsD4C.Range("D1").Font.Bold = wsD4C.Range("A1").Font.Bold ' Copy font style
-
-    ' Step 7: Add VLOOKUP formula for NonPayment in Column D starting from D2 (lookup in Column A)
+    ' Step 7: Add VLOOKUP formula for "NonPayment" in Column D
     wsD4C.Range("D2:D" & lastRow).Formula = "=VLOOKUP(A2,NonPymt!D:N,11,FALSE)"
     
     ' Autofit height and width for the D4C sheet
