@@ -2,7 +2,6 @@ Sub D4C()
 
     Dim wsD4C As Worksheet, wsAmtTermSID As Worksheet, wsNonPymt As Worksheet
     Dim lastRow As Long
-    Dim dataRange As Range
 
     ' Set worksheet references
     Set wsD4C = ThisWorkbook.Sheets("D4C")
@@ -23,8 +22,7 @@ Sub D4C()
     ' Step 3: Copy data from AmtTermSID (starting from row 8 to exclude headers)
     With wsAmtTermSID
         lastRow = .Cells(.Rows.Count, "C").End(xlUp).Row ' Find the last row with data in Column C
-        Set dataRange = .Range("C8:D" & lastRow) ' Explicitly skip rows 1-7
-        dataRange.Copy
+        .Range("C8:D" & lastRow).Copy ' Skip rows 1-7
     End With
     wsD4C.Range("A2").PasteSpecial Paste:=xlPasteValues ' Paste values into D4C starting at row 2
 
@@ -43,7 +41,18 @@ Sub D4C()
 
     ' Step 6: Add VLOOKUP formula for "NonPayment" in Column D
     wsD4C.Range("D2:D" & lastRow).Formula = "=VLOOKUP(A2,NonPymt!D:N,11,FALSE)"
-    
+
+    ' Step 7: Delete Row 1 and shift rows up
+    wsD4C.Rows(1).Delete
+
+    ' Step 8: Copy C1 and D1 and paste as values
+    wsD4C.Range("C1").Value = wsD4C.Range("C1").Value ' Paste C1 as value
+    wsD4C.Range("D1").Value = wsD4C.Range("D1").Value ' Paste D1 as value
+
+    ' Step 9: Enable filtering for all rows
+    lastRow = wsD4C.Cells(wsD4C.Rows.Count, "A").End(xlUp).Row ' Recalculate last row in Column A
+    wsD4C.Rows(1).AutoFilter
+
     ' Autofit height and width for the D4C sheet
     wsD4C.Cells.EntireColumn.AutoFit
     wsD4C.Cells.EntireRow.AutoFit
