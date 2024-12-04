@@ -6,12 +6,16 @@ Sub D4C()
     Dim currentWorkbookPath As String
     Dim savePath As String
     Dim newSheet As Worksheet
+    Dim todayDate As String
 
     ' Set worksheet references
     Set wsD4C = ThisWorkbook.Sheets("D4C")
     Set wsAmtTermSID = ThisWorkbook.Sheets("AmtTermSID")
     Set wsNonPymt = ThisWorkbook.Sheets("NonPymt")
     Set wsFSA = ThisWorkbook.Sheets("FSA")
+    
+    ' Get today's date in MM-dd-YY format
+    todayDate = Format(Date, "MM-dd-YY")
     
     ' Step 1: Auto unmerge and autofit height and width for all sheets
     Dim ws As Worksheet
@@ -94,13 +98,13 @@ Sub D4C()
         newSheet.Cells.EntireRow.AutoFit
     End If
 
-    ' Step 19: Save the new workbook in the same folder as the current workbook
+    ' Step 19: Save the new workbook in the same folder as the current workbook with today's date
     currentWorkbookPath = ThisWorkbook.Path
-    savePath = currentWorkbookPath & "\D4C Cashiers.xlsx"
+    savePath = currentWorkbookPath & "\D4C Cashiers " & todayDate & ".xlsx"
     Application.DisplayAlerts = False ' Suppress overwrite warning
     newWorkbook.SaveAs Filename:=savePath, FileFormat:=xlOpenXMLWorkbook
     Application.DisplayAlerts = True
 
-    MsgBox "Filtered data saved to 'D4C Cashiers.xlsx' with Column D formatted as Accounting!", vbInformation
+    MsgBox "Filtered data saved to 'D4C Cashiers " & todayDate & ".xlsx' with Column D formatted as Accounting!", vbInformation
 
 End Sub
