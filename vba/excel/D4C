@@ -1,7 +1,10 @@
 Sub D4C()
 
     Dim wsD4C As Worksheet, wsAmtTermSID As Worksheet, wsNonPymt As Worksheet, wsFSA As Worksheet
-    Dim lastRow As Long
+    Dim lastRow As Long, filteredData As Range
+    Dim newWorkbook As Workbook
+    Dim currentWorkbookPath As String
+    Dim savePath As String
 
     ' Set worksheet references
     Set wsD4C = ThisWorkbook.Sheets("D4C")
@@ -65,10 +68,30 @@ Sub D4C()
     ' Step 13: Enable filtering for all rows
     wsD4C.Rows(1).AutoFilter
 
-    ' Autofit height and width for the D4C sheet
-    wsD4C.Cells.EntireColumn.AutoFit
-    wsD4C.Cells.EntireRow.AutoFit
+    ' Step 14: Apply filters to "Amt>500" and "Attribute"
+    wsD4C.AutoFilterMode = False ' Clear any existing filters
+    wsD4C.Rows(1).AutoFilter Field:=5, Criteria1:="None" ' Filter Attribute (Column E) for "None"
+    wsD4C.Rows(1).AutoFilter Field:=6, Criteria1:="TRUE" ' Filter Amt>500 (Column F) for "TRUE"
 
-    MsgBox "Macro completed successfully!", vbInformation
+    ' Step 15: Copy filtered data from Columns A:D
+    On Error Resume Next
+    Set filteredData = wsD4C.Range("A1:D" & lastRow).SpecialCells(xlCellTypeVisible)
+    On Error GoTo 0
+
+    ' Step 16: Create a new workbook and paste data
+    If Not filteredData Is Nothing Then
+        Set newWorkbook = Workbooks.Add
+        filteredData.Copy
+        newWorkbook.Sheets(1).Range("A1").PasteSpecial Paste:=xlPasteValues
+    End If
+
+    ' Step 17: Save the new workbook in the same folder as the current workbook
+    currentWorkbookPath = ThisWorkbook.Path
+    savePath = currentWorkbookPath & "\D4C Cashiers.xlsx"
+    Application.DisplayAlerts = False ' Suppress overwrite warning
+    newWorkbook.SaveAs Filename:=savePath, FileFormat:=xlOpenXMLWorkbook
+    Application.DisplayAlerts = True
+
+    MsgBox "Filtered data saved to 'D4C Cashiers.xlsx'!", vbInformation
 
 End Sub
