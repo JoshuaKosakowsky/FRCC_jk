@@ -5,6 +5,7 @@ Sub D4C()
     Dim newWorkbook As Workbook
     Dim currentWorkbookPath As String
     Dim savePath As String
+    Dim newSheet As Worksheet
 
     ' Set worksheet references
     Set wsD4C = ThisWorkbook.Sheets("D4C")
@@ -81,17 +82,25 @@ Sub D4C()
     ' Step 16: Create a new workbook and paste data
     If Not filteredData Is Nothing Then
         Set newWorkbook = Workbooks.Add
+        Set newSheet = newWorkbook.Sheets(1)
         filteredData.Copy
-        newWorkbook.Sheets(1).Range("A1").PasteSpecial Paste:=xlPasteValues
+        newSheet.Range("A1").PasteSpecial Paste:=xlPasteValues
+        
+        ' Step 17: Format Column D as Accounting
+        newSheet.Columns("D").NumberFormat = "$#,##0.00"
+        
+        ' Step 18: Autofit height and width
+        newSheet.Cells.EntireColumn.AutoFit
+        newSheet.Cells.EntireRow.AutoFit
     End If
 
-    ' Step 17: Save the new workbook in the same folder as the current workbook
+    ' Step 19: Save the new workbook in the same folder as the current workbook
     currentWorkbookPath = ThisWorkbook.Path
     savePath = currentWorkbookPath & "\D4C Cashiers.xlsx"
     Application.DisplayAlerts = False ' Suppress overwrite warning
     newWorkbook.SaveAs Filename:=savePath, FileFormat:=xlOpenXMLWorkbook
     Application.DisplayAlerts = True
 
-    MsgBox "Filtered data saved to 'D4C Cashiers.xlsx'!", vbInformation
+    MsgBox "Filtered data saved to 'D4C Cashiers.xlsx' with Column D formatted as Accounting!", vbInformation
 
 End Sub
