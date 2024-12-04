@@ -1,9 +1,9 @@
 Sub D4C()
 
     Dim wsD4C As Worksheet, wsAmtTermSID As Worksheet, wsNonPymt As Worksheet
-    Dim lastRow As Long, targetRow As Long
+    Dim lastRow As Long
     Dim dataRange As Range
-    
+
     ' Set worksheet references
     Set wsD4C = ThisWorkbook.Sheets("D4C")
     Set wsAmtTermSID = ThisWorkbook.Sheets("AmtTermSID")
@@ -29,10 +29,10 @@ Sub D4C()
     ' Format headers
     wsD4C.Rows(1).Font.Bold = True
 
-    ' Step 4: Copy data from AmtTermSID (excluding headers)
+    ' Step 4: Copy data from AmtTermSID (starting from row 8 to exclude headers)
     With wsAmtTermSID
         lastRow = .Cells(.Rows.Count, "C").End(xlUp).Row ' Find the last row with data in Column C
-        Set dataRange = .Range("C8:D" & lastRow) ' Skip rows 1-7, copy Columns C and D
+        Set dataRange = .Range("C8:D" & lastRow) ' Explicitly skip rows 1-7
         dataRange.Copy
     End With
     wsD4C.Range("A2").PasteSpecial Paste:=xlPasteValues ' Paste values into D4C starting at row 2
