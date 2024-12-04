@@ -1,11 +1,11 @@
 Sub D4C()
 
     Dim wsD4C As Worksheet, wsAmtTermSID As Worksheet, wsNonPymt As Worksheet, wsFSA As Worksheet
-    Dim lastRow As Long, filteredData As Range
-    Dim newWorkbook As Workbook
+    Dim lastRow As Long, filteredData As Range, studentData As Range
+    Dim newWorkbook As Workbook, studentWorkbook As Workbook
     Dim currentWorkbookPath As String
-    Dim savePath As String
-    Dim newSheet As Worksheet
+    Dim savePathCashiers As String, savePathStudents As String
+    Dim newSheet As Worksheet, studentSheet As Worksheet
     Dim todayDate As String
 
     ' Set worksheet references
@@ -78,33 +78,58 @@ Sub D4C()
     wsD4C.Rows(1).AutoFilter Field:=5, Criteria1:="None" ' Filter Attribute (Column E) for "None"
     wsD4C.Rows(1).AutoFilter Field:=6, Criteria1:="TRUE" ' Filter Amt>500 (Column F) for "TRUE"
 
-    ' Step 15: Copy filtered data from Columns A:D
+    ' Step 15: Copy filtered data for Cashiers (Columns A:D)
     On Error Resume Next
     Set filteredData = wsD4C.Range("A1:D" & lastRow).SpecialCells(xlCellTypeVisible)
     On Error GoTo 0
 
-    ' Step 16: Create a new workbook and paste data
+    ' Step 16: Create a new workbook and paste data for Cashiers
     If Not filteredData Is Nothing Then
         Set newWorkbook = Workbooks.Add
         Set newSheet = newWorkbook.Sheets(1)
         filteredData.Copy
         newSheet.Range("A1").PasteSpecial Paste:=xlPasteValues
         
-        ' Step 17: Format Column D as Accounting
+        ' Format Column D as Accounting
         newSheet.Columns("D").NumberFormat = "$#,##0.00"
         
-        ' Step 18: Autofit height and width
+        ' Autofit height and width
         newSheet.Cells.EntireColumn.AutoFit
         newSheet.Cells.EntireRow.AutoFit
+        
+        ' Save the new workbook for Cashiers
+        currentWorkbookPath = ThisWorkbook.Path
+        savePathCashiers = currentWorkbookPath & "\D4C Cashiers " & todayDate & ".xlsx"
+        Application.DisplayAlerts = False ' Suppress overwrite warning
+        newWorkbook.SaveAs Filename:=savePathCashiers, FileFormat:=xlOpenXMLWorkbook
+        Application.DisplayAlerts = True
     End If
 
-    ' Step 19: Save the new workbook in the same folder as the current workbook with today's date
-    currentWorkbookPath = ThisWorkbook.Path
-    savePath = currentWorkbookPath & "\D4C Cashiers " & todayDate & ".xlsx"
-    Application.DisplayAlerts = False ' Suppress overwrite warning
-    newWorkbook.SaveAs Filename:=savePath, FileFormat:=xlOpenXMLWorkbook
-    Application.DisplayAlerts = True
+    ' Step 17: Copy filtered data for Students (Columns A:B)
+    On Error Resume Next
+    Set studentData = wsD4C.Range("A1:B" & lastRow).SpecialCells(xlCellTypeVisible)
+    On Error GoTo 0
 
-    MsgBox "Filtered data saved to 'D4C Cashiers " & todayDate & ".xlsx' with Column D formatted as Accounting!", vbInformation
+    ' Step 18: Create a new workbook and paste data for Students
+    If Not studentData Is Nothing Then
+        Set studentWorkbook = Workbooks.Add
+        Set studentSheet = studentWorkbook.Sheets(1)
+        studentData.Copy
+        studentSheet.Range("A1").PasteSpecial Paste:=xlPasteValues
+        
+        ' Autofit height and width
+        studentSheet.Cells.EntireColumn.AutoFit
+        studentSheet.Cells.EntireRow.AutoFit
+        
+        ' Save the new workbook for Students
+        savePathStudents = currentWorkbookPath & "\D4C Students " & todayDate & ".xlsx"
+        Application.DisplayAlerts = False ' Suppress overwrite warning
+        studentWorkbook.SaveAs Filename:=savePathStudents, FileFormat:=xlOpenXMLWorkbook
+        Application.DisplayAlerts = True
+    End If
+
+    MsgBox "Files created successfully:" & vbCrLf & _
+           "'D4C Cashiers " & todayDate & ".xlsx'" & vbCrLf & _
+           "'D4C Students " & todayDate & ".xlsx'", vbInformation
 
 End Sub
