@@ -1,7 +1,7 @@
 Sub D4C()
 
     Dim wsD4C As Worksheet, wsAmtTermSID As Worksheet, wsNonPymt As Worksheet
-    Dim lastRow As Long, targetRow As Long
+    Dim lastRow As Long
     Dim headerStyle As Range
 
     ' Set worksheet references
@@ -17,29 +17,32 @@ Sub D4C()
         ws.Cells.EntireRow.AutoFit
     Next ws
     
-    ' Step 2: Copy ID (Column C) and Name (Column D) from AmtTermSID to D4C (Columns A & B)
+    ' Step 2: Remove blank cells in A1 and B1 on D4C if present
+    wsD4C.Range("A1:B1").ClearContents
+
+    ' Step 3: Copy ID (Column C) and Name (Column D) from AmtTermSID to D4C (Columns A & B)
     With wsAmtTermSID
         lastRow = .Cells(.Rows.Count, "C").End(xlUp).Row ' Find the last row with data in Column C
         .Range("C8:D" & lastRow).Copy ' Copy relevant rows starting after header (row 7)
     End With
     wsD4C.Range("A2").PasteSpecial Paste:=xlPasteValues ' Paste values into D4C starting at row 2
 
-    ' Step 3: Add header "Phone No." in C1 in D4C and copy style from A1
+    ' Step 4: Add header "Phone No." in C1 in D4C and copy style from A1
     wsD4C.Range("C1").Value = "Phone No."
     wsD4C.Range("C1").Interior.Color = wsD4C.Range("A1").Interior.Color ' Copy style (background color)
     wsD4C.Range("C1").Font.Bold = wsD4C.Range("A1").Font.Bold ' Copy font style
 
-    ' Step 4: Add VLOOKUP formula for Phone No. in Column C starting from C2
+    ' Step 5: Add VLOOKUP formula for Phone No. in Column C starting from C2 (lookup in Column A)
     lastRow = wsD4C.Cells(wsD4C.Rows.Count, "A").End(xlUp).Row ' Find last row in column A
-    wsD4C.Range("C2:C" & lastRow).Formula = "=IFERROR(VLOOKUP(B2,NonPymt!D:E,2,FALSE),""Number Not Listed"")"
+    wsD4C.Range("C2:C" & lastRow).Formula = "=IFERROR(VLOOKUP(A2,NonPymt!D:E,2,FALSE),""Number Not Listed"")"
 
-    ' Step 5: Add header "NonPayment" in D1 in D4C and copy style from A1
+    ' Step 6: Add header "NonPayment" in D1 in D4C and copy style from A1
     wsD4C.Range("D1").Value = "NonPayment"
     wsD4C.Range("D1").Interior.Color = wsD4C.Range("A1").Interior.Color ' Copy style (background color)
     wsD4C.Range("D1").Font.Bold = wsD4C.Range("A1").Font.Bold ' Copy font style
 
-    ' Step 6: Add VLOOKUP formula for NonPayment in Column D starting from D2
-    wsD4C.Range("D2:D" & lastRow).Formula = "=VLOOKUP(B2,NonPymt!D:N,11,FALSE)"
+    ' Step 7: Add VLOOKUP formula for NonPayment in Column D starting from D2 (lookup in Column A)
+    wsD4C.Range("D2:D" & lastRow).Formula = "=VLOOKUP(A2,NonPymt!D:N,11,FALSE)"
     
     ' Autofit height and width for the D4C sheet
     wsD4C.Cells.EntireColumn.AutoFit
