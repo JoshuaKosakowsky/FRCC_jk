@@ -1,12 +1,13 @@
 Sub D4C()
 
-    Dim wsD4C As Worksheet, wsAmtTermSID As Worksheet, wsNonPymt As Worksheet
+    Dim wsD4C As Worksheet, wsAmtTermSID As Worksheet, wsNonPymt As Worksheet, wsFSA As Worksheet
     Dim lastRow As Long
 
     ' Set worksheet references
     Set wsD4C = ThisWorkbook.Sheets("D4C")
     Set wsAmtTermSID = ThisWorkbook.Sheets("AmtTermSID")
     Set wsNonPymt = ThisWorkbook.Sheets("NonPymt")
+    Set wsFSA = ThisWorkbook.Sheets("FSA")
     
     ' Step 1: Auto unmerge and autofit height and width for all sheets
     Dim ws As Worksheet
@@ -49,8 +50,13 @@ Sub D4C()
     wsD4C.Range("C1").Value = wsD4C.Range("C1").Value ' Paste C1 as value
     wsD4C.Range("D1").Value = wsD4C.Range("D1").Value ' Paste D1 as value
 
-    ' Step 9: Enable filtering for all rows
-    lastRow = wsD4C.Cells(wsD4C.Rows.Count, "A").End(xlUp).Row ' Recalculate last row in Column A
+    ' Step 9: Add "Attribute" header in Column E
+    wsD4C.Range("E1").Value = "Attribute"
+
+    ' Step 10: Add VLOOKUP formula for "Attribute" in Column E
+    wsD4C.Range("E2:E" & lastRow).Formula = "=IFERROR(VLOOKUP(A2,FSA!B:E,4,FALSE),""None"")"
+
+    ' Step 11: Enable filtering for all rows
     wsD4C.Rows(1).AutoFilter
 
     ' Autofit height and width for the D4C sheet
