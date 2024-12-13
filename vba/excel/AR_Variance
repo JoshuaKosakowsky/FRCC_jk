@@ -91,17 +91,11 @@ Sub AR_Variance()
     ' Update the last row in the Variance sheet
     varianceLastRow = wsVariance.Cells(wsVariance.Rows.Count, "A").End(xlUp).Row + 1
 
-    ' Copy Current Period data (exclude header row and subtotal row)
+    ' Copy Current Period data (exclude header row and last two rows)
     With wsCurrent
-        ' Identify range (exclude first 10 rows, header row, and column A)
+        ' Identify range (exclude first 10 rows, header row, and last two rows)
         currentLastRow = .Cells(.Rows.Count, "A").End(xlUp).Row
-        If .Cells(currentLastRow, "A").MergeCells Then
-            ' Exclude subtotal row with merged cells
-            Set currentPeriodData = .Range("B12", .Cells(currentLastRow - 1, "I"))
-        Else
-            ' No merged cells; include entire range
-            Set currentPeriodData = .Range("B12", .Cells(currentLastRow, "I"))
-        End If
+        Set currentPeriodData = .Range("B12", .Cells(currentLastRow - 2, "I"))
         
         ' Append data to Variance starting at the next available row
         currentPeriodData.Copy wsVariance.Cells(varianceLastRow, 1)
