@@ -193,5 +193,19 @@ Sub AR_Variance()
         .Range("R2:Y" & lastRowR).AutoFilter Field:=7, Criteria1:=">=1", Operator:=xlOr, Criteria2:="<-1" ' Filter for Percent column (X)
     End With
 
+    ' Loop through visible rows and create new worksheets
+    For Each visibleRow In wsVariance.AutoFilter.Range.SpecialCells(xlCellTypeVisible).Rows
+        If visibleRow.Row > 2 Then ' Skip header row
+            fundValue = visibleRow.Cells(1, "R").Value
+            acctValue = visibleRow.Cells(1, "S").Value
+            newSheetName = Left(fundValue & "_" & acctValue, 31) ' Ensure name is within Excel's 31-character limit
+            
+            ' Create a new worksheet with the combined name
+            On Error Resume Next ' Handle duplicate names gracefully
+            Set newSheet = Worksheets.Add
+            newSheet.Name = newSheetName
+            On Error GoTo 0
+        End If
+    Next visibleRow
 
 End Sub
