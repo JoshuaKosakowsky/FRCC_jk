@@ -65,37 +65,29 @@ Sub AR_Variance()
     wsCurrent.Name = "Period " & fiscalPeriod
     wsPrior.Name = "Period " & priorFiscalPeriod
     
-    ' Clear existing data in Variance sheet
-    wsVariance.Cells.Clear
+    ' Identify the last row in the Variance sheet
+    lastRowVariance = wsVariance.Cells(wsVariance.Rows.Count, "A").End(xlUp).Row + 1
     
     ' Copy Prior Period data (exclude header row)
     With wsPrior
         ' Identify range (exclude first 10 rows, header row, and column A)
         Set priorPeriodData = .Range("B12", .Cells(.Rows.Count, "I").End(xlUp))
         
-        ' Copy data to Variance
-        priorPeriodData.Copy wsVariance.Cells(1, 1)
+        ' Copy data to Variance starting at the next available row
+        priorPeriodData.Copy wsVariance.Cells(lastRowVariance, 1)
     End With
     
-    ' Add "Period" column for Prior Period data
-    lastRowVariance = wsVariance.Cells(wsVariance.Rows.Count, "A").End(xlUp).Row
-    wsVariance.Cells(1, "I").Value = "Period"
-    wsVariance.Range("I1:I" & lastRowVariance).Value = priorFiscalPeriod
+    ' Update the last row in the Variance sheet
+    lastRowVariance = wsVariance.Cells(wsVariance.Rows.Count, "A").End(xlUp).Row + 1
     
     ' Copy Current Period data (exclude header row)
     With wsCurrent
         ' Identify range (exclude first 10 rows, header row, and column A)
         Set currentPeriodData = .Range("B12", .Cells(.Rows.Count, "I").End(xlUp))
         
-        ' Append data to Variance
-        currentPeriodData.Copy wsVariance.Cells(lastRowVariance + 1, 1)
+        ' Append data to Variance starting at the next available row
+        currentPeriodData.Copy wsVariance.Cells(lastRowVariance, 1)
     End With
-    
-    ' Add "Period" column for Current Period data
-    Dim currentStartRow As Long
-    currentStartRow = lastRowVariance + 1
-    lastRowVariance = wsVariance.Cells(wsVariance.Rows.Count, "A").End(xlUp).Row
-    wsVariance.Range("I" & currentStartRow & ":I" & lastRowVariance).Value = fiscalPeriod
     
     ' Autofit columns for better readability
     wsVariance.Columns.AutoFit
