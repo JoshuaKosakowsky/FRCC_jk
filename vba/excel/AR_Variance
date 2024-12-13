@@ -172,6 +172,14 @@ Sub AR_Variance()
         .Range("Y2").Value = "Review (Over $100K & 100%): Debits should be clearing and decreasing"
     End With
 
+    ' Data Cleanup: Fill blank cells in column R with the value above, preserving leading zeros
+    lastRowR = wsVariance.Cells(wsVariance.Rows.Count, "R").End(xlUp).Row
+    For i = 3 To lastRowR ' Start from row 3 to avoid overwriting headers
+        If IsEmpty(wsVariance.Cells(i, "R").Value) Then
+            wsVariance.Cells(i, "R").Value = "'" & wsVariance.Cells(i - 1, "R").Value
+        End If
+    Next i
+
     ' Autofit columns for better readability
     wsVariance.Columns.AutoFit
 
