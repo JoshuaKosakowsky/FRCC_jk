@@ -160,15 +160,19 @@ Sub AR_Variance()
     pivotRange.Copy
     wsVariance.Range("R1").PasteSpecial Paste:=xlPasteValues
 
-    ' Autofit columns for pasted values
-    wsVariance.Range("R1").EntireColumn.AutoFit
+    ' Rename headers and clear unnecessary cells
+    With wsVariance
+        .Range("R1").Value = "A/R Variance Analysis"
+        .Range("S1:V1").ClearContents
+        .Range("R2").Value = "Fund"
+        .Range("T2").Value = "Period " & priorFiscalPeriod
+        .Range("U2").Value = "Period " & fiscalPeriod
+        .Range("W2").Value = "Difference"
+        .Range("X2").Value = "Percent"
+        .Range("Y2").Value = "Review (Over $100K & 100%): Debits should be clearing and decreasing"
+    End With
 
-    ' Data Cleanup: Fill blank cells in column R with the value above, preserving leading zeros
-    lastRowR = wsVariance.Cells(wsVariance.Rows.Count, "R").End(xlUp).Row
-    For i = 2 To lastRowR
-        If IsEmpty(wsVariance.Cells(i, "R").Value) Then
-            wsVariance.Cells(i, "R").Value = "'" & wsVariance.Cells(i - 1, "R").Value
-        End If
-    Next i
+    ' Autofit columns for better readability
+    wsVariance.Columns.AutoFit
 
 End Sub
