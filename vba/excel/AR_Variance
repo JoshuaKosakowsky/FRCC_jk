@@ -194,13 +194,13 @@ Sub AR_Variance()
     End With
 
     ' Loop through visible rows and create new worksheets
-    Dim lastSheet As Worksheet
     Set lastSheet = wsVariance ' Set reference for adding worksheets after Variance
     
     For Each visibleRow In wsVariance.AutoFilter.Range.SpecialCells(xlCellTypeVisible).Rows
         If visibleRow.Row > 2 Then ' Skip header row
-            fundValue = Trim(visibleRow.Cells(1, "R").Value) ' Get Fund value
-            acctValue = Trim(visibleRow.Cells(1, "S").Value) ' Get Acct value
+            ' Clean and ensure values are strings
+            fundValue = Trim(CStr(visibleRow.Cells(1, "R").Value)) ' Get Fund value
+            acctValue = Trim(CStr(visibleRow.Cells(1, "S").Value)) ' Get Acct value
     
             ' Replace blank values with placeholders
             If fundValue = "" Then fundValue = "NoFund"
