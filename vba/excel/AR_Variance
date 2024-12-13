@@ -24,19 +24,26 @@ Sub AR_Variance()
     fiscalPeriod = ((Month(adjustedDate) - fiscalStartMonth + 12) Mod 12) + 1
     
     ' Determine the Prior Fiscal Period
-    priorFiscalPeriod -1
+    priorFiscalPeriod = fiscalPeriod - 1
     If priorFiscalPeriod = 0 Then
         priorFiscalPeriod = 12
     End If
     
-    'Find sheets "Current Period" and "Prior Period" for renaming purposes
+    ' Find sheets "Current Period" and "Prior Period" for renaming purposes
     On Error Resume Next
     Set wsCurrent = Worksheets("Current Period")
     Set wsPrior = Worksheets("Prior Period")
     On Error GoTo 0
     
+    ' Validate sheets exist before renaming
+    If wsCurrent Is Nothing Or wsPrior Is Nothing Then
+        MsgBox "One or both sheets ('Current Period', 'Prior Period') are missing.", vbExclamation
+        Exit Sub
+    End If
+    
     ' Renaming found sheets
     wsCurrent.Name = "Period " & fiscalPeriod
     wsPrior.Name = "Period " & priorFiscalPeriod
     
+    MsgBox "Sheets renamed successfully: " & wsCurrent.Name & " and " & wsPrior.Name, vbInformation
 End Sub
