@@ -181,7 +181,7 @@ Sub AR_Variance()
         End If
         
         ' Preserve leading zeros by formatting as text and explicitly formatting as 6-digit text
-        If Len(wsVariance.Cells(i, "R").Value) > 0 Then
+         If Len(wsVariance.Cells(i, "R").Value) > 0 And IsNumeric(wsVariance.Cells(i, "R").Value) The
             wsVariance.Cells(i, "R").NumberFormat = "@"
             wsVariance.Cells(i, "R").Value = Format(wsVariance.Cells(i, "R").Value, "000000")
         End If
@@ -222,7 +222,7 @@ Sub AR_Variance()
             newSheetName = Left(fundValue & "_" & acctValue, 31) ' Ensure name is within 31 characters
     
             ' Debugging: Print the generated sheet name to Immediate Window
-            Debug.Print "Creating sheet: " & newSheetName
+            Debug.Print "Row " & visibleRow.Row & ": Creating sheet " & newSheetName
     
             ' Create a new worksheet with the combined name, after Variance tab
             On Error Resume Next ' Handle duplicate names gracefully
@@ -234,5 +234,6 @@ Sub AR_Variance()
             Set lastSheet = newSheet
         End If
     Next visibleRow
+
 
 End Sub
