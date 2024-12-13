@@ -202,6 +202,10 @@ Sub AR_Variance()
             fundValue = Trim(CStr(visibleRow.Cells(1, "R").Value)) ' Get Fund value
             acctValue = Trim(CStr(visibleRow.Cells(1, "S").Value)) ' Get Acct value
     
+            ' Remove leading apostrophes or other unwanted characters
+            fundValue = Replace(fundValue, "'", "")
+            acctValue = Replace(acctValue, "'", "")
+    
             ' Replace blank values with placeholders
             If fundValue = "" Then fundValue = "NoFund"
             If acctValue = "" Then acctValue = "NoAcct"
