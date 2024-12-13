@@ -1,12 +1,17 @@
 Sub AR_Variance()
     Dim wsCurrent As Worksheet
     Dim wsPrior As Worksheet
+    Dim wsVariance As Worksheet
     Dim todayDate As Date
     Dim fiscalStartMonth As Integer
     Dim fiscalPeriod As Integer
     Dim priorFiscalPeriod As Integer
     Dim adjustedDate As Date
     Dim currentDay As Integer
+    Dim priorPeriodData As Range
+    Dim currentPeriodData As Range
+    Dim headerRow As Range
+    Dim lastRowVariance As Long
     
     ' Define FRCC's FY Start Month
     fiscalStartMonth = 7
@@ -44,20 +49,56 @@ Sub AR_Variance()
         priorFiscalPeriod = 12
     End If
     
-    ' Find sheets "Current Period" and "Prior Period" for renaming purposes
+    ' Find sheets
     On Error Resume Next
     Set wsCurrent = Worksheets("Current Period")
     Set wsPrior = Worksheets("Prior Period")
+    Set wsVariance = Worksheets("Variance")
     On Error GoTo 0
     
-    ' Validate sheets exist before renaming
-    If wsCurrent Is Nothing Or wsPrior Is Nothing Then
-        MsgBox "One or both sheets ('Current Period', 'Prior Period') are missing.", vbExclamation
+    ' Validate sheets exist
+    If wsCurrent Is Nothing Or wsPrior Is Nothing Or wsVariance Is Nothing Then
+        MsgBox "One or more sheets ('Current Period', 'Prior Period', 'Variance') are missing.", vbExclamation
         Exit Sub
     End If
     
-    ' Rename sheets
-    wsCurrent.Name = "Period " & fiscalPeriod
-    wsPrior.Name = "Period " & priorFiscalPeriod
+    ' Clear existing data in Variance sheet
+    wsVariance.Cells.Clear
+    
+    ' Copy Prior Period data
+    With wsPrior
+        ' Identify range (exclude first 10 rows and column A)
+        Set priorPeriodData = .Range("B11", .Cells(.Rows.Count, "I").End(xlUp))
+        Set headerRow = .Range("B10:I10")
+        
+        ' Copy header row to Variance
+        headerRow.Copy wsVariance.Cells(1, 1)
+        
+        ' Copy data to Variance
+        priorPeriodData.Copy wsVariance.Cells(2, 1)
+    End With
+    
+    ' Add "Period" column for Prior Period data
+    lastRowVariance = wsVariance.Cells(wsVariance.Rows.Count, "A").End(xlUp).Row
+    wsVariance.Cells(1, "I").Value = "Period"
+    wsVariance.Range("I2:I" & lastRowVariance).Value = priorFiscalPeriod
+    
+    ' Copy Current Period data
+    With wsCurrent
+        ' Identify range (exclude first 10 rows and column A)
+        Set currentPeriodData = .Range("B11", .Cells(.Rows.Count, "I").End(xlUp))
+        
+        ' Append data to Variance (exclude header row)
+        currentPeriodData.Copy wsVariance.Cells(lastRowVariance + 1, 1)
+    End With
+    
+    ' Add "Period" column for Current Period data
+    Dim currentStartRow As Long
+    currentStartRow = lastRowVariance + 1
+    lastRowVariance = wsVariance.Cells(wsVariance.Rows.Count, "A").End(xlUp).Row
+    wsVariance.Range("I" & currentStartRow & ":I" & lastRowVariance).Value = fiscalPeriod
+    
+    ' Autofit columns for better readability
+    wsVariance.Columns.AutoFit
 
 End Sub
