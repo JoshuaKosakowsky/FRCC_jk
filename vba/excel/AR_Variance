@@ -18,6 +18,7 @@ Sub AR_Variance()
     Dim pivotTable As PivotTable
     Dim pivotTableName As String
     Dim pivotStartCell As Range
+    Dim pivotRange As Range
 
     ' Define FRCC's FY Start Month
     fiscalStartMonth = 7
@@ -152,7 +153,12 @@ Sub AR_Variance()
         .PivotFields("Acct").LayoutForm = xlTabular
     End With
 
-    ' Autofit PivotTable columns
-    pivotStartCell.EntireColumn.AutoFit
+    ' Copy Pivot Table and Paste as Values in R1
+    Set pivotRange = pivotTable.TableRange2
+    pivotRange.Copy
+    wsVariance.Range("R1").PasteSpecial Paste:=xlPasteValues
+
+    ' Autofit columns for pasted values
+    wsVariance.Range("R1").EntireColumn.AutoFit
 
 End Sub
