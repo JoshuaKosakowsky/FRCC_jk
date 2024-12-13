@@ -6,22 +6,37 @@ Sub AR_Variance()
     Dim fiscalPeriod As Integer
     Dim priorFiscalPeriod As Integer
     Dim adjustedDate As Date
+    Dim currentDay As Integer
     
     ' Define FRCC's FY Start Month
     fiscalStartMonth = 7
     
     ' Use the current date for calculations
-    todayDate = Date
+    todayDate = Date ' Default: current system date
     
-    ' Calculate Period based on Fiscal Year
-    If Month(todayDate) >= fiscalStartMonth Then
-        adjustedDate = DateSerial(Year(todayDate), Month(todayDate), 1)
+    ' Get the current day of the month
+    currentDay = Day(todayDate)
+    
+    ' Adjust the date for fiscal period calculation
+    If currentDay <= 14 Then
+        ' If today is between the 1st and 14th, consider the previous month
+        If Month(todayDate) = 1 Then
+            ' Handle January edge case
+            adjustedDate = DateSerial(Year(todayDate) - 1, 12, 1)
+        Else
+            adjustedDate = DateSerial(Year(todayDate), Month(todayDate) - 1, 1)
+        End If
     Else
-        adjustedDate = DateSerial(Year(todayDate) - 1, Month(todayDate), 1)
+        ' Otherwise, use the current month
+        adjustedDate = DateSerial(Year(todayDate), Month(todayDate), 1)
     End If
     
-    ' Determine the Current Fiscal Period
-    fiscalPeriod = ((Month(adjustedDate) - fiscalStartMonth + 12) Mod 12) + 1
+    ' Calculate the Current Fiscal Period
+    If Month(adjustedDate) >= fiscalStartMonth Then
+        fiscalPeriod = ((Month(adjustedDate) - fiscalStartMonth + 12) Mod 12) + 1
+    Else
+        fiscalPeriod = ((Month(adjustedDate) - fiscalStartMonth + 12 + 12) Mod 12) + 1
+    End If
     
     ' Determine the Prior Fiscal Period
     priorFiscalPeriod = fiscalPeriod - 1
@@ -41,9 +56,8 @@ Sub AR_Variance()
         Exit Sub
     End If
     
-    ' Renaming found sheets
+    ' Rename sheets
     wsCurrent.Name = "Period " & fiscalPeriod
     wsPrior.Name = "Period " & priorFiscalPeriod
-    
-    MsgBox "Sheets renamed successfully: " & wsCurrent.Name & " and " & wsPrior.Name, vbInformation
+
 End Sub
