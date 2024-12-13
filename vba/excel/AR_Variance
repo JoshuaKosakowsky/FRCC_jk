@@ -176,7 +176,12 @@ Sub AR_Variance()
     lastRowR = wsVariance.Cells(wsVariance.Rows.Count, "R").End(xlUp).Row
     For i = 3 To lastRowR ' Start from row 3 to avoid overwriting headers
         If IsEmpty(wsVariance.Cells(i, "R").Value) Then
-            wsVariance.Cells(i, "R").Value = "'" & wsVariance.Cells(i - 1, "R").Value
+            wsVariance.Cells(i, "R").Value = wsVariance.Cells(i - 1, "R").Text ' Use the value from the row above
+        End If
+        ' Ensure leading zeros are preserved for 6-digit values
+        If Len(wsVariance.Cells(i, "R").Value) = 6 And IsNumeric(wsVariance.Cells(i, "R").Value) Then
+            wsVariance.Cells(i, "R").NumberFormat = "@"
+            wsVariance.Cells(i, "R").Value = Format(wsVariance.Cells(i, "R").Value, "000000")
         End If
     Next i
 
