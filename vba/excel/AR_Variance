@@ -180,7 +180,14 @@ Sub AR_Variance()
         End If
     Next i
 
+    ' Add formulas for Difference and Percent columns
+    For i = 3 To lastRowR
+        wsVariance.Cells(i, "W").Formula = "=T" & i & "-U" & i
+        wsVariance.Cells(i, "X").Formula = "=IFERROR(1-(T" & i & "/U" & i & "),0)"
+    Next i
+
     ' Autofit columns for better readability
     wsVariance.Columns.AutoFit
+
 
 End Sub
