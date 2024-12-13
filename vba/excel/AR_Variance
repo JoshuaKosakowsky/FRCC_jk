@@ -163,11 +163,11 @@ Sub AR_Variance()
     ' Autofit columns for pasted values
     wsVariance.Range("R1").EntireColumn.AutoFit
 
-    ' Data Cleanup: Fill blank cells in column R with the value above
+    ' Data Cleanup: Fill blank cells in column R with the value above, preserving leading zeros
     lastRowR = wsVariance.Cells(wsVariance.Rows.Count, "R").End(xlUp).Row
     For i = 2 To lastRowR
         If IsEmpty(wsVariance.Cells(i, "R").Value) Then
-            wsVariance.Cells(i, "R").Value = wsVariance.Cells(i - 1, "R").Value
+            wsVariance.Cells(i, "R").Value = "'" & wsVariance.Cells(i - 1, "R").Value
         End If
     Next i
 
