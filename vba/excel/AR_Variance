@@ -104,7 +104,8 @@ Sub AR_Variance()
     End With
 
     ' Delete the last row of the Variance sheet (subtotal row from Current Period)
-    wsVariance.Rows(wsVariance.Cells(wsVariance.Rows.Count, "A").End(xlUp).Row).Delete
+    lastRowVariance = wsVariance.Cells(wsVariance.Rows.Count, "A").End(xlUp).Row
+    wsVariance.Rows(lastRowVariance).Delete
 
     ' Autofit columns for better readability
     wsVariance.Columns.AutoFit
@@ -116,7 +117,7 @@ Sub AR_Variance()
     ' Define PivotCache
     Set pivotCache = ThisWorkbook.PivotCaches.Create( _
         SourceType:=xlDatabase, _
-        SourceData:=wsVariance.Range("A1:I" & lastRowCurrent))
+        SourceData:=wsVariance.Range("A1:I" & lastRowVariance - 1))
     
     ' Clear existing PivotTable if it exists
     On Error Resume Next
