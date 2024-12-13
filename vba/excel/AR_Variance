@@ -1,0 +1,42 @@
+Sub AR_Variance()
+    Dim wsCurrent As Worksheet
+    Dim wsPrior As Worksheet
+    Dim todayDate As Date
+    Dim fiscalStartMonth As Integer
+    Dim fiscalPeriod As Integer
+    Dim priorFiscalPeriod As Integer
+    Dim adjustedDate As Date
+    
+    ' Define FRCC's FY Start Month
+    fiscalStartMonth = 7
+    
+    ' Use the current date for calculations
+    todayDate = Date
+    
+    ' Calculate Period based on Fiscal Year
+    If Month(todayDate) >= fiscalStartMonth Then
+        adjustedDate = DateSerial(Year(todayDate), Month(todayDate), 1)
+    Else
+        adjustedDate = DateSerial(Year(todayDate) - 1, Month(todayDate), 1)
+    End If
+    
+    ' Determine the Current Fiscal Period
+    fiscalPeriod = ((Month(adjustedDate) - fiscalStartMonth + 12) Mod 12) + 1
+    
+    ' Determine the Prior Fiscal Period
+    priorFiscalPeriod -1
+    If priorFiscalPeriod = 0 Then
+        priorFiscalPeriod = 12
+    End If
+    
+    'Find sheets "Current Period" and "Prior Period" for renaming purposes
+    On Error Resume Next
+    Set wsCurrent = Worksheets("Current Period")
+    Set wsPrior = Worksheets("Prior Period")
+    On Error GoTo 0
+    
+    ' Renaming found sheets
+    wsCurrent.Name = "Period " & fiscalPeriod
+    wsPrior.Name = "Period " & priorFiscalPeriod
+    
+End Sub
