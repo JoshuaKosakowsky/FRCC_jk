@@ -194,17 +194,29 @@ Sub AR_Variance()
     End With
 
     ' Loop through visible rows and create new worksheets
+    Dim lastSheet As Worksheet
+    Set lastSheet = wsVariance ' Set reference for adding worksheets after Variance
+    
     For Each visibleRow In wsVariance.AutoFilter.Range.SpecialCells(xlCellTypeVisible).Rows
         If visibleRow.Row > 2 Then ' Skip header row
-            fundValue = visibleRow.Cells(1, "R").Value
-            acctValue = visibleRow.Cells(1, "S").Value
-            newSheetName = Left(fundValue & "_" & acctValue, 31) ' Ensure name is within Excel's 31-character limit
-            
-            ' Create a new worksheet with the combined name
+            fundValue = Trim(visibleRow.Cells(1, "R").Value) ' Get Fund value
+            acctValue = Trim(visibleRow.Cells(1, "S").Value) ' Get Acct value
+    
+            ' Replace blank values with placeholders
+            If fundValue = "" Then fundValue = "NoFund"
+            If acctValue = "" Then acctValue = "NoAcct"
+    
+            ' Combine Fund and Acct to create a new sheet name
+            newSheetName = Left(fundValue & "_" & acctValue, 31) ' Ensure name is within 31 characters
+    
+            ' Create a new worksheet with the combined name, after Variance tab
             On Error Resume Next ' Handle duplicate names gracefully
-            Set newSheet = Worksheets.Add
+            Set newSheet = Worksheets.Add(After:=lastSheet)
             newSheet.Name = newSheetName
             On Error GoTo 0
+    
+            ' Update lastSheet reference to the newly created sheet
+            Set lastSheet = newSheet
         End If
     Next visibleRow
 
