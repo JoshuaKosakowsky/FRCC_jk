@@ -176,10 +176,12 @@ Sub AR_Variance()
     lastRowR = wsVariance.Cells(wsVariance.Rows.Count, "R").End(xlUp).Row
     For i = 3 To lastRowR ' Start from row 3 to avoid overwriting headers
         If IsEmpty(wsVariance.Cells(i, "R").Value) Then
-            wsVariance.Cells(i, "R").Value = wsVariance.Cells(i - 1, "R").Text ' Use the value from the row above
+            ' Fill blank cell with the value from the row above
+            wsVariance.Cells(i, "R").Value = wsVariance.Cells(i - 1, "R").Value
         End If
-        ' Ensure leading zeros are preserved for 6-digit values
-        If Len(wsVariance.Cells(i, "R").Value) = 6 And IsNumeric(wsVariance.Cells(i, "R").Value) Then
+        
+        ' Preserve leading zeros by formatting as text and explicitly formatting as 6-digit text
+        If Len(wsVariance.Cells(i, "R").Value) > 0 Then
             wsVariance.Cells(i, "R").NumberFormat = "@"
             wsVariance.Cells(i, "R").Value = Format(wsVariance.Cells(i, "R").Value, "000000")
         End If
@@ -203,20 +205,14 @@ Sub AR_Variance()
     
     For Each visibleRow In wsVariance.AutoFilter.Range.SpecialCells(xlCellTypeVisible).Rows
         If visibleRow.Row > 2 Then ' Skip header row
-            ' Debugging: Read and log raw values from Fund and Acct columns
-            Debug.Print "Row " & visibleRow.Row & " - Fund: " & visibleRow.Cells(1, "R").Text & ", Acct: " & visibleRow.Cells(1, "S").Text
+            ' Read Fund and Acct values
+            fundValue = Trim(CStr(visibleRow.Cells(1, "R").Value)) ' Get Fund value
+            acctValue = Trim(CStr(visibleRow.Cells(1, "S").Value)) ' Get Acct value
     
-            ' Use .Text to read the displayed value in Excel
-            fundValue = Trim(visibleRow.Cells(1, "R").Text)
-            acctValue = Trim(visibleRow.Cells(1, "S").Text)
-    
-            ' Remove leading apostrophes or unwanted characters
-            fundValue = Replace(fundValue, "'", "")
-            acctValue = Replace(acctValue, "'", "")
-    
-            ' Evaluate to handle text-like numbers
-            If IsNumeric(fundValue) Then fundValue = CStr(Evaluate(fundValue))
-            If IsNumeric(acctValue) Then acctValue = CStr(Evaluate(acctValue))
+            ' Ensure Fund is 6 characters with leading zeros
+            If Len(fundValue) > 0 And IsNumeric(fundValue) Then
+                fundValue = Format(fundValue, "000000")
+            End If
     
             ' Replace blank values with placeholders
             If fundValue = "" Then fundValue = "NoFund"
@@ -225,7 +221,7 @@ Sub AR_Variance()
             ' Combine Fund and Acct to create a new sheet name
             newSheetName = Left(fundValue & "_" & acctValue, 31) ' Ensure name is within 31 characters
     
-            ' Debugging: Log the generated sheet name
+            ' Debugging: Print the generated sheet name to Immediate Window
             Debug.Print "Creating sheet: " & newSheetName
     
             ' Create a new worksheet with the combined name, after Variance tab
