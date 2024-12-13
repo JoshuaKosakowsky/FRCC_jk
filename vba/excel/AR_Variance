@@ -188,8 +188,9 @@ Sub AR_Variance()
 
     ' Apply filter to rows R2-Y2 based on criteria
     With wsVariance
-        .Rows("2:2").AutoFilter Field:=23, Criteria1:=">=100000", Operator:=xlOr, Criteria2:="<=-100000" ' Filter for Difference column (W)
-        .Rows("2:2").AutoFilter Field:=24, Criteria1:=">=1", Operator:=xlOr, Criteria2:="<-1" ' Filter for Percent column (X)
+        ' Apply filter to the range R2:Y2
+        .Range("R2:Y" & lastRowR).AutoFilter Field:=6, Criteria1:=">=100000", Operator:=xlOr, Criteria2:="<=-100000" ' Filter for Difference column (W)
+        .Range("R2:Y" & lastRowR).AutoFilter Field:=7, Criteria1:=">=1", Operator:=xlOr, Criteria2:="<-1" ' Filter for Percent column (X)
     End With
 
 
