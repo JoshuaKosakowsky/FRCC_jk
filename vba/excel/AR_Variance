@@ -13,16 +13,20 @@ Sub AR_Variance()
     Dim lastRowVariance As Long
     Dim lastRowPrior As Long
     Dim lastRowCurrent As Long
-    
+    Dim pivotCache As PivotCache
+    Dim pivotTable As PivotTable
+    Dim pivotTableName As String
+    Dim pivotStartCell As Range
+
     ' Define FRCC's FY Start Month
     fiscalStartMonth = 7
-    
+
     ' Use the current date for calculations
     todayDate = Date ' Default: current system date
-    
+
     ' Get the current day of the month
     currentDay = Day(todayDate)
-    
+
     ' Adjust the date for fiscal period calculation
     If currentDay <= 14 Then
         ' If today is between the 1st and 14th, consider the previous month
@@ -36,40 +40,40 @@ Sub AR_Variance()
         ' Otherwise, use the current month
         adjustedDate = DateSerial(Year(todayDate), Month(todayDate), 1)
     End If
-    
+
     ' Calculate the Current Fiscal Period
     If Month(adjustedDate) >= fiscalStartMonth Then
         fiscalPeriod = ((Month(adjustedDate) - fiscalStartMonth + 12) Mod 12) + 1
     Else
         fiscalPeriod = ((Month(adjustedDate) - fiscalStartMonth + 12 + 12) Mod 12) + 1
     End If
-    
+
     ' Determine the Prior Fiscal Period
     priorFiscalPeriod = fiscalPeriod - 1
     If priorFiscalPeriod = 0 Then
         priorFiscalPeriod = 12
     End If
-    
+
     ' Find sheets
     On Error Resume Next
     Set wsCurrent = Worksheets("Current Period")
     Set wsPrior = Worksheets("Prior Period")
     Set wsVariance = Worksheets("Variance")
     On Error GoTo 0
-    
+
     ' Validate sheets exist
     If wsCurrent Is Nothing Or wsPrior Is Nothing Or wsVariance Is Nothing Then
         MsgBox "One or more sheets ('Current Period', 'Prior Period', 'Variance') are missing.", vbExclamation
         Exit Sub
     End If
-    
+
     ' Rename sheets
     wsCurrent.Name = "Period " & fiscalPeriod
     wsPrior.Name = "Period " & priorFiscalPeriod
-    
+
     ' Identify the last row in the Variance sheet
     lastRowVariance = wsVariance.Cells(wsVariance.Rows.Count, "A").End(xlUp).Row + 1
-    
+
     ' Copy Prior Period data (exclude header row)
     With wsPrior
         ' Identify range (exclude first 10 rows, header row, and column A)
@@ -82,10 +86,10 @@ Sub AR_Variance()
         lastRowPrior = lastRowVariance + priorPeriodData.Rows.Count - 1
         wsVariance.Range("I" & lastRowVariance & ":I" & lastRowPrior).Value = priorFiscalPeriod
     End With
-    
+
     ' Update the last row in the Variance sheet
     lastRowVariance = wsVariance.Cells(wsVariance.Rows.Count, "A").End(xlUp).Row + 1
-    
+
     ' Copy Current Period data (exclude header row)
     With wsCurrent
         ' Identify range (exclude first 10 rows, header row, and column A)
@@ -98,7 +102,55 @@ Sub AR_Variance()
         lastRowCurrent = lastRowVariance + currentPeriodData.Rows.Count - 1
         wsVariance.Range("I" & lastRowVariance & ":I" & lastRowCurrent).Value = fiscalPeriod
     End With
-    
+
     ' Autofit columns for better readability
     wsVariance.Columns.AutoFit
+
+    ' Create Pivot Table
+    pivotTableName = "VariancePivot"
+    Set pivotStartCell = wsVariance.Range("K1")
+    
+    ' Define PivotCache
+    Set pivotCache = ThisWorkbook.PivotCaches.Create( _
+        SourceType:=xlDatabase, _
+        SourceData:=wsVariance.Range("A1:I" & lastRowCurrent))
+    
+    ' Clear existing PivotTable if it exists
+    On Error Resume Next
+    wsVariance.PivotTables(pivotTableName).TableRange2.Clear
+    On Error GoTo 0
+    
+    ' Create the PivotTable
+    Set pivotTable = pivotCache.CreatePivotTable( _
+        TableDestination:=pivotStartCell, _
+        TableName:=pivotTableName)
+    
+    ' Configure PivotTable fields
+    With pivotTable
+        ' Add rows: Fund and Acct
+        .PivotFields("Fund").Orientation = xlRowField
+        .PivotFields("Acct").Orientation = xlRowField
+        
+        ' Add columns: Period
+        .PivotFields("Period").Orientation = xlColumnField
+        
+        ' Add values: Sum of Current_Yr_Balance
+        With .PivotFields("Current_Yr_Balance")
+            .Orientation = xlDataField
+            .Function = xlSum
+            .Name = "Sum of Current_Yr_Balance"
+        End With
+        
+        ' Configure Subtotals & Filters for Fund and Acct
+        .PivotFields("Fund").Subtotals = Array(False, False, False, False, False, False, False, False, False, False, False, False)
+        .PivotFields("Acct").Subtotals = Array(False, False, False, False, False, False, False, False, False, False, False, False)
+        
+        ' Set Layout and Print settings for Fund and Acct
+        .PivotFields("Fund").LayoutForm = xlTabular
+        .PivotFields("Acct").LayoutForm = xlTabular
+    End With
+
+    ' Autofit PivotTable columns
+    pivotStartCell.EntireColumn.Auto
+
 End Sub
