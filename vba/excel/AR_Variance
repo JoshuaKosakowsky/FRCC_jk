@@ -181,7 +181,7 @@ Sub AR_Variance()
         End If
         
         ' Preserve leading zeros by formatting as text and explicitly formatting as 6-digit text
-         If Len(wsVariance.Cells(i, "R").Value) > 0 And IsNumeric(wsVariance.Cells(i, "R").Value) The
+         If Len(wsVariance.Cells(i, "R").Value) > 0 And IsNumeric(wsVariance.Cells(i, "R").Value) Then
             wsVariance.Cells(i, "R").NumberFormat = "@"
             wsVariance.Cells(i, "R").Value = Format(wsVariance.Cells(i, "R").Value, "000000")
         End If
