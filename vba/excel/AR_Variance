@@ -21,6 +21,12 @@ Sub AR_Variance()
     Dim pivotRange As Range
     Dim lastRowR As Long
     Dim i As Long
+    Dim visibleRow As Range
+    Dim fundValue As String
+    Dim acctValue As String
+    Dim newSheetName As String
+    Dim newSheet As Worksheet
+    Dim lastSheet As Worksheet
 
     ' Define FRCC's FY Start Month
     fiscalStartMonth = 7
@@ -200,45 +206,31 @@ Sub AR_Variance()
         .Range("R2:Y" & lastRowR).AutoFilter Field:=7, Criteria1:=">=1", Operator:=xlOr, Criteria2:="<-1" ' Filter for Percent column (X)
     End With
 
-    ' Debugging: Start logging
-    Debug.Print "Start creating sheets from visible rows."
-
-    ' Loop through visible rows in the filtered range
-    On Error Resume Next
+    ' Loop through visible rows and create new worksheets
+    Set lastSheet = wsVariance ' Set reference for adding worksheets after Variance
     For Each visibleRow In wsVariance.AutoFilter.Range.SpecialCells(xlCellTypeVisible).Rows
         If visibleRow.Row > 2 Then ' Skip header row
             ' Read and clean Fund and Acct values
             fundValue = Trim(CStr(visibleRow.Cells(1, "R").Value))
             acctValue = Trim(CStr(visibleRow.Cells(1, "S").Value))
 
-            ' Debugging: Log captured values
-            Debug.Print "Row " & visibleRow.Row & ": Fund='" & fundValue & "', Acct='" & acctValue & "'"
-
             ' Handle missing or invalid Fund values
-            If fundValue = "" Or fundValue = " " Then
-                fundValue = "NoFund"
-            ElseIf Len(fundValue) = 6 And IsNumeric(fundValue) Then
+            If fundValue = "" Then fundValue = "NoFund"
+            If Len(fundValue) = 6 And IsNumeric(fundValue) Then
                 fundValue = Format(fundValue, "000000") ' Ensure leading zeros
             End If
 
             ' Handle missing or invalid Acct values
-            If acctValue = "" Or acctValue = " " Then
-                acctValue = "NoAcct"
-            End If
+            If acctValue = "" Then acctValue = "NoAcct"
 
             ' Combine Fund and Acct to create a new sheet name
-            newSheetName = Left(fundValue & "_" & acctValue, 31) ' Limit name to 31 characters
+            newSheetName = Left(fundValue & "_" & acctValue, 31) ' Ensure name is within 31 characters
 
             ' Debugging: Log the generated sheet name
-            Debug.Print "Generated sheet name: " & newSheetName
-
-            ' Validate the sheet name
-            If newSheetName Like "*[\/:*?""<>|]*" Or newSheetName = "" Then
-                Debug.Print "Invalid sheet name for row " & visibleRow.Row & ": " & newSheetName
-                newSheetName = "InvalidName_" & visibleRow.Row
-            End If
+            Debug.Print "Row " & visibleRow.Row & ": Creating sheet " & newSheetName
 
             ' Create a new worksheet with the combined name, after Variance tab
+            On Error Resume Next ' Handle duplicate names gracefully
             Set newSheet = Worksheets.Add(After:=lastSheet)
             newSheet.Name = newSheetName
             On Error GoTo 0
@@ -247,8 +239,5 @@ Sub AR_Variance()
             Set lastSheet = newSheet
         End If
     Next visibleRow
-
-    ' Debugging: End logging
-    Debug.Print "Sheet creation complete."
 
 End Sub
