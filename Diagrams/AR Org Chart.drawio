@@ -1,5 +1,5 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="25.0.3">
-  <diagram id="prtHgNgQTEPvFCAcTncT" name="Page-1">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="25.0.3" pages="2">
+  <diagram id="prtHgNgQTEPvFCAcTncT" name="Current">
     <mxGraphModel dx="1824" dy="878" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
@@ -28,14 +28,6 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="KOA3y_Gjj6j5qlT28fj2-61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="dNxyNK7c78bLwvsdeMH5-11" source="dNxyNK7c78bLwvsdeMH5-12" target="KOA3y_Gjj6j5qlT28fj2-59">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="926" y="310" />
-              <mxPoint x="735" y="310" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
         <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="Dina Azarakhshi" position="Manager/Bursar" location="Westminster/Hybrid" email="Dina.Azarakhshi@frontrange.edu" placeholders="1" link="" Duties="Rate Table, Write Offs, Student AR Processes/Reports, ELM Reconciliation, Publish Bills" id="dNxyNK7c78bLwvsdeMH5-12">
           <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-3-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeMoving=1;treeFolding=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
             <mxGeometry x="776" y="40" width="300" height="200" as="geometry" />
@@ -49,9 +41,6 @@
             <mxGeometry x="176" y="340" width="300" height="150" as="geometry" />
           </mxCell>
         </UserObject>
-        <mxCell id="KOA3y_Gjj6j5qlT28fj2-60" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="dNxyNK7c78bLwvsdeMH5-11" source="dNxyNK7c78bLwvsdeMH5-16" target="KOA3y_Gjj6j5qlT28fj2-59">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="Joshua Kosakowsky" position="Asst Manager/Asst Bursar" location="Westminster/Hybrid" email="Joshua.Kosakowsky@frontrange.edu" placeholders="1" link="" Duties="Refunds, Parent Plus Loans, Review JE/Cash Log, BOA, D4NA, Appeals, K615, Deceased, Student Payment Agreement, Visix Boards, Website Updates, AR Variance, BM Reconciliation, Cashnet Terms, Student Accounts" id="dNxyNK7c78bLwvsdeMH5-16">
           <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-9-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeFolding=1;treeMoving=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
             <mxGeometry x="776" y="340" width="300" height="150" as="geometry" />
@@ -105,9 +94,6 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="KOA3y_Gjj6j5qlT28fj2-58" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="dNxyNK7c78bLwvsdeMH5-11" source="dNxyNK7c78bLwvsdeMH5-18" target="KOA3y_Gjj6j5qlT28fj2-57">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="Marina Lucero" position="Cash Management Supervisor" location="Westminster/Hybrid" email="Marina.Lucero@frontrange.edu" link="" placeholders="1" Duties="Oversee Cashier’s Offices/Staff, ACD lines, Bank/Offices Supplies, Armored Knights, Backup for all Tech 1 &amp; 2 Duties" id="dNxyNK7c78bLwvsdeMH5-18">
           <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
             <mxGeometry x="1376" y="340" width="300" height="150" as="geometry" />
@@ -158,14 +144,194 @@
             <mxGeometry x="1726" y="790" width="200" height="100" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="J Doe" position="Account Tech 1" location="WC" email="James.Dickinson@frontrange.edu" link="" placeholders="1" Duties="Cashiering" id="KOA3y_Gjj6j5qlT28fj2-57">
-          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;" vertex="1" parent="dNxyNK7c78bLwvsdeMH5-11">
-            <mxGeometry x="1426" y="700" width="200" height="100" as="geometry" />
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="ewkFsnCR2pDEiCqA6YCn" name="Proposed">
+    <mxGraphModel dx="2583" dy="1243" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="mmfWpYS0T2q381ey2DWb-1" value="Fiscal AR Org Chart" style="swimlane;html=1;startSize=20;horizontal=1;containerType=tree;glass=0;swimlaneLine=1;rounded=0;shadow=0;" vertex="1" parent="1">
+          <mxGeometry width="2320" height="1100" as="geometry">
+            <mxRectangle x="-290" y="60" width="150" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mmfWpYS0T2q381ey2DWb-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="mmfWpYS0T2q381ey2DWb-1" source="mmfWpYS0T2q381ey2DWb-6" target="mmfWpYS0T2q381ey2DWb-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mmfWpYS0T2q381ey2DWb-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="mmfWpYS0T2q381ey2DWb-1" source="mmfWpYS0T2q381ey2DWb-6" target="mmfWpYS0T2q381ey2DWb-8">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="926" y="280" />
+              <mxPoint x="326" y="280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mmfWpYS0T2q381ey2DWb-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="mmfWpYS0T2q381ey2DWb-1" source="mmfWpYS0T2q381ey2DWb-6" target="mmfWpYS0T2q381ey2DWb-18">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="926" y="280" />
+              <mxPoint x="1526" y="280" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="x5ET5GpdkbGCLUOih6cy-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="mmfWpYS0T2q381ey2DWb-1" source="mmfWpYS0T2q381ey2DWb-6" target="mmfWpYS0T2q381ey2DWb-29">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="926" y="310" />
+              <mxPoint x="745" y="310" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="Dina Azarakhshi" position="Manager/Bursar" location="Westminster/Hybrid" email="Dina.Azarakhshi@frontrange.edu" placeholders="1" link="" Duties="Rate Table, Write Offs, Student AR Processes/Reports, ELM Reconciliation, Publish Bills" id="mmfWpYS0T2q381ey2DWb-6">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-3-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeMoving=1;treeFolding=1;" vertex="1" parent="mmfWpYS0T2q381ey2DWb-1">
+            <mxGeometry x="776" y="40" width="300" height="200" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="&#xa;&lt;span style=&quot;color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 700; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; display: inline !important; float: none;&quot;&gt;%name%&lt;/span&gt;&lt;br style=&quot;forced-color-adjust: none; color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 700; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;i style=&quot;forced-color-adjust: none; font-family: Helvetica; font-size: 12px; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 700; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial; color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br style=&quot;forced-color-adjust: none; color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 700; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;a style=&quot;forced-color-adjust: none; font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 700; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(251, 251, 251);&quot; href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div style=&quot;forced-color-adjust: none; color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 700; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;&lt;span style=&quot;forced-color-adjust: none; font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;forced-color-adjust: none; color: rgb(0, 0, 0); font-family: Helvetica; font-size: 12px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 700; letter-spacing: normal; orphans: 2; text-align: left; text-indent: 0px; text-transform: none; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; white-space: normal; background-color: rgb(251, 251, 251); text-decoration-thickness: initial; text-decoration-style: initial; text-decoration-color: initial;&quot;&gt;%Duties%&lt;/div&gt;&#xa;&#xa;" name="J Doe" position="Acct Tech 3" location="Westminster/Hybrid" email="" placeholders="1" link="" Duties="Rate Table (Testing &amp; Reviewing)?&#xa;BM Rev, DNR, &#xa;&#xa;Appeals &amp; Refunds?" Requirements="" id="KOA3y_Gjj6j5qlT28fj2-59">
-          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-9-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeFolding=1;treeMoving=1;" vertex="1" parent="dNxyNK7c78bLwvsdeMH5-11">
-            <mxGeometry x="610" y="547.5" width="250" height="150" as="geometry" />
+        <mxCell id="mmfWpYS0T2q381ey2DWb-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="mmfWpYS0T2q381ey2DWb-1" source="mmfWpYS0T2q381ey2DWb-8" target="mmfWpYS0T2q381ey2DWb-19">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="Michelle Garner" position="Accountant" location="Westminster/Hybrid" email="Michelle.Garner@frontrange.edu" placeholders="1" link="" Duties="Tax Offset, G999, Journal Entry, Collections Reconciliation, Wires, Cashnet Transaction Verification, Billing/College Hill Library, Oversee HS/VA/Collections" id="mmfWpYS0T2q381ey2DWb-8">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-10-3-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeFolding=1;treeMoving=1;" vertex="1" parent="mmfWpYS0T2q381ey2DWb-1">
+            <mxGeometry x="176" y="340" width="300" height="150" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="mmfWpYS0T2q381ey2DWb-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="mmfWpYS0T2q381ey2DWb-1" source="mmfWpYS0T2q381ey2DWb-10" target="mmfWpYS0T2q381ey2DWb-29">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="Joshua Kosakowsky" position="Asst Manager/Asst Bursar" location="Westminster/Hybrid" email="Joshua.Kosakowsky@frontrange.edu" placeholders="1" link="" Duties="Refunds, Parent Plus Loans, Review JE/Cash Log, BOA, D4NA, Appeals, K615, Deceased, Student Payment Agreement, Visix Boards, Website Updates, AR Variance, BM Reconciliation, Cashnet Terms, Student Accounts" id="mmfWpYS0T2q381ey2DWb-10">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-9-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeFolding=1;treeMoving=1;" vertex="1" parent="mmfWpYS0T2q381ey2DWb-1">
+            <mxGeometry x="776" y="340" width="300" height="150" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="mmfWpYS0T2q381ey2DWb-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="mmfWpYS0T2q381ey2DWb-1" source="mmfWpYS0T2q381ey2DWb-18" target="mmfWpYS0T2q381ey2DWb-22">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1526" y="520" />
+              <mxPoint x="1069" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mmfWpYS0T2q381ey2DWb-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="mmfWpYS0T2q381ey2DWb-1" source="mmfWpYS0T2q381ey2DWb-18" target="mmfWpYS0T2q381ey2DWb-24">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1526" y="520" />
+              <mxPoint x="1463" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mmfWpYS0T2q381ey2DWb-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="mmfWpYS0T2q381ey2DWb-1" source="mmfWpYS0T2q381ey2DWb-18" target="mmfWpYS0T2q381ey2DWb-23">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1526" y="520" />
+              <mxPoint x="1206" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mmfWpYS0T2q381ey2DWb-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="mmfWpYS0T2q381ey2DWb-1" source="mmfWpYS0T2q381ey2DWb-18" target="mmfWpYS0T2q381ey2DWb-27">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1526" y="520" />
+              <mxPoint x="1760" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="x5ET5GpdkbGCLUOih6cy-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="mmfWpYS0T2q381ey2DWb-1" source="mmfWpYS0T2q381ey2DWb-18" target="PsxZyjaVAd7-Sz06WdyC-2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1526" y="520" />
+              <mxPoint x="1330" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="x5ET5GpdkbGCLUOih6cy-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="mmfWpYS0T2q381ey2DWb-1" source="mmfWpYS0T2q381ey2DWb-18" target="mmfWpYS0T2q381ey2DWb-28">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1526" y="520" />
+              <mxPoint x="1630" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="x5ET5GpdkbGCLUOih6cy-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="mmfWpYS0T2q381ey2DWb-1" source="mmfWpYS0T2q381ey2DWb-18" target="PsxZyjaVAd7-Sz06WdyC-1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1526" y="520" />
+              <mxPoint x="1990" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="x5ET5GpdkbGCLUOih6cy-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="mmfWpYS0T2q381ey2DWb-1" source="mmfWpYS0T2q381ey2DWb-18" target="mmfWpYS0T2q381ey2DWb-26">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1526" y="520" />
+              <mxPoint x="2173" y="520" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="Marina Lucero" position="Cash Management Supervisor" location="Westminster/Hybrid" email="Marina.Lucero@frontrange.edu" link="" placeholders="1" Duties="Oversee Cashier’s Offices/Staff, ACD lines, Bank/Offices Supplies, Armored Knights, Backup for all Tech 1 &amp; 2 Duties" id="mmfWpYS0T2q381ey2DWb-18">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;" vertex="1" parent="mmfWpYS0T2q381ey2DWb-1">
+            <mxGeometry x="1376" y="340" width="300" height="150" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="Anne Holmes" position="Billing Specialist/ Acct Tech 3" location="Westminster/Hybrid" email="Anne.Holmes@frontrange.edu" placeholders="1" link="" Duties="HS and VA Billing/Invoicing, College Hill Library Billing, Cadaver Lab for HS" id="mmfWpYS0T2q381ey2DWb-19">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-9-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeFolding=1;treeMoving=1;" vertex="1" parent="mmfWpYS0T2q381ey2DWb-1">
+            <mxGeometry x="50" y="600" width="250" height="150" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="Jonathan Oh-Xiong" position="Acct Tech 3" location="Westminster/Hybrid" email="Jonathan.Oh-Xiong@frontrange.edu" placeholders="1" link="" Duties="Credit Card Refunds and Collections" id="mmfWpYS0T2q381ey2DWb-20">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-9-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeFolding=1;treeMoving=1;" vertex="1" parent="mmfWpYS0T2q381ey2DWb-1">
+            <mxGeometry x="350" y="600" width="250" height="150" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="mmfWpYS0T2q381ey2DWb-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="mmfWpYS0T2q381ey2DWb-1" source="mmfWpYS0T2q381ey2DWb-8" target="mmfWpYS0T2q381ey2DWb-20">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="313.5" y="500" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="Sharon Kueker" position="Account Tech 2" location="Fort Collins" email="Sharon.Kueker@frontrange.edu" link="" placeholders="1" Duties="Billing, Payment Notices/Collections" id="mmfWpYS0T2q381ey2DWb-22">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;" vertex="1" parent="mmfWpYS0T2q381ey2DWb-1">
+            <mxGeometry x="956" y="662.5" width="225" height="125" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="James Dickinson" position="Account Tech 1" location="Fort Collins" email="James.Dickinson@frontrange.edu" link="" placeholders="1" Duties="Cross Term" id="mmfWpYS0T2q381ey2DWb-23">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;" vertex="1" parent="mmfWpYS0T2q381ey2DWb-1">
+            <mxGeometry x="1106" y="802.5" width="200" height="100" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="Shawnti Vigil" position="Account Tech 2" location="Westminster" email="Shawnti.Vigil@frontrange.edu" link="" placeholders="1" Duties="Wires, COF, Reversal Report, ELM, International Insurance" id="mmfWpYS0T2q381ey2DWb-24">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;" vertex="1" parent="mmfWpYS0T2q381ey2DWb-1">
+            <mxGeometry x="1350" y="660" width="225" height="125" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="Laura Grimaldo" position="Account Tech 2" location="Longmont" email="Laura.Grimaldo@frontrange.edu" link="" placeholders="1" Duties="Third Party Billing/ Invoicing" id="mmfWpYS0T2q381ey2DWb-26">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;" vertex="1" parent="mmfWpYS0T2q381ey2DWb-1">
+            <mxGeometry x="2060" y="662.5" width="225" height="125" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="J Doe" position="Student Employee" location="Westminster" email="Place.Holder@frontrange.edu" link="" placeholders="1" Duties="Cashiering" id="mmfWpYS0T2q381ey2DWb-27">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;" vertex="1" parent="mmfWpYS0T2q381ey2DWb-1">
+            <mxGeometry x="1660" y="923.75" width="200" height="100" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="J Doe" position="Account Tech 1" location="Westminster" email="James.Dickinson@frontrange.edu" link="" placeholders="1" Duties="PLA&#39;s" id="mmfWpYS0T2q381ey2DWb-28">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;" vertex="1" parent="mmfWpYS0T2q381ey2DWb-1">
+            <mxGeometry x="1530" y="802.5" width="200" height="100" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="J Doe" position="Acct Tech 3" location="Westminster/Hybrid" email="" placeholders="1" link="" Duties="Rate Table (Testing &amp; Reviewing)?&#xa;BM Rev, DNR, &#xa;&#xa;Appeals &amp; Refunds?" Requirements="" id="mmfWpYS0T2q381ey2DWb-29">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-9-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeFolding=1;treeMoving=1;" vertex="1" parent="mmfWpYS0T2q381ey2DWb-1">
+            <mxGeometry x="620" y="600" width="250" height="150" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="J Doe" position="Student Employee" location="Westminster" email="Place.Holder@frontrange.edu" link="" placeholders="1" Duties="Cashiering" id="PsxZyjaVAd7-Sz06WdyC-1">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;" vertex="1" parent="mmfWpYS0T2q381ey2DWb-1">
+            <mxGeometry x="1890" y="923.75" width="200" height="100" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="J Doe" position="Student Employee" location="Fort Collins" email="Place.Holder@frontrange.edu" link="" placeholders="1" Duties="Cashiering" id="PsxZyjaVAd7-Sz06WdyC-2">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;" vertex="1" parent="mmfWpYS0T2q381ey2DWb-1">
+            <mxGeometry x="1230" y="923.75" width="200" height="100" as="geometry" />
           </mxCell>
         </UserObject>
       </root>
