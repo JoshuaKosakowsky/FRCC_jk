@@ -4,7 +4,7 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="dNxyNK7c78bLwvsdeMH5-11" value="Fiscal AR Org Chart" style="swimlane;html=1;startSize=20;horizontal=1;containerType=tree;glass=0;" parent="1" vertex="1">
+        <mxCell id="dNxyNK7c78bLwvsdeMH5-11" value="Fiscal AR Org Chart" style="swimlane;html=1;startSize=20;horizontal=1;containerType=tree;glass=0;swimlaneLine=1;rounded=0;shadow=0;" parent="1" vertex="1">
           <mxGeometry x="-390" y="-10" width="1530" height="630" as="geometry">
             <mxRectangle x="-290" y="60" width="150" height="30" as="alternateBounds" />
           </mxGeometry>
@@ -32,9 +32,9 @@
         <mxCell id="dNxyNK7c78bLwvsdeMH5-15" value="" style="endArrow=blockThin;endFill=1;fontSize=11;edgeStyle=elbowEdgeStyle;elbow=vertical;rounded=0;" parent="dNxyNK7c78bLwvsdeMH5-11" source="dNxyNK7c78bLwvsdeMH5-12" target="dNxyNK7c78bLwvsdeMH5-16" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;" name="Joshua Kosakowsky" position="Asst Manager/Asst Bursar" location="Westminster/Hybrid" email="Joshua.Kosakowsky@frontrange.edu" placeholders="1" link="" Duties="Refunds, Parent Plus Loans, Cash Log, BOA, D4NA, Appeals, K615, Deceased, Student Payment Agreement, Visix Boards, Website Updates" id="dNxyNK7c78bLwvsdeMH5-16">
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="Joshua Kosakowsky" position="Asst Manager/Asst Bursar" location="Westminster/Hybrid" email="Joshua.Kosakowsky@frontrange.edu" placeholders="1" link="" Duties="Refunds, Parent Plus Loans, Cash Log, BOA, D4NA, Appeals, K615, Deceased, Student Payment Agreement, Visix Boards, Website Updates" id="dNxyNK7c78bLwvsdeMH5-16">
           <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-9-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeFolding=1;treeMoving=1;" parent="dNxyNK7c78bLwvsdeMH5-11" vertex="1">
-            <mxGeometry x="580" y="190" width="180" height="80" as="geometry" />
+            <mxGeometry x="520" y="180" width="300" height="130" as="geometry" />
           </mxCell>
         </UserObject>
         <mxCell id="dNxyNK7c78bLwvsdeMH5-17" value="" style="endArrow=blockThin;endFill=1;fontSize=11;edgeStyle=elbowEdgeStyle;elbow=vertical;rounded=0;" parent="dNxyNK7c78bLwvsdeMH5-11" source="dNxyNK7c78bLwvsdeMH5-12" target="dNxyNK7c78bLwvsdeMH5-18" edge="1">
@@ -70,9 +70,9 @@
             <mxGeometry x="10" y="320" width="180" height="80" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;" name="Jonathan Oh-Xiong" position="Acct Tech 3" location="Westminster/Hybrid" email="Jonathan.Oh-Xiong@frontrange.edu" placeholders="1" link="" Duties="Credit Card Refunds and Collections" id="KOA3y_Gjj6j5qlT28fj2-8">
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="Jonathan Oh-Xiong" position="Acct Tech 3" location="Westminster/Hybrid" email="Jonathan.Oh-Xiong@frontrange.edu" placeholders="1" link="" Duties="Credit Card Refunds and Collections" id="KOA3y_Gjj6j5qlT28fj2-8">
           <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-9-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeFolding=1;treeMoving=1;" vertex="1" parent="dNxyNK7c78bLwvsdeMH5-11">
-            <mxGeometry x="240" y="320" width="180" height="80" as="geometry" />
+            <mxGeometry x="240" y="320" width="210" height="100" as="geometry" />
           </mxCell>
         </UserObject>
         <mxCell id="KOA3y_Gjj6j5qlT28fj2-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="dNxyNK7c78bLwvsdeMH5-11" source="dNxyNK7c78bLwvsdeMH5-14" target="KOA3y_Gjj6j5qlT28fj2-8">
