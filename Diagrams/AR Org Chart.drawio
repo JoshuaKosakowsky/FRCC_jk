@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" version="25.0.3" pages="2">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36" version="26.0.6" pages="3">
   <diagram id="prtHgNgQTEPvFCAcTncT" name="Current">
     <mxGraphModel dx="1824" dy="878" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -142,6 +142,121 @@
         <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;&lt;br&gt;&lt;a href=&quot;mailto:%email%&quot;&gt;Email&lt;/a&gt;&lt;div&gt;&lt;span style=&quot;font-family: -apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI Variable&amp;quot;, &amp;quot;Segoe UI&amp;quot;, system-ui, ui-sans-serif, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;; font-size: 14px; font-weight: 400; background-color: rgb(255, 255, 255);&quot;&gt;%location%&lt;/span&gt;&lt;/div&gt;&lt;div&gt;%Duties%&lt;/div&gt;" name="J Doe" position="Student Employee" location="Westminster" email="Place.Holder@frontrange.edu" link="" placeholders="1" Duties="Cashiering" id="KOA3y_Gjj6j5qlT28fj2-32">
           <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;" vertex="1" parent="dNxyNK7c78bLwvsdeMH5-11">
             <mxGeometry x="1726" y="790" width="200" height="100" as="geometry" />
+          </mxCell>
+        </UserObject>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Current Simp" id="L3KJB3qS7a1krc_2wtsv">
+    <mxGraphModel dx="1615" dy="865" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="7CjRVH_cydRTyCtGGqEr-0" />
+        <mxCell id="7CjRVH_cydRTyCtGGqEr-1" parent="7CjRVH_cydRTyCtGGqEr-0" />
+        <mxCell id="7CjRVH_cydRTyCtGGqEr-2" value="Fiscal AR Org Chart" style="swimlane;html=1;startSize=20;horizontal=1;containerType=tree;glass=0;swimlaneLine=1;rounded=0;shadow=0;" vertex="1" parent="7CjRVH_cydRTyCtGGqEr-1">
+          <mxGeometry width="1380" height="600" as="geometry">
+            <mxRectangle x="-290" y="60" width="150" height="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Lj19DwpWiSqvWplCZSML-106" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="7CjRVH_cydRTyCtGGqEr-2" source="7CjRVH_cydRTyCtGGqEr-6" target="Lj19DwpWiSqvWplCZSML-84">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Lj19DwpWiSqvWplCZSML-109" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="7CjRVH_cydRTyCtGGqEr-2" source="7CjRVH_cydRTyCtGGqEr-6" target="Lj19DwpWiSqvWplCZSML-24">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="577" y="160" />
+              <mxPoint x="277" y="160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Lj19DwpWiSqvWplCZSML-110" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="7CjRVH_cydRTyCtGGqEr-2" source="7CjRVH_cydRTyCtGGqEr-6" target="Lj19DwpWiSqvWplCZSML-89">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="577" y="160" />
+              <mxPoint x="877" y="160" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;" name="Dina Azarakhshi" position="Manager/Bursar" location="Westminster/Hybrid" email="Dina.Azarakhshi@frontrange.edu" placeholders="1" link="" Duties="Rate Table, Write Offs, Student AR Processes/Reports, ELM Reconciliation, Publish Bills" id="7CjRVH_cydRTyCtGGqEr-6">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-3-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeMoving=1;treeFolding=1;align=center;" vertex="1" parent="7CjRVH_cydRTyCtGGqEr-2">
+            <mxGeometry x="477" y="50" width="200" height="75" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="Lj19DwpWiSqvWplCZSML-111" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="7CjRVH_cydRTyCtGGqEr-2" source="Lj19DwpWiSqvWplCZSML-24" target="Lj19DwpWiSqvWplCZSML-56">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Lj19DwpWiSqvWplCZSML-112" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="7CjRVH_cydRTyCtGGqEr-2" source="Lj19DwpWiSqvWplCZSML-24" target="Lj19DwpWiSqvWplCZSML-28">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;" name="Michelle Garner" position="Accounts Receivable Accountant" location="Westminster/Hybrid" email="Michelle.Garner@frontrange.edu" placeholders="1" link="" Duties="Tax Offset, G999, Journal Entry, Collections Reconciliation, Wires, Cashnet Transaction Verification, Billing/College Hill Library, Oversee HS/VA/Collections" id="Lj19DwpWiSqvWplCZSML-24">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-3-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeMoving=1;treeFolding=1;" vertex="1" parent="7CjRVH_cydRTyCtGGqEr-2">
+            <mxGeometry x="177" y="200" width="200" height="75" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;" name="Jonathan Oh-Xiong" position="Accounting Technician III" location="Westminster/Hybrid" email="Jonathan.Oh-Xiong@frontrange.edu" placeholders="1" link="" Duties="Credit Card Refunds and Collections" id="Lj19DwpWiSqvWplCZSML-28">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-9-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeFolding=1;treeMoving=1;" vertex="1" parent="7CjRVH_cydRTyCtGGqEr-2">
+            <mxGeometry x="277" y="350" width="200" height="75" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;" name="Anne Holmes" position="AR Billing Specialist/ Accounting Technician III" location="Longmont/Hybrid" email="Anne.Holmes@frontrange.edu" placeholders="1" link="" Duties="HS and VA Billing/Invoicing, College Hill Library Billing, Cadaver Lab for HS" id="Lj19DwpWiSqvWplCZSML-56">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-3-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeMoving=1;treeFolding=1;" vertex="1" parent="7CjRVH_cydRTyCtGGqEr-2">
+            <mxGeometry x="52" y="350" width="200" height="75" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;" name="Joshua Kosakowsky" position="Assistant Manager/ Assistant Bursar" location="Westminster/Hybrid" email="Joshua.Kosakowsky@frontrange.edu" placeholders="1" link="" Duties="Refunds, Parent Plus Loans, Review JE/Cash Log, BOA, D4NA, Appeals, K615, Deceased, Student Payment Agreement, Visix Boards, Website Updates, AR Variance, BM Reconciliation, Cashnet Terms, Student Accounts" id="Lj19DwpWiSqvWplCZSML-84">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-10-3-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeFolding=1;treeMoving=1;" vertex="1" parent="7CjRVH_cydRTyCtGGqEr-2">
+            <mxGeometry x="477" y="200" width="200" height="75" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;" name="James Dickinson" position="Accounting Technician I" location="Fort Collins" email="James.Dickinson@frontrange.edu" link="" placeholders="1" Duties="Cross Term" id="Lj19DwpWiSqvWplCZSML-85">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-2-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;" vertex="1" parent="7CjRVH_cydRTyCtGGqEr-2">
+            <mxGeometry x="777" y="500" width="200" height="75" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <mxCell id="Lj19DwpWiSqvWplCZSML-116" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="7CjRVH_cydRTyCtGGqEr-2" source="Lj19DwpWiSqvWplCZSML-89" target="Lj19DwpWiSqvWplCZSML-85">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Lj19DwpWiSqvWplCZSML-117" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="7CjRVH_cydRTyCtGGqEr-2" source="Lj19DwpWiSqvWplCZSML-89" target="Lj19DwpWiSqvWplCZSML-103">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="877" y="320" />
+              <mxPoint x="750" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Lj19DwpWiSqvWplCZSML-119" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="7CjRVH_cydRTyCtGGqEr-2" source="Lj19DwpWiSqvWplCZSML-89" target="Lj19DwpWiSqvWplCZSML-104">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="877" y="320" />
+              <mxPoint x="1000" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Lj19DwpWiSqvWplCZSML-120" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="7CjRVH_cydRTyCtGGqEr-2" source="Lj19DwpWiSqvWplCZSML-89" target="Lj19DwpWiSqvWplCZSML-105">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="877" y="320" />
+              <mxPoint x="1250" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;" name="Marina Lucero" position="Cash Management Supervisor" location="Westminster/Hybrid" email="Marina.Lucero@frontrange.edu" placeholders="1" link="" Duties="Oversee Cashier’s Offices/Staff, ACD lines, Bank/Offices Supplies, Armored Knights, Backup for all Tech 1 &amp; 2 Duties" id="Lj19DwpWiSqvWplCZSML-89">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-3-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeMoving=1;treeFolding=1;" vertex="1" parent="7CjRVH_cydRTyCtGGqEr-2">
+            <mxGeometry x="777" y="200" width="200" height="75" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;" name="Sharon Kueker" position="Accounting Technician II" location="Fort Collins" email="Sharon.Kueker@frontrange.edu" placeholders="1" link="" Duties="Billing, Payment Notices/Collections" id="Lj19DwpWiSqvWplCZSML-103">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-3-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeMoving=1;treeFolding=1;" vertex="1" parent="7CjRVH_cydRTyCtGGqEr-2">
+            <mxGeometry x="650" y="400" width="200" height="75" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;" name="Shawnti Vigil" position="Accounting Technician II" location="Westminster" email="Shawnti.Vigil@frontrange.edu" placeholders="1" link="" Duties="Wires, COF, Reversal Report, ELM, PLA’s, International Insurance" id="Lj19DwpWiSqvWplCZSML-104">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-3-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeMoving=1;treeFolding=1;" vertex="1" parent="7CjRVH_cydRTyCtGGqEr-2">
+            <mxGeometry x="900" y="400" width="200" height="75" as="geometry" />
+          </mxCell>
+        </UserObject>
+        <UserObject label="%name%&lt;br&gt;&lt;i style=&quot;color: gray;&quot;&gt;%position%&lt;/i&gt;" name="Laura Grimaldo" position="Accounting Technician II" location="Longmont" email="Laura.Grimaldo@frontrange.edu" placeholders="1" link="" Duties="Third Party Billing/ Invoicing" id="Lj19DwpWiSqvWplCZSML-105">
+          <mxCell style="label;image=https://cdn3.iconfinder.com/data/icons/user-avatars-1/512/users-3-128.png;whiteSpace=wrap;html=1;rounded=0;glass=0;treeMoving=1;treeFolding=1;" vertex="1" parent="7CjRVH_cydRTyCtGGqEr-2">
+            <mxGeometry x="1150" y="400" width="200" height="75" as="geometry" />
           </mxCell>
         </UserObject>
       </root>
