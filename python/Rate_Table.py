@@ -380,8 +380,8 @@ df_RT = df_RT[df_RT.apply(course_filter, axis=1)]
 df_RT = df_RT[df_RT.apply(dropHS_all, axis=1)]
 df_RT = hs_filter(df_RT)
 
-# Function to see if Detail Codes, Fee Amounts, or Fee Type has changed 
-def CRN_data_changed(group):
+# Function to see if Fee Amounts have changed 
+def CRN_fee_changed(group):
     previous_fee = set(group['AMOUNT'])
     current_fee = set(group[f'{FY} FEE AMOUNT'])
 
@@ -398,7 +398,31 @@ def CRN_data_changed(group):
 
     return unchanged
 
-df_RT['UNCHANGED'] = df_RT[['CRN','AMOUNT',f'{FY} FEE AMOUNT']].groupby('CRN', group_keys= False).apply(CRN_data_changed)
+# Function to see if Detail Codes have changed
+def CRN_DC_changed(group):
+    prev_dc = set(group['DET CODE'])
+    current_dc = set(group['DETAIL CODE'])
+
+    # Any code from Previous appearing in Current Detail Code(s)
+    unchanged = group['DET CODE'].apply(lambda x: x in current_dc)
+
+        # Identify any Current Fees that were added and not in previous_fee so it can be added
+    new_codes = current_dc - prev_dc
+
+    # If a new fee exists, mark at least ONE row as False for input
+    if new_codes:
+        index_to_modify = group.index[0] # Modify first row in the group
+        unchanged.loc[index_to_modify] = False # Flag one row as False
+
+    return unchanged
+
+# Applying function to get the outcome of Fee Changes
+df_RT['UNCHANGED'] = df_RT.groupby('CRN', group_keys=False).apply(CRN_fee_changed)
+
+# Applying function to get the outcome of Detail Code Changes
+df_RT.loc[df_RT['UNCHANGED'], 'UNCHANGED'] = df_RT.groupby('CRN', group_keys=False).apply(CRN_DC_changed)
+
+#df_RT['UNCHANGED'] = df_RT[['CRN','AMOUNT',f'{FY} FEE AMOUNT']].groupby('CRN', group_keys= False).apply(CRN_fee_changed)
 
 #df_RT = df_RT[df_RT['UNCHANGED'] | ~df_RT['AMOUNT'].isin(df_RT['FY25 FEE AMOUNT'])]
 
