@@ -43,7 +43,7 @@ Next we will create paths to our folder directories for easy management
 '''
 
 # Path to the specific folder were all the tables are saved to
-filepath = 'c:/Users/S03112819/OneDrive - Colorado Community College System/AR/Course Fees/Current Project/'
+filepath = 'c:/Users/'
 
 # The file from Banner (Course Fee Listing) that has all the data about current courses per term.
 BANNER_CourseFeeListing = 'gokoutp.csv' # input file
@@ -91,14 +91,15 @@ rename_columns = {
     'SSBSECT_CAMP_CODE': 'CAMPUS',
     'SSRATTR_ATTR_CODE': 'ATTR',
     'SSRFEES_DETL_CODE': 'DET CODE',
-    'SSRFEES_AMOUNT': 'AMOUNT'
+    'SSRFEES_AMOUNT': 'AMOUNT',
+    'SSRFEES_FTYP_CODE': 'FEE TYPE (OLD)'
                 }
 
 # Renaming the columns
 df_B_CFL.rename(columns=rename_columns, inplace=True, errors = 'ignore')
 
 # Drop columns
-df_B_CFL.drop(['SSBSECT_VPDI_CODE','SSBSECT_CREDIT_HRS', 'SSBSECT_BILL_HRS', 'SSBSECT_ENRL', 'SSBSECT_WAIT_COUNT', 'SSBSECT_LAB_HR', 'SSBSECT_LEC_HR', 'SSBSECT_OTH_HR', 'SSBSECT_PRNT_IND', 'SSBSECT_PTRM_CODE', 'SSBSECT_ACTIVITY_DATE', 'SSBSECT_PTRM_START_DATE', 'SSBSECT_PTRM_END_DATE', 'SSBSECT_CENSUS_ENRL_DATE', 'SSRATTR_ACTIVITY_DATE', 'SSRFEES_FEE_IND', 'SSRFEES_LEVL_CODE', 'SSRFEES_FTYP_CODE', 'SSBOVRR_COLL_CODE', 'SSBOVRR_DEPT_CODE', 'SSBOVRR_DIVS_CODE', 'SSBOVRR_TOPS_CODE', 'SSRMEET_BLDG_CODE', 'SSRMEET_START_DATE', 'SSRMEET_END_DATE', 'SSRMEET_BEGIN_TIME', 'SSRMEET_END_TIME', 'SSRMEET_HRS_WEEK', 'SSRMEET_ROOM_CODE', 'SSRMEET_CATAGORY', 'SSRMEET_SUN_DAY', 'SSRMEET_MON_DAY', 'SSRMEET_TUE_DAY', 'SSRMEET_WED_DAY', 'SSRMEET_THU_DAY', 'SSRMEET_FRI_DAY', 'SSRMEET_SAT_DAY'], axis=1, inplace=True)
+df_B_CFL.drop(['SSBSECT_VPDI_CODE','SSBSECT_CREDIT_HRS', 'SSBSECT_BILL_HRS', 'SSBSECT_ENRL', 'SSBSECT_WAIT_COUNT', 'SSBSECT_LAB_HR', 'SSBSECT_LEC_HR', 'SSBSECT_OTH_HR', 'SSBSECT_PRNT_IND', 'SSBSECT_PTRM_CODE', 'SSBSECT_ACTIVITY_DATE', 'SSBSECT_PTRM_START_DATE', 'SSBSECT_PTRM_END_DATE', 'SSBSECT_CENSUS_ENRL_DATE', 'SSRATTR_ACTIVITY_DATE', 'SSRFEES_FEE_IND', 'SSRFEES_LEVL_CODE', 'SSBOVRR_COLL_CODE', 'SSBOVRR_DEPT_CODE', 'SSBOVRR_DIVS_CODE', 'SSBOVRR_TOPS_CODE', 'SSRMEET_BLDG_CODE', 'SSRMEET_START_DATE', 'SSRMEET_END_DATE', 'SSRMEET_BEGIN_TIME', 'SSRMEET_END_TIME', 'SSRMEET_HRS_WEEK', 'SSRMEET_ROOM_CODE', 'SSRMEET_CATAGORY', 'SSRMEET_SUN_DAY', 'SSRMEET_MON_DAY', 'SSRMEET_TUE_DAY', 'SSRMEET_WED_DAY', 'SSRMEET_THU_DAY', 'SSRMEET_FRI_DAY', 'SSRMEET_SAT_DAY'], axis=1, inplace=True)
 
 
 ''' Some data manipulation to refine out output and ensure we catch CONC attributes and drop duplicates'''
@@ -302,7 +303,7 @@ This in effect is the Rate Table and will be used to assign costs to courses.
 df_RT = pd.merge(df_B_CFL, df_CSF, how='inner', on=['SUBJECT'], suffixes=('_CFL', '_CSF'))
 
 # Creating a new Column "UNCHANGED" to see if the fee amount has is the same as what is in Banner's Course Fee Listing
-df_RT['UNCHANGED'] = df_RT['FY25 FEE AMOUNT'] == df_RT['AMOUNT']
+df_RT['UNCHANGED'] = df_RT[f'{FY} FEE AMOUNT'] == df_RT['AMOUNT']
 
 # Function to seperate HIGH and MED Attributes two dateframes (Since they are attribute costs, not course costs)
 def filter_out_high_med_attr(df):
@@ -416,20 +417,40 @@ def CRN_DC_changed(group):
 
     return unchanged
 
+# Function to see if Fee Types have changed
+def CRN_FT_changed(group):
+    prev_ft = set(group['FEE TYPE (OLD)'])
+    current_ft = set(group['FEE TYPE'])
+
+    # Any code from Previous appearing in Current Fee Type(s)
+    unchanged = group['FEE TYPE (OLD)'].apply(lambda x: x in current_ft)
+
+        # Identify any Current Fees that were added and not in previous_fee so it can be added
+    new_fee_type = current_ft - prev_ft
+
+    # If a new fee exists, mark at least ONE row as False for input
+    if new_fee_type:
+        index_to_modify = group.index[0] # Modify first row in the group
+        unchanged.loc[index_to_modify] = False # Flag one row as False
+
+    return unchanged
+
 # Applying function to get the outcome of Fee Changes
 df_RT['UNCHANGED'] = df_RT.groupby('CRN', group_keys=False).apply(CRN_fee_changed)
 
 # Applying function to get the outcome of Detail Code Changes
 df_RT.loc[df_RT['UNCHANGED'], 'UNCHANGED'] = df_RT.groupby('CRN', group_keys=False).apply(CRN_DC_changed)
 
-#df_RT['UNCHANGED'] = df_RT[['CRN','AMOUNT',f'{FY} FEE AMOUNT']].groupby('CRN', group_keys= False).apply(CRN_fee_changed)
+# Applying function to get the outcome of Fee Type Changes
+df_RT.loc[df_RT['UNCHANGED'], 'UNCHANGED'] = df_RT.groupby('CRN', group_keys=False).apply(CRN_FT_changed)
 
-#df_RT = df_RT[df_RT['UNCHANGED'] | ~df_RT['AMOUNT'].isin(df_RT['FY25 FEE AMOUNT'])]
+# Applying a final change to have MP in "Unchanged Column" if Explanation has "Malpractice Insurance"
+df_RT.loc[df_RT['EXPLANATION'].str.contains("Malpractice Insurance", na=False), "UNCHANGED"] = 'MP'
 
 df_RT = df_RT.sort_values(by=['SUBJECT', 'COURSE NUMBER_CFL', 'CRN'], ascending = [True, True, True])
 
 # Changing column order so related columns from the two datasets are near each other
-column_order = ['SEMESTER', 'CRN', 'SUBJECT', 'COURSE NUMBER_CFL', 'COURSE NUMBER_CSF', 'SECTION_CFL', 'MODIFIED_SECTION', 'SECTION_CSF', 'CAMPUS_CFL', 'CAMPUS_CSF', 'ATTR', 'DET CODE', 'DETAIL CODE', 'AMOUNT', 'FY25 FEE AMOUNT', 'FEE TYPE', 'COURSE NAME', 'FREQUENCY', 'EXPLANATION', 'UNCHANGED']
+column_order = ['SEMESTER', 'CRN', 'SUBJECT', 'COURSE NUMBER_CFL', 'COURSE NUMBER_CSF', 'SECTION_CFL', 'MODIFIED_SECTION', 'SECTION_CSF', 'CAMPUS_CFL', 'CAMPUS_CSF', 'ATTR', 'DET CODE', 'DETAIL CODE', 'AMOUNT', 'FY25 FEE AMOUNT', 'FEE TYPE (OLD)', 'FEE TYPE', 'COURSE NAME', 'FREQUENCY', 'EXPLANATION', 'UNCHANGED']
 df_RT = df_RT[column_order]
 
 # Getting a quick preview of what the data will look like, along with the count of columns and rows, before creating an excel file.
