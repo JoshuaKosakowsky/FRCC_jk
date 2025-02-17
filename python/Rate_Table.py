@@ -2,6 +2,11 @@
 This is a fresh start to the Rate Table code. 
 I will be copying code from the three other scripts here in an effort clean the code and resolve issues with output.
 '''
+
+'''Note**** 
+Don't Forget to change the Detail Codes depedning on the term on lines 267 & 269
+(May find a way to incorporate the Term Code to self assign what the detail code should be (end in 10, 20, or 30))
+'''
 # First step will be to install necessary packages the script before breaking down the individual processes
 
 import pandas as pd
@@ -10,22 +15,36 @@ from datetime import datetime
 import re
 
 '''
+Universal function(s) and variable(s) to be used throughout.
+'''
+
+# Function to get the current date for file renaming.
+def get_current_date():
+    current_date = datetime.now()
+    formatted_date = current_date.strftime("%m-%d-%y")
+    return formatted_date
+
+current_date = get_current_date()
+csv_doc = current_date + '.csv'
+xlsx_doc = '_' + current_date + '.xlsx'
+
+'''
 Next we will create paths to our folder directories for easy management
 '''
 
 # Path to the specific folder were all the tables are saved to
-filepath = 'c:/'
+filepath = 'c:/Users/S03112819/OneDrive - Colorado Community College System/AR/Course Fees/Current Project/'
 
 # The file from Banner (Course Fee Listing) that has all the data about current courses per term.
 BANNER_CourseFeeListing = 'gokoutp.csv' # input file
-Cleaned_CFL = 'Cleaned_CFL.xlsx' # output file
+Cleaned_CFL = f'Cleaned_CFL{xlsx_doc}' # output file
 
 # The file from Lori/Dina pertaining to the New Course Specific Fees for the fiscal year.
 FRCC_CourseSpecificFees = 'Course Specific Fees.xlsx'
-Cleaned_CSF = 'Cleaned Course Specific Fees.xlsx'
+Cleaned_CSF = f'Cleaned Course Specific Fees{xlsx_doc}'
 
 # This file is the final combined output from the Course Fee Listing and Course Specific Fees.
-Rate_Table = 'Rate Table.xlsx'
+Rate_Table = f'Rate Table{xlsx_doc}'
 
 # Add more below as they become needed
 
@@ -71,14 +90,52 @@ df_B_CFL.rename(columns=rename_columns, inplace=True, errors = 'ignore')
 # Drop columns
 df_B_CFL.drop(['SSBSECT_VPDI_CODE','SSBSECT_CREDIT_HRS', 'SSBSECT_BILL_HRS', 'SSBSECT_ENRL', 'SSBSECT_WAIT_COUNT', 'SSBSECT_LAB_HR', 'SSBSECT_LEC_HR', 'SSBSECT_OTH_HR', 'SSBSECT_PRNT_IND', 'SSBSECT_PTRM_CODE', 'SSBSECT_ACTIVITY_DATE', 'SSBSECT_PTRM_START_DATE', 'SSBSECT_PTRM_END_DATE', 'SSBSECT_CENSUS_ENRL_DATE', 'SSRATTR_ACTIVITY_DATE', 'SSRFEES_FEE_IND', 'SSRFEES_LEVL_CODE', 'SSRFEES_FTYP_CODE', 'SSBOVRR_COLL_CODE', 'SSBOVRR_DEPT_CODE', 'SSBOVRR_DIVS_CODE', 'SSBOVRR_TOPS_CODE', 'SSRMEET_BLDG_CODE', 'SSRMEET_START_DATE', 'SSRMEET_END_DATE', 'SSRMEET_BEGIN_TIME', 'SSRMEET_END_TIME', 'SSRMEET_HRS_WEEK', 'SSRMEET_ROOM_CODE', 'SSRMEET_CATAGORY', 'SSRMEET_SUN_DAY', 'SSRMEET_MON_DAY', 'SSRMEET_TUE_DAY', 'SSRMEET_WED_DAY', 'SSRMEET_THU_DAY', 'SSRMEET_FRI_DAY', 'SSRMEET_SAT_DAY'], axis=1, inplace=True)
 
-# Drop duplicate CRNs
-df_B_CFL.drop_duplicates(subset='CRN', inplace=True)
+
+''' Some data manipulation to refine out output and ensure we catch CONC attributes and drop duplicates'''
+# Function to remove any value from Attribute column that isn't CONC
+def conc_only(value):
+    if value != "CONC":
+        return ""
+    else:
+        return "CONC"
+
+# Creating a dataset only where CRN's have a CONC attribute
+CONC_df_CFL = df_B_CFL[df_B_CFL['ATTR'] == 'CONC']
+
+# Creating a dateset only where there is a unique value in amount.
+Unique_AMT_df_CFL = df_B_CFL.dropna(subset=['AMOUNT']).drop_duplicates(subset=['CRN', 'AMOUNT'])
+Unique_AMT_df_CFL['ATTR'] = Unique_AMT_df_CFL['ATTR'].apply(conc_only)
+
+# Creating a dataset where amount is nan
+na_amt_df_CFL = df_B_CFL[df_B_CFL['AMOUNT'].isna()].drop_duplicates(subset=['CRN', 'ATTR'])
+na_amt_df_CFL['ATTR'] = na_amt_df_CFL['ATTR'].apply(conc_only)
+
+# Concatenating the three created datasets above to drop duplicates the required way.
+df_B_CFL = pd.concat([CONC_df_CFL, Unique_AMT_df_CFL, na_amt_df_CFL])
+
+df_B_CFL['ATTR2'] = df_B_CFL['ATTR'].apply(lambda x: 'MISSING' if pd.isna(x) or x == '' else x)
+df_B_CFL['AMOUNT2'] = df_B_CFL['AMOUNT'].fillna('MISSING')
+
+df_B_CFL['ATTR'] = df_B_CFL['ATTR'].apply(conc_only)
+
+df_B_CFL.sort_values(by=['CRN', 'ATTR'], ascending = [True, False], inplace=True)
+
+df_B_CFL.to_excel(filepath + 'b4Drops.xlsx', index=False)
+
+# Dropping duplicate values to ensure we are keeping any CONC that may have been dropped before this proccess
+df_B_CFL = df_B_CFL.drop_duplicates(subset=['CRN', 'AMOUNT2'], keep='first')
+df_B_CFL = df_B_CFL.drop(columns=['ATTR2', 'AMOUNT2'])
+
+df_B_CFL.to_excel(filepath + 'afterDrops.xlsx', index=False)
+
+df_B_CFL['SECTION'] = df_B_CFL['SECTION'].astype(str).str.zfill(3)
+
 
 # Drop rows where "CAMPUS" is FCX, FCW, FCZ, or FZZ
 df_B_CFL = df_B_CFL[~df_B_CFL['CAMPUS'].str.contains('FCX|FCW|FCZ|FZZ', na=False)]
 
-# Drop rows where Section is High School (37X, 38X, or 39X), Campus is FWO or FWC, and the Attribute is Concurrent (CONC)
-df_B_CFL = df_B_CFL[~((df_B_CFL['SECTION'].str.contains(r'37[A-Z]|38[A-Z]|39[A-Z]', na=False)) & ~((df_B_CFL['CAMPUS'].isin(['FWO', 'FWC'])) & (df_B_CFL['ATTR'] == 'CONC')))]
+# Drop rows where Section is High School (37X, 38X, 39X, or 78X), Campus is FWO or FWC, and the Attribute is Concurrent (CONC)
+df_B_CFL = df_B_CFL[~((df_B_CFL['SECTION'].str.contains(r'37[A-Z]|38[A-Z]|39[A-Z]|78[A-Z]', na=False)) & ~((df_B_CFL['CAMPUS'].isin(['FWO', 'FWC'])) & (df_B_CFL['ATTR'] == 'CONC')))]
 
 # Function to find HS courses and normalize them to all end in X or XX, have all else just end in XX except ALL
 def modify_for_matching(value):
@@ -92,6 +149,15 @@ def modify_for_matching(value):
             return section_str[0] + 'XX'
 
 df_B_CFL['MODIFIED_SECTION'] = df_B_CFL['SECTION'].apply(modify_for_matching)
+
+# Function to remove any value from Attribute column that isn't CONC
+def conc_only(value):
+    if value != "CONC":
+        return ""
+    else:
+        return "CONC"
+    
+df_B_CFL['ATTR'] = df_B_CFL['ATTR'].apply(conc_only)
 
 # Sort values by SUBJECT then COURSE NUMBER 
 df_B_CFL.sort_values(by=['SUBJECT', 'COURSE NUMBER'], ascending = [True, True], inplace=True)
@@ -199,9 +265,9 @@ def detail_code(det, campus):
             return 'B732' 
     else:
         if det == 'Digital Content Fee':
-            return 'A393' # A392 - FALL, A393 - SPRING
+            return 'A393' # A392 - FALL, A393 - SPRING, 'A394' Summer 
         else:
-            return 'A384' # A383 - FALL, A384 - SPRING # Course Specific Fee
+            return 'A384' # A383 - FALL, A384 - SPRING , 'A385' Summer # Course Specific Fee
 
 # Applying the function to a new column called "Fee Type" based off the values from "FREQUENCY"
 df_CSF['FEE TYPE'] = df_CSF['FREQUENCY'].apply(fee_type)
@@ -258,6 +324,12 @@ def course_filter(row):
                     )
     return course_match
 
+# Function to filter out HS courses ('37X', '38X', '39X') when they match with "ALL" from the course_filter function
+def dropHS_all(row):
+    if row['MODIFIED_SECTION'] in ['37X', '38X', '39X'] and row['SECTION_CSF'] == 'ALL':
+        return False
+    return True
+
 # Function to match the "CAMPUS_CFL" to the "CAMPUS_CSF" column Based off specific Campus codes for matching
 def campus_filter(row):
 
@@ -286,7 +358,7 @@ def campus_filter(row):
 def hs_filter(df):
         # Exclude rows where ATTR is 'CONC' and SECTION is '2XX' or '3XX' or '30X'
     df = df[~((df['ATTR'] == "CONC") &
-              (~df['MODIFIED_SECTION'].str.match(r'^(2XX|3XX|37X|38X)$', na=False)))]
+              (df['MODIFIED_SECTION'].str.match(r'^(2XX|3XX|7XX)$', na=False)))]
     
     return df
 
@@ -295,9 +367,24 @@ df_RT = filter_out_high_med_attr(df_RT)
 df_RT = df_RT[df_RT.apply(section_filter, axis=1)]
 df_RT = df_RT[df_RT.apply(campus_filter, axis=1)]
 df_RT = df_RT[df_RT.apply(course_filter, axis=1)]
+df_RT = df_RT[df_RT.apply(dropHS_all, axis=1)]
 df_RT = hs_filter(df_RT)
 
+def update_unchaged(group):
+    has_match = group['AMOUNT'].isin(group['FY25 FEE AMOUNT']).any()
+    if has_match:
+        group.loc[:, 'UNCHANGED'] = True
+    return group
 
+df_RT = df_RT.groupby(['CRN'], group_keys=False).apply(update_unchaged)
+
+df_RT = df_RT[df_RT['UNCHANGED'] | ~df_RT['AMOUNT'].isin(df_RT['FY25 FEE AMOUNT'])]
+
+df_RT = df_RT.sort_values(by=['SUBJECT', 'COURSE NUMBER_CFL', 'CRN'], ascending = [True, True, True])
+
+# Changing column order so related columns from the two datasets are near each other
+column_order = ['SEMESTER', 'CRN', 'SUBJECT', 'COURSE NUMBER_CFL', 'COURSE NUMBER_CSF', 'SECTION_CFL', 'MODIFIED_SECTION', 'SECTION_CSF', 'CAMPUS_CFL', 'CAMPUS_CSF', 'ATTR', 'DET CODE', 'DETAIL CODE', 'AMOUNT', 'FY25 FEE AMOUNT', 'FEE TYPE', 'COURSE NAME', 'FREQUENCY', 'EXPLANATION', 'UNCHANGED']
+df_RT = df_RT[column_order]
 
 # Getting a quick preview of what the data will look like, along with the count of columns and rows, before creating an excel file.
 print("\nInformation about the transformed Rate Table Dataset\n",df_RT.head(15),"\n",f"Columns: {df_RT.shape[1]} \nRows: {df_RT.shape[0]}")
