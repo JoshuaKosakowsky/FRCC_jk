@@ -15,6 +15,16 @@ from datetime import datetime
 import re
 
 '''
+Variables to update depending on the FY/Term
+'''
+
+FY = 'FY25'
+Dig_content_fee = 'A394'
+Not_DCF = 'A385'
+# A392 - FALL, A393 - SPRING, 'A394' Summer 
+# A383 - FALL, A384 - SPRING , 'A385' Summer # Course Specific Fee
+
+'''
 Universal function(s) and variable(s) to be used throughout.
 '''
 
@@ -265,9 +275,9 @@ def detail_code(det, campus):
             return 'B732' 
     else:
         if det == 'Digital Content Fee':
-            return 'A393' # A392 - FALL, A393 - SPRING, 'A394' Summer 
+            return Dig_content_fee # A392 - FALL, A393 - SPRING, 'A394' Summer 
         else:
-            return 'A384' # A383 - FALL, A384 - SPRING , 'A385' Summer # Course Specific Fee
+            return Not_DCF # A383 - FALL, A384 - SPRING , 'A385' Summer # Course Specific Fee
 
 # Applying the function to a new column called "Fee Type" based off the values from "FREQUENCY"
 df_CSF['FEE TYPE'] = df_CSF['FREQUENCY'].apply(fee_type)
@@ -370,15 +380,27 @@ df_RT = df_RT[df_RT.apply(course_filter, axis=1)]
 df_RT = df_RT[df_RT.apply(dropHS_all, axis=1)]
 df_RT = hs_filter(df_RT)
 
-def update_unchaged(group):
-    has_match = group['AMOUNT'].isin(group['FY25 FEE AMOUNT']).any()
-    if has_match:
-        group.loc[:, 'UNCHANGED'] = True
-    return group
+# Function to see if Detail Codes, Fee Amounts, or Fee Type has changed 
+def CRN_data_changed(group):
+    previous_fee = set(group['AMOUNT'])
+    current_fee = set(group[f'{FY} FEE AMOUNT'])
 
-df_RT = df_RT.groupby(['CRN'], group_keys=False).apply(update_unchaged)
+    # Check Previous Fee Amount for Any Matching value in Current Fee Amount for the specific CRN
+    unchanged = group['AMOUNT'].apply(lambda x: x in current_fee)
 
-df_RT = df_RT[df_RT['UNCHANGED'] | ~df_RT['AMOUNT'].isin(df_RT['FY25 FEE AMOUNT'])]
+    # Identify any Current Fees that were added and not in previous_fee so it can be added
+    new_fees = current_fee - previous_fee
+
+    # If a new fee exists, mark at least ONE row as False for input
+    if new_fees:
+        index_to_modify = group.index[0] # Modify first row in the group
+        unchanged.loc[index_to_modify] = False # Flag one row as False
+
+    return unchanged
+
+df_RT['UNCHANGED'] = df_RT[['CRN','AMOUNT',f'{FY} FEE AMOUNT']].groupby('CRN', group_keys= False).apply(CRN_data_changed)
+
+#df_RT = df_RT[df_RT['UNCHANGED'] | ~df_RT['AMOUNT'].isin(df_RT['FY25 FEE AMOUNT'])]
 
 df_RT = df_RT.sort_values(by=['SUBJECT', 'COURSE NUMBER_CFL', 'CRN'], ascending = [True, True, True])
 
