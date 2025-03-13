@@ -19,10 +19,23 @@ Variables to update depending on the FY/Term
 '''
 
 FY = 'FY25'
-Dig_content_fee = 'A394'
-Not_DCF = 'A385'
-# A392 - FALL, A393 - SPRING, 'A394' Summer 
-# A383 - FALL, A384 - SPRING , 'A385' Summer # Course Specific Fee
+Term = 'Summer' # Choices "Summer", "Fall", "Spring"
+
+if Term.capitalize() == "Summer":
+    Dig_content_fee = 'A394'
+    Not_DCF = 'A385'
+elif Term.capitalize() == 'Fall':
+    Dig_content_fee = 'A392'
+    Not_DCF = 'A383'
+elif Term.capitalize() == 'Spring':
+    Dig_content_fee = 'A393'
+    Not_DCF = 'A384'
+else: 
+    Dig_content_fee = "Please input a valid term"
+    Not_DCF = "Please input a valid term"
+
+# {'A392':'FALL', 'A393':'SPRING', 'A394':'Summer'} # Digital Content Fee
+# {'A383':'FALL', 'A384':'SPRING', 'A385':'Summer'} # Course Specific Fee
 
 '''
 Universal function(s) and variable(s) to be used throughout.
@@ -39,11 +52,11 @@ csv_doc = current_date + '.csv'
 xlsx_doc = '_' + current_date + '.xlsx'
 
 '''
-Next we will create paths to our folder directories for easy management
+Next we will create paths to our folder directories for easy management 
 '''
 
 # Path to the specific folder were all the tables are saved to
-filepath = 'c:/Users/'
+filepath = 'c:/Users/S03112819/OneDrive - Colorado Community College System/AR/Course Fees/Current Project/'
 
 # The file from Banner (Course Fee Listing) that has all the data about current courses per term.
 BANNER_CourseFeeListing = 'gokoutp.csv' # input file
@@ -260,7 +273,8 @@ def fee_type(freq):
         return 'CRED'
 
 # Matches detail codes for FRCC and CO Online
-def detail_code(det, campus):
+''' NOT UTILIZING RIGHT NOW DUE TO MAJOR CONFUSION FROM CCCS. APPLYING A DETAIL CODES IN FUNCTION BELOW'''
+def B_detail_code(det, campus):
     if campus == 'FCY' or campus == 'FON':
         # CO Online Lab Kit Fee 'Lab Kit Fee'
         if np.isin(det, ['Lab Kit Fee', 'Lab Fee Kit', 'Lab Fee', 'Lab Kit']).any():
@@ -279,12 +293,23 @@ def detail_code(det, campus):
             return Dig_content_fee # A392 - FALL, A393 - SPRING, 'A394' Summer 
         else:
             return Not_DCF # A383 - FALL, A384 - SPRING , 'A385' Summer # Course Specific Fee
+        
+# Matches detail codes for FRCC and CO Online
+def detail_code(det):
+    if det == 'Digital Content Fee':
+        return Dig_content_fee # A392 - FALL, A393 - SPRING, 'A394' Summer 
+    else:
+        return Not_DCF # A383 - FALL, A384 - SPRING , 'A385' Summer # Course Specific Fee
 
 # Applying the function to a new column called "Fee Type" based off the values from "FREQUENCY"
 df_CSF['FEE TYPE'] = df_CSF['FREQUENCY'].apply(fee_type)
 
+''' THE COMMENTED OUT CODE DEALS WITH THE B DETAIL CODE FUNCTION. IT PASSES "CAMPUS" THROUGH THE FUNCTION AS WELL TO ACCURATELY INPUT, SKIP THIS UNTIL FURTHER NOTICE'''
 # Applying the function to a new column called "DETAIL CODE" based off the values from "EXPLANATION" and "CAMPUS"
-df_CSF['DETAIL CODE'] = df_CSF.apply(lambda row: detail_code(row['EXPLANATION'], row['CAMPUS']), axis=1)
+# df_CSF['DETAIL CODE'] = df_CSF.apply(lambda row: detail_code(row['EXPLANATION'], row['CAMPUS']), axis=1)
+
+# Applying the function to a new column called "DETAIL CODE" based off the values from "EXPLANATION" and "CAMPUS"
+df_CSF['DETAIL CODE'] = df_CSF.apply(lambda row: detail_code(row['EXPLANATION']), axis=1)
 
 # Sort values by SUBJECT then COURSE NUMBER
 df_CSF = df_CSF.sort_values(by=['SUBJECT', 'COURSE NUMBER'], ascending = [True, True])
