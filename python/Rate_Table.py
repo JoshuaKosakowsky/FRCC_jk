@@ -213,6 +213,15 @@ df_CSF['CAMPUS'] = df_CSF['CAMPUS'].replace(['All', 'ALL', '', 'nan', 'NAN', np.
 df_CSF['COURSE NUMBER'] = df_CSF['COURSE NUMBER'].replace(['All', 'ALL', '', ' ', 'nan', 'NAN', np.nan], 'ALL')
 df_CSF['SECTION'] = df_CSF['SECTION'].replace(['All', 'ALL', '', 'nan', 'NAN', np.nan], 'ALL')
 
+# Forcing the column "Course Number" in the CSF data to be an integer. This will prevent having to transform the data from text (str) to numbers (int) in the actual excel document.
+def text_num(CourseNumber):
+    try:
+        return int(CourseNumber)
+    except (ValueError, TypeError):
+        return CourseNumber
+
+df_CSF['COURSE NUMBER'] = df_CSF['COURSE NUMBER'].apply(text_num)
+
 
 # Utilize regex matching to remove any hyphens at the end of a string in "SECTION" with nothing.
 df_CSF['SECTION'] = df_CSF['SECTION'].str.replace(r'-$', '', regex = True)
