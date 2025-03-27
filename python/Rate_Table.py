@@ -15,6 +15,29 @@ from datetime import datetime
 import re
 
 '''
+Variables to update depending on the FY/Term
+'''
+
+FY = 'FY25'
+Term = 'Summer' # Choices "Summer", "Fall", "Spring"
+
+if Term.capitalize() == "Summer":
+    Dig_content_fee = 'A394'
+    Not_DCF = 'A385'
+elif Term.capitalize() == 'Fall':
+    Dig_content_fee = 'A392'
+    Not_DCF = 'A383'
+elif Term.capitalize() == 'Spring':
+    Dig_content_fee = 'A393'
+    Not_DCF = 'A384'
+else: 
+    Dig_content_fee = "Please input a valid term"
+    Not_DCF = "Please input a valid term"
+
+# {'A392':'FALL', 'A393':'SPRING', 'A394':'Summer'} # Digital Content Fee
+# {'A383':'FALL', 'A384':'SPRING', 'A385':'Summer'} # Course Specific Fee
+
+'''
 Universal function(s) and variable(s) to be used throughout.
 '''
 
@@ -29,7 +52,7 @@ csv_doc = current_date + '.csv'
 xlsx_doc = '_' + current_date + '.xlsx'
 
 '''
-Next we will create paths to our folder directories for easy management
+Next we will create paths to our folder directories for easy management 
 '''
 
 # Path to the specific folder were all the tables are saved to
@@ -81,14 +104,15 @@ rename_columns = {
     'SSBSECT_CAMP_CODE': 'CAMPUS',
     'SSRATTR_ATTR_CODE': 'ATTR',
     'SSRFEES_DETL_CODE': 'DET CODE',
-    'SSRFEES_AMOUNT': 'AMOUNT'
+    'SSRFEES_AMOUNT': 'AMOUNT',
+    'SSRFEES_FTYP_CODE': 'FEE TYPE (OLD)'
                 }
 
 # Renaming the columns
 df_B_CFL.rename(columns=rename_columns, inplace=True, errors = 'ignore')
 
 # Drop columns
-df_B_CFL.drop(['SSBSECT_VPDI_CODE','SSBSECT_CREDIT_HRS', 'SSBSECT_BILL_HRS', 'SSBSECT_ENRL', 'SSBSECT_WAIT_COUNT', 'SSBSECT_LAB_HR', 'SSBSECT_LEC_HR', 'SSBSECT_OTH_HR', 'SSBSECT_PRNT_IND', 'SSBSECT_PTRM_CODE', 'SSBSECT_ACTIVITY_DATE', 'SSBSECT_PTRM_START_DATE', 'SSBSECT_PTRM_END_DATE', 'SSBSECT_CENSUS_ENRL_DATE', 'SSRATTR_ACTIVITY_DATE', 'SSRFEES_FEE_IND', 'SSRFEES_LEVL_CODE', 'SSRFEES_FTYP_CODE', 'SSBOVRR_COLL_CODE', 'SSBOVRR_DEPT_CODE', 'SSBOVRR_DIVS_CODE', 'SSBOVRR_TOPS_CODE', 'SSRMEET_BLDG_CODE', 'SSRMEET_START_DATE', 'SSRMEET_END_DATE', 'SSRMEET_BEGIN_TIME', 'SSRMEET_END_TIME', 'SSRMEET_HRS_WEEK', 'SSRMEET_ROOM_CODE', 'SSRMEET_CATAGORY', 'SSRMEET_SUN_DAY', 'SSRMEET_MON_DAY', 'SSRMEET_TUE_DAY', 'SSRMEET_WED_DAY', 'SSRMEET_THU_DAY', 'SSRMEET_FRI_DAY', 'SSRMEET_SAT_DAY'], axis=1, inplace=True)
+df_B_CFL.drop(['SSBSECT_VPDI_CODE','SSBSECT_CREDIT_HRS', 'SSBSECT_BILL_HRS', 'SSBSECT_ENRL', 'SSBSECT_WAIT_COUNT', 'SSBSECT_LAB_HR', 'SSBSECT_LEC_HR', 'SSBSECT_OTH_HR', 'SSBSECT_PRNT_IND', 'SSBSECT_PTRM_CODE', 'SSBSECT_ACTIVITY_DATE', 'SSBSECT_PTRM_START_DATE', 'SSBSECT_PTRM_END_DATE', 'SSBSECT_CENSUS_ENRL_DATE', 'SSRATTR_ACTIVITY_DATE', 'SSRFEES_FEE_IND', 'SSRFEES_LEVL_CODE', 'SSBOVRR_COLL_CODE', 'SSBOVRR_DEPT_CODE', 'SSBOVRR_DIVS_CODE', 'SSBOVRR_TOPS_CODE', 'SSRMEET_BLDG_CODE', 'SSRMEET_START_DATE', 'SSRMEET_END_DATE', 'SSRMEET_BEGIN_TIME', 'SSRMEET_END_TIME', 'SSRMEET_HRS_WEEK', 'SSRMEET_ROOM_CODE', 'SSRMEET_CATAGORY', 'SSRMEET_SUN_DAY', 'SSRMEET_MON_DAY', 'SSRMEET_TUE_DAY', 'SSRMEET_WED_DAY', 'SSRMEET_THU_DAY', 'SSRMEET_FRI_DAY', 'SSRMEET_SAT_DAY'], axis=1, inplace=True)
 
 
 ''' Some data manipulation to refine out output and ensure we catch CONC attributes and drop duplicates'''
@@ -189,6 +213,15 @@ df_CSF['CAMPUS'] = df_CSF['CAMPUS'].replace(['All', 'ALL', '', 'nan', 'NAN', np.
 df_CSF['COURSE NUMBER'] = df_CSF['COURSE NUMBER'].replace(['All', 'ALL', '', ' ', 'nan', 'NAN', np.nan], 'ALL')
 df_CSF['SECTION'] = df_CSF['SECTION'].replace(['All', 'ALL', '', 'nan', 'NAN', np.nan], 'ALL')
 
+# Forcing the column "Course Number" in the CSF data to be an integer. This will prevent having to transform the data from text (str) to numbers (int) in the actual excel document.
+def text_num(CourseNumber):
+    try:
+        return int(CourseNumber)
+    except (ValueError, TypeError):
+        return CourseNumber
+
+df_CSF['COURSE NUMBER'] = df_CSF['COURSE NUMBER'].apply(text_num)
+
 
 # Utilize regex matching to remove any hyphens at the end of a string in "SECTION" with nothing.
 df_CSF['SECTION'] = df_CSF['SECTION'].str.replace(r'-$', '', regex = True)
@@ -249,7 +282,8 @@ def fee_type(freq):
         return 'CRED'
 
 # Matches detail codes for FRCC and CO Online
-def detail_code(det, campus):
+''' NOT UTILIZING RIGHT NOW DUE TO MAJOR CONFUSION FROM CCCS. APPLYING A DETAIL CODES IN FUNCTION BELOW'''
+def B_detail_code(det, campus):
     if campus == 'FCY' or campus == 'FON':
         # CO Online Lab Kit Fee 'Lab Kit Fee'
         if np.isin(det, ['Lab Kit Fee', 'Lab Fee Kit', 'Lab Fee', 'Lab Kit']).any():
@@ -265,15 +299,26 @@ def detail_code(det, campus):
             return 'B732' 
     else:
         if det == 'Digital Content Fee':
-            return 'A393' # A392 - FALL, A393 - SPRING, 'A394' Summer 
+            return Dig_content_fee # A392 - FALL, A393 - SPRING, 'A394' Summer 
         else:
-            return 'A384' # A383 - FALL, A384 - SPRING , 'A385' Summer # Course Specific Fee
+            return Not_DCF # A383 - FALL, A384 - SPRING , 'A385' Summer # Course Specific Fee
+        
+# Matches detail codes for FRCC and CO Online
+def detail_code(det):
+    if det == 'Digital Content Fee':
+        return Dig_content_fee # A392 - FALL, A393 - SPRING, 'A394' Summer 
+    else:
+        return Not_DCF # A383 - FALL, A384 - SPRING , 'A385' Summer # Course Specific Fee
 
 # Applying the function to a new column called "Fee Type" based off the values from "FREQUENCY"
 df_CSF['FEE TYPE'] = df_CSF['FREQUENCY'].apply(fee_type)
 
+''' THE COMMENTED OUT CODE DEALS WITH THE B DETAIL CODE FUNCTION. IT PASSES "CAMPUS" THROUGH THE FUNCTION AS WELL TO ACCURATELY INPUT, SKIP THIS UNTIL FURTHER NOTICE'''
 # Applying the function to a new column called "DETAIL CODE" based off the values from "EXPLANATION" and "CAMPUS"
-df_CSF['DETAIL CODE'] = df_CSF.apply(lambda row: detail_code(row['EXPLANATION'], row['CAMPUS']), axis=1)
+# df_CSF['DETAIL CODE'] = df_CSF.apply(lambda row: detail_code(row['EXPLANATION'], row['CAMPUS']), axis=1)
+
+# Applying the function to a new column called "DETAIL CODE" based off the values from "EXPLANATION" and "CAMPUS"
+df_CSF['DETAIL CODE'] = df_CSF.apply(lambda row: detail_code(row['EXPLANATION']), axis=1)
 
 # Sort values by SUBJECT then COURSE NUMBER
 df_CSF = df_CSF.sort_values(by=['SUBJECT', 'COURSE NUMBER'], ascending = [True, True])
@@ -292,7 +337,7 @@ This in effect is the Rate Table and will be used to assign costs to courses.
 df_RT = pd.merge(df_B_CFL, df_CSF, how='inner', on=['SUBJECT'], suffixes=('_CFL', '_CSF'))
 
 # Creating a new Column "UNCHANGED" to see if the fee amount has is the same as what is in Banner's Course Fee Listing
-df_RT['UNCHANGED'] = df_RT['FY25 FEE AMOUNT'] == df_RT['AMOUNT']
+df_RT['UNCHANGED'] = df_RT[f'{FY} FEE AMOUNT'] == df_RT['AMOUNT']
 
 # Function to seperate HIGH and MED Attributes two dateframes (Since they are attribute costs, not course costs)
 def filter_out_high_med_attr(df):
@@ -370,20 +415,76 @@ df_RT = df_RT[df_RT.apply(course_filter, axis=1)]
 df_RT = df_RT[df_RT.apply(dropHS_all, axis=1)]
 df_RT = hs_filter(df_RT)
 
-def update_unchaged(group):
-    has_match = group['AMOUNT'].isin(group['FY25 FEE AMOUNT']).any()
-    if has_match:
-        group.loc[:, 'UNCHANGED'] = True
-    return group
+# Function to see if Fee Amounts have changed 
+def CRN_fee_changed(group):
+    previous_fee = set(group['AMOUNT'])
+    current_fee = set(group[f'{FY} FEE AMOUNT'])
 
-df_RT = df_RT.groupby(['CRN'], group_keys=False).apply(update_unchaged)
+    # Check Previous Fee Amount for Any Matching value in Current Fee Amount for the specific CRN
+    unchanged = group['AMOUNT'].apply(lambda x: x in current_fee)
 
-df_RT = df_RT[df_RT['UNCHANGED'] | ~df_RT['AMOUNT'].isin(df_RT['FY25 FEE AMOUNT'])]
+    # Identify any Current Fees that were added and not in previous_fee so it can be added
+    new_fees = current_fee - previous_fee
+
+    # If a new fee exists, mark at least ONE row as False for input
+    if new_fees:
+        index_to_modify = group.index[0] # Modify first row in the group
+        unchanged.loc[index_to_modify] = False # Flag one row as False
+
+    return unchanged
+
+# Function to see if Detail Codes have changed
+def CRN_DC_changed(group):
+    prev_dc = set(group['DET CODE'])
+    current_dc = set(group['DETAIL CODE'])
+
+    # Any code from Previous appearing in Current Detail Code(s)
+    unchanged = group['DET CODE'].apply(lambda x: x in current_dc)
+
+        # Identify any Current Fees that were added and not in previous_fee so it can be added
+    new_codes = current_dc - prev_dc
+
+    # If a new fee exists, mark at least ONE row as False for input
+    if new_codes:
+        index_to_modify = group.index[0] # Modify first row in the group
+        unchanged.loc[index_to_modify] = False # Flag one row as False
+
+    return unchanged
+
+# Function to see if Fee Types have changed
+def CRN_FT_changed(group):
+    prev_ft = set(group['FEE TYPE (OLD)'])
+    current_ft = set(group['FEE TYPE'])
+
+    # Any code from Previous appearing in Current Fee Type(s)
+    unchanged = group['FEE TYPE (OLD)'].apply(lambda x: x in current_ft)
+
+        # Identify any Current Fees that were added and not in previous_fee so it can be added
+    new_fee_type = current_ft - prev_ft
+
+    # If a new fee exists, mark at least ONE row as False for input
+    if new_fee_type:
+        index_to_modify = group.index[0] # Modify first row in the group
+        unchanged.loc[index_to_modify] = False # Flag one row as False
+
+    return unchanged
+
+# Applying function to get the outcome of Fee Changes
+df_RT['UNCHANGED'] = df_RT.groupby('CRN', group_keys=False).apply(CRN_fee_changed)
+
+# Applying function to get the outcome of Detail Code Changes
+df_RT.loc[df_RT['UNCHANGED'], 'UNCHANGED'] = df_RT.groupby('CRN', group_keys=False).apply(CRN_DC_changed)
+
+# Applying function to get the outcome of Fee Type Changes
+df_RT.loc[df_RT['UNCHANGED'], 'UNCHANGED'] = df_RT.groupby('CRN', group_keys=False).apply(CRN_FT_changed)
+
+# Applying a final change to have MP in "Unchanged Column" if Explanation has "Malpractice Insurance"
+df_RT.loc[df_RT['EXPLANATION'].str.contains("Malpractice Insurance", na=False), "UNCHANGED"] = 'MP'
 
 df_RT = df_RT.sort_values(by=['SUBJECT', 'COURSE NUMBER_CFL', 'CRN'], ascending = [True, True, True])
 
 # Changing column order so related columns from the two datasets are near each other
-column_order = ['SEMESTER', 'CRN', 'SUBJECT', 'COURSE NUMBER_CFL', 'COURSE NUMBER_CSF', 'SECTION_CFL', 'MODIFIED_SECTION', 'SECTION_CSF', 'CAMPUS_CFL', 'CAMPUS_CSF', 'ATTR', 'DET CODE', 'DETAIL CODE', 'AMOUNT', 'FY25 FEE AMOUNT', 'FEE TYPE', 'COURSE NAME', 'FREQUENCY', 'EXPLANATION', 'UNCHANGED']
+column_order = ['SEMESTER', 'CRN', 'SUBJECT', 'COURSE NUMBER_CFL', 'COURSE NUMBER_CSF', 'SECTION_CFL', 'MODIFIED_SECTION', 'SECTION_CSF', 'CAMPUS_CFL', 'CAMPUS_CSF', 'ATTR', 'DET CODE', 'DETAIL CODE', 'AMOUNT', 'FY25 FEE AMOUNT', 'FEE TYPE (OLD)', 'FEE TYPE', 'COURSE NAME', 'FREQUENCY', 'EXPLANATION', 'UNCHANGED']
 df_RT = df_RT[column_order]
 
 # Getting a quick preview of what the data will look like, along with the count of columns and rows, before creating an excel file.
