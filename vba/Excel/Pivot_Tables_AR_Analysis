@@ -1,134 +1,73 @@
 Sub Pivot_Tables()
-'
-' Pivot_Tables Macro
-'
-
-'
-    ActiveWorkbook.PivotCaches.Create(SourceType:=xlDatabase, SourceData:= _
-        "011042 113320!R1C1:R1048576C7", Version:=6).CreatePivotTable _
-        TableDestination:="011042 113320!R1C9", TableName:="PivotTable3", _
-        DefaultVersion:=6
-    Sheets("011042 113320").Select
-    Cells(1, 9).Select
-    With ActiveSheet.PivotTables("PivotTable3")
-        .ColumnGrand = True
-        .HasAutoFormat = True
-        .DisplayErrorString = False
-        .DisplayNullString = True
-        .EnableDrilldown = True
-        .ErrorString = ""
-        .MergeLabels = False
-        .NullString = ""
-        .PageFieldOrder = 2
-        .PageFieldWrapCount = 0
-        .PreserveFormatting = True
-        .RowGrand = True
-        .SaveData = True
-        .PrintTitles = False
-        .RepeatItemsOnEachPrintedPage = True
-        .TotalsAnnotation = False
-        .CompactRowIndent = 1
-        .InGridDropZones = False
-        .DisplayFieldCaptions = True
-        .DisplayMemberPropertyTooltips = False
-        .DisplayContextTooltips = True
-        .ShowDrillIndicators = True
-        .PrintDrillIndicators = False
-        .AllowMultipleFilters = False
-        .SortUsingCustomLists = True
-        .FieldListSortAscending = False
-        .ShowValuesRow = False
-        .CalculatedMembersInFilters = False
+    Dim ws As Worksheet
+    Set ws = ActiveSheet
+    
+    Dim dataRange As String
+    dataRange = ws.Name & "!R1C1:R1048576C7" ' Columns A to G
+    
+    ' Create First Pivot Table at I1 (Column 9)
+    Dim pc1 As PivotCache
+    Set pc1 = ActiveWorkbook.PivotCaches.Create( _
+        SourceType:=xlDatabase, _
+        SourceData:=dataRange, _
+        Version:=6)
+        
+    Dim pt1 As PivotTable
+    Set pt1 = pc1.CreatePivotTable( _
+        TableDestination:=ws.Cells(1, 9), _
+        TableName:="PivotTable3", _
+        DefaultVersion:=6)
+    
+    With pt1
         .RowAxisLayout xlCompactRow
+        .RepeatAllLabels xlRepeatLabels
+        .AddDataField .PivotFields("Amt"), "Sum of Amt", xlSum
+        With .PivotFields("'Trans Desc'")
+            .Orientation = xlRowField
+            .Position = 1
+        End With
+        With .PivotFields("'Rucl Code'")
+            .Orientation = xlColumnField
+            .Position = 1
+        End With
     End With
-    With ActiveSheet.PivotTables("PivotTable3").pivotCache
-        .RefreshOnFileOpen = False
-        .MissingItemsLimit = xlMissingItemsDefault
-    End With
-    ActiveSheet.PivotTables("PivotTable3").RepeatAllLabels xlRepeatLabels
-    ActiveSheet.PivotTables("PivotTable3").AddDataField ActiveSheet.PivotTables( _
-        "PivotTable3").PivotFields("Amt"), "Sum of Amt", xlSum
-    Windows("FY25 Period 8 AR Variance Analysis.xlsm").Activate
-    Range("K22").Select
-    Windows("FY25 Period 9 AR Variance Analysis.xlsm").Activate
-    With ActiveSheet.PivotTables("PivotTable3").PivotFields("'Trans Desc'")
-        .Orientation = xlRowField
-        .Position = 1
-    End With
-    With ActiveSheet.PivotTables("PivotTable3").PivotFields("'Rucl Code'")
-        .Orientation = xlColumnField
-        .Position = 1
-    End With
-    ActiveWindow.ScrollColumn = 2
-    ActiveWindow.ScrollColumn = 3
-    ActiveWindow.ScrollColumn = 4
-    ActiveWindow.ScrollColumn = 5
-    ActiveWindow.ScrollColumn = 6
-    Columns("J:N").Select
-    Selection.Style = "Comma"
-    ActiveWindow.SmallScroll ToRight:=1
-    Range("P1").Select
-    ActiveWorkbook.Worksheets("011042 113320").PivotTables("PivotTable3"). _
-        pivotCache.CreatePivotTable TableDestination:="011042 113320!R1C16", _
-        TableName:="PivotTable4", DefaultVersion:=6
-    Sheets("011042 113320").Select
-    Cells(1, 16).Select
-    With ActiveSheet.PivotTables("PivotTable4")
-        .ColumnGrand = True
-        .HasAutoFormat = True
-        .DisplayErrorString = False
-        .DisplayNullString = True
-        .EnableDrilldown = True
-        .ErrorString = ""
-        .MergeLabels = False
-        .NullString = ""
-        .PageFieldOrder = 2
-        .PageFieldWrapCount = 0
-        .PreserveFormatting = True
-        .RowGrand = True
-        .SaveData = True
-        .PrintTitles = False
-        .RepeatItemsOnEachPrintedPage = True
-        .TotalsAnnotation = False
-        .CompactRowIndent = 1
-        .InGridDropZones = False
-        .DisplayFieldCaptions = True
-        .DisplayMemberPropertyTooltips = False
-        .DisplayContextTooltips = True
-        .ShowDrillIndicators = True
-        .PrintDrillIndicators = False
-        .AllowMultipleFilters = False
-        .SortUsingCustomLists = True
-        .FieldListSortAscending = False
-        .ShowValuesRow = False
-        .CalculatedMembersInFilters = False
+    
+    ' Apply comma format to J:N
+    ws.Range("J:N").Style = "Comma"
+    
+    ' Create Second Pivot Table at P1 (Column 16)
+    Dim pc2 As PivotCache
+    Set pc2 = ActiveWorkbook.PivotCaches.Create( _
+        SourceType:=xlDatabase, _
+        SourceData:=dataRange, _
+        Version:=6)
+    
+    Dim pt2 As PivotTable
+    Set pt2 = pc2.CreatePivotTable( _
+        TableDestination:=ws.Cells(1, 16), _
+        TableName:="PivotTable4", _
+        DefaultVersion:=6)
+    
+    With pt2
         .RowAxisLayout xlCompactRow
+        .RepeatAllLabels xlRepeatLabels
+        .AddDataField .PivotFields("Amt"), "Sum of Amt", xlSum
+        With .PivotFields("'Dr Cr Ind'")
+            .Orientation = xlColumnField
+            .Position = 1
+        End With
+        With .PivotFields("Trans")
+            .Orientation = xlRowField
+            .Position = 1
+            .AutoGroup
+        End With
     End With
-    With ActiveSheet.PivotTables("PivotTable4").pivotCache
-        .RefreshOnFileOpen = False
-        .MissingItemsLimit = xlMissingItemsDefault
-    End With
-    ActiveSheet.PivotTables("PivotTable4").RepeatAllLabels xlRepeatLabels
-    ActiveWindow.ScrollColumn = 5
-    ActiveWindow.ScrollColumn = 6
-    ActiveWindow.ScrollColumn = 7
-    ActiveWindow.ScrollColumn = 8
-    ActiveWindow.ScrollColumn = 9
-    ActiveSheet.PivotTables("PivotTable4").AddDataField ActiveSheet.PivotTables( _
-        "PivotTable4").PivotFields("Amt"), "Sum of Amt", xlSum
-    With ActiveSheet.PivotTables("PivotTable4").PivotFields("'Dr Cr Ind'")
-        .Orientation = xlColumnField
-        .Position = 1
-    End With
-    With ActiveSheet.PivotTables("PivotTable4").PivotFields("Trans")
-        .Orientation = xlRowField
-        .Position = 1
-    End With
-    ActiveSheet.PivotTables("PivotTable4").PivotFields("Trans").AutoGroup
-    Range("P3").Select
-    Selection.Group Start:=True, End:=True, Periods:=Array(False, False, False, _
-        False, True, False, False)
-    ActiveWindow.ScrollColumn = 10
-    Columns("Q:T").Select
-    Selection.Style = "Comma"
+    
+    ' Group by months if Trans is a date
+    On Error Resume Next
+    ws.Range("P3").Group Start:=True, End:=True, Periods:=Array(False, False, False, False, True, False, False)
+    On Error GoTo 0
+    
+    ' Apply comma style to Q:T
+    ws.Range("Q:T").Style = "Comma"
 End Sub
