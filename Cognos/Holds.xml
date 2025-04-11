@@ -1,118 +1,131 @@
-<report xmlns="http://developer.cognos.com/schemas/report/16.2/" expressionLocale="en-us" useStyleVersion="11.4">
-  <!--RSU-SPC-0093 The report specification was upgraded from version 14.3 to 16.2 -->
-  <drillBehavior/>
-  <layouts>
-    <layout>
-      <reportPages>
-        <page name="Page1">
-          <style>
-            <defaultStyles>
-              <defaultStyle refStyle="pg"/>
-            </defaultStyles>
-          </style>
-          <pageBody>
-            <style>
-              <defaultStyles>
-                <defaultStyle refStyle="pb"/>
-              </defaultStyles>
-            </style>
-            <contents>
-              <list horizontalPagination="true" name="List1" refQuery="Query1">
-                <noDataHandler>
-                  <contents>
-                    <block>
-                      <contents>
-                        <textItem>
-                          <dataSource>
-                            <staticValue>No Data Available</staticValue>
-                          </dataSource>
-                          <style>
-                            <CSS value="padding:10px 18px;"/>
-                          </style>
-                        </textItem>
-                      </contents>
-                    </block>
-                  </contents>
-                </noDataHandler>
-                <!-- listColumns section unchanged for brevity -->
-              </list>
-            </contents>
-          </pageBody>
-          <XMLAttributes>
-            <XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/>
-          </XMLAttributes>
-        </page>
-      </reportPages>
-      <promptPages>
-        <page name="Prompt page1">
-          <pageBody>
-            <contents>
-              <table>
-                <tableRows>
-                  <tableRow>
-                    <tableCells>
-                      <tableCell>
-                        <contents>
-                          <textItem>
-                            <dataSource>
-                              <staticValue>VPDI: </staticValue>
-                            </dataSource>
-                          </textItem>
-                        </contents>
-                      </tableCell>
-                      <tableCell>
-                        <contents>
-                          <selectValue multiSelect="true" parameter="p_Institution" refQuery="QueryVPDI" required="false" selectValueUI="listBox">
-                            <useItem refDataItem="VALUE">
-                              <displayItem refDataItem="VALUE1"/>
-                            </useItem>
-                          </selectValue>
-                        </contents>
-                      </tableCell>
-                    </tableCells>
-                  </tableRow>
-                </tableRows>
-              </table>
-            </contents>
-          </pageBody>
-        </page>
-      </promptPages>
-    </layout>
-  </layouts>
-  <queries>
-    <query name="Query1">
-      <source>
-        <model/>
-      </source>
-      <selection>
-        <!-- selection items unchanged for brevity -->
-      </selection>
-      <detailFilters>
-        <detailFilter>
-          <filterExpression>[HOLD1]='T'</filterExpression>
-        </detailFilter>
-        <detailFilter>
-          <filterExpression>[Hold VPDI1]=[MULTI_SOURCE1]</filterExpression>
-        </detailFilter>
-        <detailFilter use="optional">
-          <filterExpression>[Hold VPDI1] in (?p_Institution?)</filterExpression>
-        </detailFilter>
-      </detailFilters>
-    </query>
-    <query name="QueryVPDI">
-      <source>
-        <model/>
-      </source>
-      <selection>
-        <dataItem aggregate="none" name="VALUE">
-          <expression>[List of Values].[Multi Source LOV].[VALUE]</expression>
-        </dataItem>
-        <dataItem aggregate="none" name="VALUE1" sort="ascending">
-          <expression>[List of Values].[Multi Source LOV].[VALUE]</expression>
-        </dataItem>
-      </selection>
-    </query>
-  </queries>
-  <modelPath>/content/folder[@name='Accounts Receivable']/folder[@name='Data Sources']/folder[@name='ODS Delivered Packages']/package[@name='Receivable Customer']/model[@name='model']</modelPath>
-  <reportName>Hold Codes w Acct Bal-All T (Updated)</reportName>
-</report>
+<report xmlns="http://developer.cognos.com/schemas/report/16.2/"           useStyleVersion="11.6" expressionLocale="en">
+				
+				<drillBehavior/>
+				<layouts>
+					<layout>
+						<reportPages>
+							<page name="Page1">
+								<style>
+									<defaultStyles>
+										<defaultStyle refStyle="pg"/>
+									</defaultStyles>
+								</style>
+								<pageBody>
+									<style>
+										<defaultStyles>
+											<defaultStyle refStyle="pb"/>
+										</defaultStyles>
+									</style>
+									<contents/>
+								</pageBody>
+							<XMLAttributes><XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/></XMLAttributes></page>
+						</reportPages>
+					<promptPages><page name="Prompt page1">
+			<pageHeader>
+				<contents>
+					<block>
+						<contents>
+							<textItem>
+								<dataSource>
+									<staticValue/>
+								</dataSource>
+								<style>
+									<defaultStyles>
+										<defaultStyle refStyle="tt"/>
+									</defaultStyles>
+								</style>
+							</textItem>
+						</contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="ta"/>
+							</defaultStyles>
+						</style>
+					</block>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="hp"/>
+					</defaultStyles>
+				</style>
+			</pageHeader>
+			<pageBody>
+				<contents><block>
+			<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Institution</staticValue></dataSource></textItem></contents><style><CSS value="text-align:right"/></style></tableCell><tableCell><contents><selectValue parameter="prompt_School" refQuery="LOV Institution"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE_DESCRIPTION"/></useItem></selectValue></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Term</staticValue></dataSource></textItem></contents><style><CSS value="text-align:right"/></style></tableCell><tableCell><contents><selectValue refQuery="LOV Academic Period" parameter="p_Academic_Period"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE"/></useItem><sortList><sortItem sortOrder="descending" refDataItem="VALUE"/></sortList></selectValue></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Hold Types</staticValue></dataSource></textItem></contents><style><CSS value="text-align:right"/></style></tableCell><tableCell><contents><selectValue refQuery="LOV Holds" parameter="prompt_Hold_Type"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE"/></useItem></selectValue></contents></tableCell></tableCells></tableRow></tableRows></table></contents>
+		</block></contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="py"/>
+					</defaultStyles>
+				</style>
+			</pageBody>
+			<pageFooter>
+				<contents>
+					<promptButton type="cancel">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="back">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="next">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="finish">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="fp"/>
+					</defaultStyles>
+				</style>
+			</pageFooter>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="pp"/>
+				</defaultStyles>
+			</style>
+		</page></promptPages></layout>
+				</layouts>
+			<XMLAttributes><XMLAttribute output="no" name="RS_CreateExtendedDataItems" value="true"/><XMLAttribute output="no" name="listSeparator" value=","/><XMLAttribute output="no" name="decimalSeparator" value="."/><XMLAttribute output="no" name="RS_modelModificationTime" value="2024-12-09T23:56:54.436Z"/></XMLAttributes><queries><query name="Current Holds">
+			<source>
+				<model/>
+			</source>
+			<selection><dataItem aggregate="none" rollupAggregate="none" name="MULTI_SOURCE"><expression>[Receivable Customer].[Hold].[MULTI_SOURCE]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="ID"><expression>[Receivable Customer].[Hold].[ID]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="NAME"><expression>[Receivable Customer].[Hold].[NAME]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="ACADEMIC_PERIOD"><expression>[Receivable Customer].[Receivable Account Detail].[ACADEMIC_PERIOD]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="HOLD"><expression>[Receivable Customer].[Hold].[HOLD]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="HOLD_TO_DATE"><expression>[Receivable Customer].[Hold].[HOLD_TO_DATE]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="4"/><XMLAttribute output="no" name="RS_dataUsage" value="1"/></XMLAttributes></dataItem><dataItem aggregate="total" name="BALANCE"><expression>[Receivable Customer].[Receivable Account Detail].[BALANCE]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="9"/><XMLAttribute output="no" name="RS_dataUsage" value="2"/></XMLAttributes></dataItem></selection>
+		<detailFilters><detailFilter><filterExpression>[MULTI_SOURCE] = ?prompt_School?</filterExpression></detailFilter><detailFilter><filterExpression>[HOLD_TO_DATE] &gt; current_date</filterExpression></detailFilter><detailFilter><filterExpression>[HOLD] = ?prompt_Hold_Type?</filterExpression></detailFilter><detailFilter><filterExpression>[ACADEMIC_PERIOD] = ?prompt_Academic_Period?
+</filterExpression></detailFilter></detailFilters></query><query name="LOV Institution">
+			<source>
+				<model/>
+			</source>
+			<selection><dataItem aggregate="none" rollupAggregate="none" name="VALUE"><expression>[List of Values].[Multi Source LOV].[VALUE]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="VALUE_DESCRIPTION"><expression>[List of Values].[Multi Source LOV].[VALUE_DESCRIPTION]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem></selection>
+		<detailFilters><detailFilter><filterExpression>[VALUE] = &apos;FRCC&apos;</filterExpression></detailFilter></detailFilters></query><query name="LOV Academic Period">
+			<source>
+				<model/>
+			</source>
+			<selection><dataItem aggregate="none" rollupAggregate="none" name="VALUE"><expression>[List of Values].[Academic Period LOV].[VALUE]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="VALUE_DESCRIPTION"><expression>[List of Values].[Academic Period LOV].[VALUE_DESCRIPTION]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem></selection>
+		<detailFilters><detailFilter><filterExpression>[VALUE] between 202410 and 203030</filterExpression></detailFilter></detailFilters></query><query name="LOV Holds">
+			<source>
+				<model/>
+			</source>
+			<selection><dataItem aggregate="none" rollupAggregate="none" name="VALUE"><expression>[List of Values].[Hold LOV].[VALUE]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="VALUE_DESCRIPTION"><expression>[List of Values].[Hold LOV].[VALUE_DESCRIPTION]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem></selection>
+		<detailFilters><detailFilter><filterExpression>[VALUE] in (&apos;TF&apos;, &apos;T6&apos;)</filterExpression></detailFilter></detailFilters></query></queries><classStyles><classStyle name="GuidedLayoutLeftPadding"><CSS value="padding-left:5px;border-top-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-width:1px"/></classStyle><classStyle name="GuidedLayoutTopPadding"><CSS value="padding-top:5px;border-top-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-width:1px"/></classStyle><classStyle name="GuidedLayoutRightPadding"><CSS value="padding-right:5px;border-top-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-width:1px"/></classStyle><classStyle name="GuidedLayoutBottomPadding"><CSS value="padding-bottom:5px;border-top-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-width:1px"/></classStyle><classStyle name="GuidedLayoutMargin"><CSS value="margin-bottom:10px"/></classStyle></classStyles><modelPath>/content/folder[@name=&apos;Accounts Receivable&apos;]/folder[@name=&apos;Data Sources&apos;]/folder[@name=&apos;ODS Custom Packages&apos;]/package[@name=&apos;Receivable_Customer_C&apos;]/model[@name=&apos;model&apos;]</modelPath><reportName>Finance Holds</reportName></report>
