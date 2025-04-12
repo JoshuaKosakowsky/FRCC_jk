@@ -1,0 +1,149 @@
+<report xmlns="http://developer.cognos.com/schemas/report/16.2/"           expressionLocale="en-us" useStyleVersion="11.4"><!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/14.3/" to "http://developer.cognos.com/schemas/report/16.2/" at 2025-4-11. 13:1:29-->
+				
+				<drillBehavior/>
+				<layouts>
+					<layout>
+						<reportPages>
+							<page name="Page1">
+								<style>
+									<defaultStyles>
+										<defaultStyle refStyle="pg"/>
+									</defaultStyles>
+								</style>
+								<pageBody>
+									<style>
+										<defaultStyles>
+											<defaultStyle refStyle="pb"/>
+										</defaultStyles>
+									</style>
+									<contents><list horizontalPagination="true" name="List1" refQuery="Query1">
+			
+			
+			
+			<noDataHandler>
+				<contents>
+					<block>
+						<contents>
+							<textItem>
+								<dataSource>
+									<staticValue>No Data Available</staticValue>
+								</dataSource>
+								<style>
+									<CSS value="padding:10px 18px;"/>
+								</style>
+							</textItem>
+						</contents>
+					</block>
+				</contents>
+			</noDataHandler>
+			<style>
+				<CSS value="border-collapse:collapse"/>
+				<defaultStyles>
+					<defaultStyle refStyle="ls"/>
+				</defaultStyles>
+			</style>
+		<listColumns><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="MULTI_SOURCE1"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="MULTI_SOURCE1"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="ACCOUNT_BALANCE"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="ACCOUNT_BALANCE"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Thresh"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Thresh"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="ID"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="ID"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="NAME"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="NAME"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="HOLD"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="HOLD"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="HOLD_DESC"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="HOLD_DESC"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="HOLD_USER_CREATOR"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="HOLD_USER_CREATOR"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="HOLD_FROM_DATE"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="HOLD_FROM_DATE"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="HOLD_TO_DATE"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="HOLD_TO_DATE"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="HOLD_FROM_YEAR"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="HOLD_FROM_YEAR"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:center"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="ACTIVE_HOLD_IND"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:center"/></style><contents><textItem><dataSource><dataItemValue refDataItem="ACTIVE_HOLD_IND"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="HOLD_EXPLANATION"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="HOLD_EXPLANATION"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="HOLD_AMOUNT"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="HOLD_AMOUNT"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Hold VPDI"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="Hold VPDI"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="HOLD_ORIGINATING_OFFICE_DESC"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="HOLD_ORIGINATING_OFFICE_DESC"/></dataSource></textItem></contents></listColumnBody></listColumn></listColumns><listOverallGroup><listFooter><listRows><listRow><rowCells><rowCell><contents><textItem><dataSource><staticValue>Overall</staticValue></dataSource></textItem><textItem><dataSource><staticValue> - </staticValue></dataSource></textItem><textItem><dataSource><staticValue>Summary</staticValue></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="if"/></defaultStyles></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Summary(ACCOUNT_BALANCE)2"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="is"/></defaultStyles></style></rowCell><rowCell colSpan="11"><contents/><style><defaultStyles><defaultStyle refStyle="if"/></defaultStyles></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Summary(HOLD_AMOUNT)2"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="is"/></defaultStyles></style></rowCell><rowCell colSpan="2"><contents/><style><defaultStyles><defaultStyle refStyle="if"/></defaultStyles></style></rowCell></rowCells></listRow></listRows></listFooter></listOverallGroup></list></contents>
+								</pageBody>
+							<XMLAttributes><XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/></XMLAttributes></page>
+						</reportPages>
+					<promptPages><page name="Prompt page1">
+			<pageHeader>
+				<contents>
+					<block>
+						<contents>
+							<textItem>
+								<dataSource>
+									<staticValue/>
+								</dataSource>
+								<style>
+									<defaultStyles>
+										<defaultStyle refStyle="tt"/>
+									</defaultStyles>
+								</style>
+							</textItem>
+						</contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="ta"/>
+							</defaultStyles>
+						</style>
+					</block>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="hp"/>
+					</defaultStyles>
+				</style>
+			</pageHeader>
+			<pageBody>
+				<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>VPDI: </staticValue></dataSource></textItem></contents><style><CSS value="vertical-align:top"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterVPDI" refQuery="QueryVPDI" required="false" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow></tableRows></table></contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="py"/>
+					</defaultStyles>
+				</style>
+			</pageBody>
+			<pageFooter>
+				<contents>
+					<promptButton type="cancel">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="back">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="next">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="finish">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="fp"/>
+					</defaultStyles>
+				</style>
+			</pageFooter>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="pp"/>
+				</defaultStyles>
+			</style>
+		</page></promptPages></layout>
+				</layouts>
+			<XMLAttributes><XMLAttribute name="RS_CreateExtendedDataItems" output="no" value="true"/><XMLAttribute name="listSeparator" output="no" value=","/><XMLAttribute output="no" name="RS_modelModificationTime" value="2021-10-28T23:10:27.971Z"/><XMLAttribute output="no" name="decimalSeparator" value="."/></XMLAttributes><queries><query name="Query1"><source><model/></source><selection><dataItem aggregate="none" name="ID" rollupAggregate="none"><expression>[Receivable Customer].[Hold].[ID]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" label="Name" name="NAME" rollupAggregate="none"><expression>[Receivable Customer].[Hold].[NAME]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" label="Code" name="HOLD" rollupAggregate="none"><expression>[Receivable Customer].[Hold].[HOLD]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" label="Desc" name="HOLD_DESC" rollupAggregate="none"><expression>[Receivable Customer].[Hold].[HOLD_DESC]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" label="User" name="HOLD_USER_CREATOR" rollupAggregate="none"><expression>[Receivable Customer].[Hold].[HOLD_USER_CREATOR]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" label="From Date" name="HOLD_FROM_DATE" rollupAggregate="none"><expression>[Receivable Customer].[Hold].[HOLD_FROM_DATE]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="1"/></XMLAttributes></dataItem><dataItem aggregate="none" label="To Date" name="HOLD_TO_DATE" rollupAggregate="none"><expression>[Receivable Customer].[Hold].[HOLD_TO_DATE]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="1"/></XMLAttributes></dataItem><dataItem aggregate="none" label="Release" name="HOLD_RELEASE_IND" rollupAggregate="none"><expression>[Receivable Customer].[Hold].[HOLD_RELEASE_IND]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" label="Reason" name="HOLD_EXPLANATION" rollupAggregate="none"><expression>[Receivable Customer].[Hold].[HOLD_EXPLANATION]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="0"/></XMLAttributes></dataItem><dataItem aggregate="total" label="Hold Amt" name="HOLD_AMOUNT"><expression>[Receivable Customer].[Hold].[HOLD_AMOUNT]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="9"/><XMLAttribute name="RS_dataUsage" output="no" value="2"/></XMLAttributes></dataItem><dataItem aggregate="none" label="Office" name="HOLD_ORIGINATING_OFFICE" rollupAggregate="none"><expression>[Receivable Customer].[Hold].[HOLD_ORIGINATING_OFFICE]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" label="Office Desc" name="HOLD_ORIGINATING_OFFICE_DESC" rollupAggregate="none"><expression>[Receivable Customer].[Hold].[HOLD_ORIGINATING_OFFICE_DESC]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" name="HOLD1" rollupAggregate="none"><expression>substring([Receivable Customer].[Hold].[HOLD],1,1)</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" label="VPDI" name="MULTI_SOURCE1" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account].[MULTI_SOURCE]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="0"/></XMLAttributes></dataItem><dataItem aggregate="total" label="Acct Bal" name="ACCOUNT_BALANCE"><expression>[Receivable Customer].[Receivable Account].[ACCOUNT_BALANCE]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="9"/><XMLAttribute name="RS_dataUsage" output="no" value="2"/></XMLAttributes></dataItem><dataItem aggregate="none" label="From Year" name="HOLD_FROM_YEAR" rollupAggregate="none"><expression>cast(extract( year, [Receivable Customer].[Hold].[HOLD_FROM_DATE]), varchar(4)) 
+
+
+</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="3"/></XMLAttributes></dataItem><dataItemListSummary aggregateMethod="aggregate" name="Summary(ACCOUNT_BALANCE)" refDataItem="ACCOUNT_BALANCE"/><dataItemListSummary aggregateMethod="aggregate" name="Summary(HOLD_AMOUNT)" refDataItem="HOLD_AMOUNT"/><dataItem aggregate="none" label="Coll" name="Hold VPDI" rollupAggregate="none"><expression>substring([Receivable Customer].[Hold].[HOLD_ORIGINATING_OFFICE_DESC],1,4)</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="0"/></XMLAttributes></dataItem><dataItemListSummary aggregateMethod="aggregate" name="Summary(ACCOUNT_BALANCE)1" refDataItem="ACCOUNT_BALANCE"/><dataItemListSummary aggregateMethod="aggregate" name="Summary(HOLD_AMOUNT)1" refDataItem="HOLD_AMOUNT"/><dataItem aggregate="none" label="Coll" name="Hold VPDI1" rollupAggregate="none"><expression>trim(trailing,[Hold VPDI])</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" label="Active" name="ACTIVE_HOLD_IND" rollupAggregate="none"><expression>[Receivable Customer].[Hold].[ACTIVE_HOLD_IND]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" label="Thresh" name="Thresh" rollupAggregate="none"><expression>IF ([ACCOUNT_BALANCE]&gt;500)
+THEN (&apos;500+&apos;)
+ELSE (IF ([ACCOUNT_BALANCE]&gt;400)
+THEN (&apos;400-499&apos;)
+ELSE (IF ([ACCOUNT_BALANCE]&gt;300)
+THEN (&apos;300-399&apos;)
+ELSE (IF ([ACCOUNT_BALANCE]&gt;200)
+THEN (&apos;200-299&apos;)
+ELSE (IF ([ACCOUNT_BALANCE]&gt;100)
+THEN (&apos;100-199&apos;)
+ELSE (IF ([ACCOUNT_BALANCE]&gt;0)
+THEN (&apos;0-99&apos;)
+ELSE (&apos;Zero&apos;))))))</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="0"/></XMLAttributes></dataItem><dataItemListSummary aggregateMethod="aggregate" name="Summary(ACCOUNT_BALANCE)2" refDataItem="ACCOUNT_BALANCE"/><dataItemListSummary aggregateMethod="aggregate" name="Summary(HOLD_AMOUNT)2" refDataItem="HOLD_AMOUNT"/></selection><detailFilters><detailFilter><filterExpression>[HOLD1]=&apos;T&apos;</filterExpression></detailFilter><detailFilter><filterExpression>[Hold VPDI1]=[MULTI_SOURCE1]</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Hold VPDI1] in (?ParameterVPDI?)</filterExpression></detailFilter></detailFilters></query><query name="QueryVPDI"><source><model/></source><selection><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Multi Source LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>[List of Values].[Multi Source LOV].[VALUE]</expression></dataItem></selection></query></queries><modelPath>/content/folder[@name=&apos;Accounts Receivable&apos;]/folder[@name=&apos;Data Sources&apos;]/folder[@name=&apos;ODS Delivered Packages&apos;]/package[@name=&apos;Receivable Customer&apos;]/model[@name=&apos;model&apos;]</modelPath><reportName>Hold Codes w Acct Bal-All T</reportName></report>
