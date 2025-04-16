@@ -1,6 +1,6 @@
-<report xmlns="http://developer.cognos.com/schemas/report/16.2/"           useStyleVersion="11.6" expressionLocale="en">
+<report xmlns="http://developer.cognos.com/schemas/report/16.2/"           expressionLocale="en">
 				
-				<drillBehavior/>
+				<drillBehavior drillUpDown="true"/>
 				<layouts>
 					<layout>
 						<reportPages>
@@ -16,18 +16,44 @@
 											<defaultStyle refStyle="pb"/>
 										</defaultStyles>
 									</style>
-									<contents/>
-								</pageBody>
-							<XMLAttributes><XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/></XMLAttributes></page>
-						</reportPages>
-					<promptPages><page name="Prompt page1">
-			<pageHeader>
+									<contents><table><style><CSS value="border-collapse:collapse"/><defaultStyles><defaultStyle refStyle="tb"/><defaultStyle refStyle="GuidedLayoutMargin"/></defaultStyles></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Finance Holds</staticValue></dataSource><style><CSS value="font-size:12pt"/></style></textItem></contents><style><CSS value="text-align:left;vertical-align:top"/></style></tableCell></tableCells></tableRow></tableRows></table><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse"/></style><tableRows><tableRow><tableCells><tableCell><contents><list horizontalPagination="true" refQuery="Current Holds" name="List2">
+			
+			
+			
+			<noDataHandler>
 				<contents>
 					<block>
 						<contents>
 							<textItem>
 								<dataSource>
-									<staticValue/>
+									<staticValue>No Data Available</staticValue>
+								</dataSource>
+							</textItem>
+						</contents>
+						<style>
+							<CSS value="padding:16px;"/>
+						</style>
+					</block>
+				</contents>
+			</noDataHandler>
+			<style>
+				<CSS value="border-collapse:collapse"/>
+				<defaultStyles>
+					<defaultStyle refStyle="ls"/>
+				</defaultStyles>
+			</style>
+		<listColumns><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="ID"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="ID"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="NAME"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="NAME"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="ACADEMIC_PERIOD"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="ACADEMIC_PERIOD"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="HOLD"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="HOLD"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="HOLD_EXPLANATION"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="HOLD_EXPLANATION"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="HOLD_FROM_DATE"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><dataFormat><dateFormat dateStyle="medium"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="HOLD_FROM_DATE"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="HOLD_TO_DATE"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><dataFormat><dateFormat dateStyle="medium"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="HOLD_TO_DATE"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="BALANCE"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><dataFormat><currencyFormat currencyCode="USD"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="BALANCE"/></dataSource></textItem></contents></listColumnBody></listColumn></listColumns></list></contents><style><CSS value="text-align:left;vertical-align:top"/><defaultStyles><defaultStyle refStyle="GuidedLayoutLeftPadding"/></defaultStyles></style></tableCell></tableCells></tableRow></tableRows></table></contents>
+								</pageBody>
+							<XMLAttributes><XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/></XMLAttributes></page>
+						</reportPages>
+					<promptPages><page name="Term &amp; Hold Type Prompts">
+			<pageHeader>
+				<contents>
+					<table><style><CSS value="border-collapse:collapse"/><defaultStyles><defaultStyle refStyle="tb"/><defaultStyle refStyle="GuidedLayoutMargin"/></defaultStyles></style><tableRows><tableRow><tableCells><tableCell><contents><block>
+						<contents>
+							<textItem>
+								<dataSource>
+									<staticValue>Currently Applied Financial Holds</staticValue>
 								</dataSource>
 								<style>
 									<defaultStyles>
@@ -41,18 +67,20 @@
 								<defaultStyle refStyle="ta"/>
 							</defaultStyles>
 						</style>
-					</block>
+					</block></contents><style><CSS value="text-align:left;vertical-align:top;height:100%"/></style></tableCell></tableCells></tableRow></tableRows></table>
 				</contents>
 				<style>
 					<defaultStyles>
 						<defaultStyle refStyle="hp"/>
 					</defaultStyles>
-				</style>
+				<CSS value="text-align:center"/></style>
 			</pageHeader>
 			<pageBody>
-				<contents><block>
-			<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Institution</staticValue></dataSource></textItem></contents><style><CSS value="text-align:right"/></style></tableCell><tableCell><contents><selectValue parameter="prompt_School" refQuery="LOV Institution"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE_DESCRIPTION"/></useItem></selectValue></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Term</staticValue></dataSource></textItem></contents><style><CSS value="text-align:right"/></style></tableCell><tableCell><contents><selectValue refQuery="LOV Academic Period" parameter="p_Academic_Period"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE"/></useItem><sortList><sortItem sortOrder="descending" refDataItem="VALUE"/></sortList></selectValue></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Hold Types</staticValue></dataSource></textItem></contents><style><CSS value="text-align:right"/></style></tableCell><tableCell><contents><selectValue refQuery="LOV Holds" parameter="prompt_Hold_Type"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE"/></useItem></selectValue></contents></tableCell></tableCells></tableRow></tableRows></table></contents>
-		</block></contents>
+				<contents><table><style><CSS value="border-collapse:collapse;width:100%"/><defaultStyles><defaultStyle refStyle="tb"/><defaultStyle refStyle="GuidedLayoutMargin"/></defaultStyles></style><tableRows><tableRow><tableCells><tableCell><contents><block>
+			<contents><textItem><dataSource><staticValue>VPDI: Front Range Community College</staticValue></dataSource><style><CSS value="font-size:12pt;text-decoration:underline"/></style></textItem></contents>
+		</block></contents><style><CSS value="text-align:center;vertical-align:top"/></style></tableCell></tableCells></tableRow></tableRows></table><block>
+			<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Term</staticValue></dataSource></textItem></contents><style><CSS value="text-align:right;font-size:12pt;font-weight:normal;font-style:normal;width:46%"/></style></tableCell><tableCell><contents><selectValue refQuery="LOV Academic Period" parameter="prompt_Academic_Period"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE"/></useItem><sortList><sortItem sortOrder="descending" refDataItem="VALUE"/></sortList></selectValue></contents><style><CSS value="font-size:12pt;font-weight:normal;font-style:normal"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Hold Types</staticValue></dataSource></textItem></contents><style><CSS value="text-align:right;font-size:12pt;font-weight:normal;font-style:normal;width:46%"/></style></tableCell><tableCell><contents><selectValue refQuery="LOV Holds" parameter="prompt_Hold_Type" multiSelect="true" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE"/></useItem></selectValue></contents><style><CSS value="font-size:12pt;font-weight:normal;font-style:normal"/></style></tableCell></tableCells></tableRow></tableRows></table></contents>
+		<style><CSS value="text-align:center"/></style></block></contents>
 				<style>
 					<defaultStyles>
 						<defaultStyle refStyle="py"/>
@@ -111,14 +139,9 @@
 			<source>
 				<model/>
 			</source>
-			<selection><dataItem aggregate="none" rollupAggregate="none" name="MULTI_SOURCE"><expression>[Receivable Customer].[Hold].[MULTI_SOURCE]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="ID"><expression>[Receivable Customer].[Hold].[ID]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="NAME"><expression>[Receivable Customer].[Hold].[NAME]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="ACADEMIC_PERIOD"><expression>[Receivable Customer].[Receivable Account Detail].[ACADEMIC_PERIOD]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="HOLD"><expression>[Receivable Customer].[Hold].[HOLD]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="HOLD_TO_DATE"><expression>[Receivable Customer].[Hold].[HOLD_TO_DATE]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="4"/><XMLAttribute output="no" name="RS_dataUsage" value="1"/></XMLAttributes></dataItem><dataItem aggregate="total" name="BALANCE"><expression>[Receivable Customer].[Receivable Account Detail].[BALANCE]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="9"/><XMLAttribute output="no" name="RS_dataUsage" value="2"/></XMLAttributes></dataItem></selection>
-		<detailFilters><detailFilter><filterExpression>[MULTI_SOURCE] = ?prompt_School?</filterExpression></detailFilter><detailFilter><filterExpression>[HOLD_TO_DATE] &gt; current_date</filterExpression></detailFilter><detailFilter><filterExpression>[HOLD] = ?prompt_Hold_Type?</filterExpression></detailFilter><detailFilter><filterExpression>[ACADEMIC_PERIOD] = ?prompt_Academic_Period?
-</filterExpression></detailFilter></detailFilters></query><query name="LOV Institution">
-			<source>
-				<model/>
-			</source>
-			<selection><dataItem aggregate="none" rollupAggregate="none" name="VALUE"><expression>[List of Values].[Multi Source LOV].[VALUE]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="VALUE_DESCRIPTION"><expression>[List of Values].[Multi Source LOV].[VALUE_DESCRIPTION]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem></selection>
-		<detailFilters><detailFilter><filterExpression>[VALUE] = &apos;FRCC&apos;</filterExpression></detailFilter></detailFilters></query><query name="LOV Academic Period">
+			<selection><dataItem aggregate="none" rollupAggregate="none" name="ID"><expression>[Receivable Customer].[Hold].[ID]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="NAME"><expression>[Receivable Customer].[Hold].[NAME]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="ACADEMIC_PERIOD"><expression>[Receivable Customer].[Receivable Account Detail].[ACADEMIC_PERIOD]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="HOLD"><expression>[Receivable Customer].[Hold].[HOLD]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="HOLD_EXPLANATION"><expression>[Receivable Customer].[Hold].[HOLD_EXPLANATION]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="HOLD_FROM_DATE" sort="descending"><expression>[Receivable Customer].[Hold].[HOLD_FROM_DATE]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="4"/><XMLAttribute output="no" name="RS_dataUsage" value="1"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="HOLD_TO_DATE"><expression>[Receivable Customer].[Hold].[HOLD_TO_DATE]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="4"/><XMLAttribute output="no" name="RS_dataUsage" value="1"/></XMLAttributes></dataItem><dataItem aggregate="total" name="BALANCE"><expression>[Receivable Customer].[Receivable Account Detail].[BALANCE]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="9"/><XMLAttribute output="no" name="RS_dataUsage" value="2"/></XMLAttributes></dataItem></selection>
+		<detailFilters><detailFilter><filterExpression>[HOLD_TO_DATE] &gt; current_date</filterExpression></detailFilter><detailFilter><filterExpression>[HOLD] in ?prompt_Hold_Type?</filterExpression></detailFilter><detailFilter><filterExpression>[ACADEMIC_PERIOD] in ?prompt_Academic_Period?
+</filterExpression></detailFilter></detailFilters></query><query name="LOV Academic Period">
 			<source>
 				<model/>
 			</source>
@@ -128,4 +151,6 @@
 				<model/>
 			</source>
 			<selection><dataItem aggregate="none" rollupAggregate="none" name="VALUE"><expression>[List of Values].[Hold LOV].[VALUE]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="VALUE_DESCRIPTION"><expression>[List of Values].[Hold LOV].[VALUE_DESCRIPTION]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem></selection>
-		<detailFilters><detailFilter><filterExpression>[VALUE] in (&apos;TF&apos;, &apos;T6&apos;)</filterExpression></detailFilter></detailFilters></query></queries><classStyles><classStyle name="GuidedLayoutLeftPadding"><CSS value="padding-left:5px;border-top-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-width:1px"/></classStyle><classStyle name="GuidedLayoutTopPadding"><CSS value="padding-top:5px;border-top-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-width:1px"/></classStyle><classStyle name="GuidedLayoutRightPadding"><CSS value="padding-right:5px;border-top-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-width:1px"/></classStyle><classStyle name="GuidedLayoutBottomPadding"><CSS value="padding-bottom:5px;border-top-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-width:1px"/></classStyle><classStyle name="GuidedLayoutMargin"><CSS value="margin-bottom:10px"/></classStyle></classStyles><modelPath>/content/folder[@name=&apos;Accounts Receivable&apos;]/folder[@name=&apos;Data Sources&apos;]/folder[@name=&apos;ODS Custom Packages&apos;]/package[@name=&apos;Receivable_Customer_C&apos;]/model[@name=&apos;model&apos;]</modelPath><reportName>Finance Holds</reportName></report>
+		<detailFilters><detailFilter><filterExpression>[VALUE] in (&apos;TF&apos;, &apos;T6&apos;)</filterExpression></detailFilter></detailFilters></query></queries><classStyles><classStyle name="GuidedLayoutLeftPadding"><CSS value="padding-left:5px;border-top-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-width:1px"/></classStyle><classStyle name="GuidedLayoutTopPadding"><CSS value="padding-top:5px;border-top-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-width:1px"/></classStyle><classStyle name="GuidedLayoutRightPadding"><CSS value="padding-right:5px;border-top-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-width:1px"/></classStyle><classStyle name="GuidedLayoutBottomPadding"><CSS value="padding-bottom:5px;border-top-width:1px;border-bottom-width:1px;border-left-width:1px;border-right-width:1px"/></classStyle><classStyle name="GuidedLayoutMargin"><CSS value="margin-bottom:10px"/></classStyle></classStyles><modelPath>/content/folder[@name=&apos;Accounts Receivable&apos;]/folder[@name=&apos;Data Sources&apos;]/folder[@name=&apos;ODS Custom Packages&apos;]/package[@name=&apos;Receivable_Customer_C&apos;]/model[@name=&apos;model&apos;]</modelPath><reportName>Finance Holds</reportName><reportVariables><reportVariable type="locale" name="Locale">
+			<reportExpression>ReportLocale()</reportExpression>
+		<variableValues><variableValue value="en"/></variableValues></reportVariable></reportVariables></report>

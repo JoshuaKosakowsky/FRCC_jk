@@ -1,0 +1,174 @@
+<report xmlns="http://developer.cognos.com/schemas/report/16.2/"           expressionLocale="en-us"><!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/14.3/" to "http://developer.cognos.com/schemas/report/16.2/" at 2023-2-16. 12:41:19--><!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/12.0/" to "http://developer.cognos.com/schemas/report/14.3/" at 2019-6-6. 9:17:9--><!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/9.0/" to "http://developer.cognos.com/schemas/report/12.0/" at 2016-1-7. 15:55:45--><modelPath>/content/folder[@name=&apos;Accounts Receivable&apos;]/folder[@name=&apos;Data Sources&apos;]/folder[@name=&apos;ODS Custom Packages&apos;]/package[@name=&apos;Receivable_Customer_C&apos;]/model[@name=&apos;model&apos;]</modelPath><queries><query name="Query"><source><model/></source><selection><dataItem aggregate="none" name="MULTI_SOURCE" label="VPDI"><expression>[Receivable Customer].[Receivable Account Detail].[MULTI_SOURCE]</expression></dataItem><dataItem aggregate="none" label="Ent" name="ACCOUNT_ENTITY_IND" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account].[ACCOUNT_ENTITY_IND]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="ID"><expression>[Receivable Customer].[Receivable Account Detail].[ID]</expression></dataItem><dataItem aggregate="none" name="NAME"><expression>[Receivable Customer].[Receivable Account Detail].[NAME]</expression></dataItem><dataItem aggregate="none" name="ACADEMIC_PERIOD" label="Term"><expression>[Receivable Customer].[Receivable Account Detail].[ACADEMIC_PERIOD]</expression></dataItem><dataItem aggregate="total" name="AMOUNT" rollupAggregate="total" label="Amount"><expression>[Receivable Customer].[Receivable Account Detail].[AMOUNT]</expression></dataItem><dataItem aggregate="total" name="BALANCE" label="Balance"><expression>[Receivable Customer].[Receivable Account Detail].[BALANCE]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="9"/><XMLAttribute name="RS_dataUsage" output="no" value="fact"/></XMLAttributes></dataItem><dataItem aggregate="calculated" name="Total(AMOUNT)" rollupAggregate="total"><expression>[AMOUNT]</expression></dataItem><dataItem aggregate="calculated" name="Summary(BALANCE)"><expression>[BALANCE]</expression></dataItem></selection><detailFilters><detailFilter use="optional"><filterExpression>[Receivable Customer].[Receivable Account Detail].[MULTI_SOURCE] in (?ParameterVPDI?)</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Receivable Customer].[Receivable Account Detail].[ACADEMIC_PERIOD] in (?ParameterTerm?)</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Receivable Customer].[Receivable Account Detail].[CATEGORY] in (?ParameterCat?)</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Receivable Customer].[Receivable Account Detail].[DETAIL_CODE] in (?ParameterDC?)</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Receivable Customer].[Receivable Account Detail].[SOURCE] in (?ParameterSrc?)</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Receivable Customer].[Receivable Account].[ACCOUNT_ENTITY_IND] in (?ParameterEnt?)</filterExpression></detailFilter></detailFilters></query><query name="QueryTerm"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="Data Item1"><expression>[List of Values].[Academic Period LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE" sort="ascending"><expression>[List of Values].[Academic Period LOV].[VALUE]</expression></dataItem></selection><detailFilters><detailFilter><filterExpression>[List of Values].[Academic Period LOV].[VALUE] in_range {&apos;200610&apos;:&apos;202999&apos;}
+or
+[List of Values].[Academic Period LOV].[VALUE] in_range {&apos;820061&apos;:&apos;820299&apos;}
+</filterExpression></detailFilter></detailFilters></query><query name="QueryCat"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Receivable Category LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>[List of Values].[Receivable Category LOV].[VALUE]</expression></dataItem></selection></query><query name="QueryDC"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Receivable Detail Code LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>[List of Values].[Receivable Detail Code LOV].[VALUE]</expression></dataItem></selection><detailFilters><detailFilter use="optional"><filterExpression>[List of Values].[Receivable Detail Code LOV].[MULTI_SOURCE] = ?ParameterVPDI?</filterExpression></detailFilter></detailFilters></query><query name="QuerySrc"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Receivable Source LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>[List of Values].[Receivable Source LOV].[VALUE]</expression></dataItem></selection></query><query name="QueryEnt"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Receivable Source LOV].[VALUE]</expression></dataItem></selection><detailFilters><detailFilter><filterExpression>[VALUE] in (&apos;P&apos;,&apos;C&apos;)</filterExpression></detailFilter></detailFilters></query><query name="QueryVPDI"><source><model/></source><selection><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Multi Source LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>[List of Values].[Multi Source LOV].[VALUE]</expression></dataItem></selection></query></queries><layouts><layout><reportPages><page name="Page1"><pageHeader><style><CSS value="padding-bottom:10px;"/><defaultStyles><defaultStyle refStyle="ph"/></defaultStyles></style><contents><block><style><defaultStyles><defaultStyle refStyle="ta"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem name="reportTitle"><style><defaultStyles><defaultStyle refStyle="tt"/></defaultStyles></style><dataSource><staticValue>Amount by Term</staticValue></dataSource></textItem></contents></block><block>
+			<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF8"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterVPDI&apos;) is not null) then &quot;VPDI: &quot; +  ParamDisplayValue(&apos;ParameterVPDI&apos;) else &quot;VPDI: All&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF9"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterTerm&apos;) is not null) then &quot;Term: &quot; +  ParamDisplayValue(&apos;ParameterTerm&apos;) else &quot;Term: All &quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF10"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterCat&apos;) is not null) then &quot;Category: &quot; + ParamDisplayValue(&apos;ParameterCat&apos;) else &quot;Category: All&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF11"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterDC&apos;) is not null) then &quot;Detail Code: &quot; +  ParamDisplayValue(&apos;ParameterDC&apos;) else &quot;Detail Code: All&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF12"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterSrc&apos;) is not null) then &quot;Source: &quot; +  ParamDisplayValue(&apos;ParameterSrc&apos;) else &quot;Source: All &quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterEnt&apos;) is not null) then &quot;Entity: &quot; +   ParamDisplayValue(&apos;ParameterEnt&apos;) else &quot;Entity: All&quot;</reportExpression></dataSource></textItem></contents></tableCell></tableCells></tableRow></tableRows></table></contents>
+		<style><defaultStyles><defaultStyle refStyle="ft"/></defaultStyles></style></block></contents></pageHeader><pageBody><style><defaultStyles><defaultStyle refStyle="pb"/></defaultStyles></style><contents><list keepWithFooter="2" keepWithHeader="2" name="List1" refQuery="Query"><noDataHandler><contents><block><contents><textItem><dataSource><staticValue>No data available</staticValue></dataSource><style><CSS value="padding:10px 18px;"/></style></textItem></contents></block></contents></noDataHandler><listColumns><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C1"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="MULTI_SOURCE"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C1"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>VPDI</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="MULTI_SOURCE"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="ACCOUNT_ENTITY_IND"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="ACCOUNT_ENTITY_IND"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C4"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="ACADEMIC_PERIOD"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C4"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Term</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="ACADEMIC_PERIOD"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:right;;white-space:nowrap"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C9"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="AMOUNT"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:right"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C9"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Amount</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="AMOUNT"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:right"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="BALANCE"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="BALANCE"/></dataSource></textItem></contents></listColumnBody></listColumn></listColumns><style><CSS value="border-collapse: collapse;"/><defaultStyles><defaultStyle refStyle="ls"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="ls"/></XMLAttributes><listOverallGroup><listFooter><listRows><listRow><rowCells><rowCell colSpan="3"><contents><textItem><dataSource><staticValue>Overall</staticValue></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="if"/></defaultStyles></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Total(AMOUNT)"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="is"/></defaultStyles></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Summary(BALANCE)"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="is"/></defaultStyles></style></rowCell></rowCells></listRow></listRows></listFooter></listOverallGroup></list></contents></pageBody><pageFooter><style><CSS value="padding-top:10px;"/><defaultStyles><defaultStyle refStyle="pf"/></defaultStyles></style><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%;"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><reportExpression>AsOfDate()</reportExpression></dataSource></textItem></contents><style><CSS value="vertical-align:top;text-align:left;width:25%;"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue> - </staticValue></dataSource></textItem><textItem><dataSource><reportExpression>PageNumber()</reportExpression></dataSource></textItem><textItem><dataSource><staticValue> - </staticValue></dataSource></textItem></contents><style><CSS value="vertical-align:top;text-align:center;width:50%;"/></style></tableCell><tableCell><contents><textItem><dataSource><reportExpression>AsOfTime()</reportExpression></dataSource></textItem></contents><style><CSS value="vertical-align:top;text-align:right;width:25%;"/></style></tableCell></tableCells></tableRow></tableRows></table></contents></pageFooter><style><defaultStyles><defaultStyle refStyle="pg"/></defaultStyles></style><XMLAttributes><XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/></XMLAttributes></page></reportPages><promptPages><page name="Prompt Page1">
+			<pageHeader>
+				<contents>
+					<block>
+						<contents>
+							<textItem>
+								<dataSource>
+									<staticValue/>
+								</dataSource>
+								<style>
+									<defaultStyles>
+										<defaultStyle refStyle="tt"/>
+									</defaultStyles>
+								</style>
+							</textItem>
+						</contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="ta"/>
+							</defaultStyles>
+						</style>
+					</block>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="hp"/>
+					</defaultStyles>
+				</style>
+			</pageHeader>
+			<pageBody>
+				<contents><block>
+			<contents/>
+		</block><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>VPDI: </staticValue></dataSource></textItem></contents><style><CSS value="vertical-align:top;text-align:right"/></style></tableCell><tableCell><contents><selectValue parameter="ParameterVPDI" refQuery="QueryVPDI" required="false" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue> </staticValue></dataSource></textItem></contents></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow></tableRows></table></contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="py"/>
+					</defaultStyles>
+				</style>
+			</pageBody>
+			<pageFooter>
+				<contents>
+					<promptButton type="cancel">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="back">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="next">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="finish">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="fp"/>
+					</defaultStyles>
+				</style>
+			</pageFooter>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="pp"/>
+				</defaultStyles>
+			</style>
+		</page><page name="Prompt Page2">
+			<pageHeader>
+				<contents>
+					<block>
+						<contents>
+							<textItem>
+								<dataSource>
+									<staticValue/>
+								</dataSource>
+								<style>
+									<defaultStyles>
+										<defaultStyle refStyle="tt"/>
+									</defaultStyles>
+								</style>
+							</textItem>
+						</contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="ta"/>
+							</defaultStyles>
+						</style>
+					</block>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="hp"/>
+					</defaultStyles>
+				</style>
+			</pageHeader>
+			<pageBody>
+				<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow></tableRows></table><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Term: </staticValue></dataSource></textItem></contents><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterTerm" refQuery="QueryTerm" required="false" selectValueUI="listBox"><useItem refDataItem="Data Item1"><displayItem refDataItem="VALUE"/></useItem></selectValue></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Source:</staticValue></dataSource></textItem></contents><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterSrc" refQuery="QuerySrc" required="false" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Category: </staticValue></dataSource></textItem></contents><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterCat" refQuery="QueryCat" required="false" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Account Type (P)ersonal or (C)ompany:</staticValue></dataSource></textItem></contents><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterEnt" refQuery="QueryEnt" selectValueUI="listBox"><useItem refDataItem="VALUE"/></selectValue></contents><style><CSS value="vertical-align:top"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents><textItem><dataSource><staticValue>The report defaults to all detail codes.</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Detail Code: </staticValue></dataSource></textItem></contents><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterDC" refQuery="QueryDC" required="false" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents></tableCell><tableCell><contents/><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents/><style><CSS value="vertical-align:top"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents><textItem><dataSource><staticValue>Selection of more than 1000 detail codes will abort.</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow></tableRows></table></contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="py"/>
+					</defaultStyles>
+				</style>
+			</pageBody>
+			<pageFooter>
+				<contents>
+					<promptButton type="cancel">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="back">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="next">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="finish">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="fp"/>
+					</defaultStyles>
+				</style>
+			</pageFooter>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="pp"/>
+				</defaultStyles>
+			</style>
+		</page></promptPages></layout></layouts><reportVariables><reportVariable name="locale" type="locale"><reportExpression>ReportLocale()</reportExpression><variableValues><variableValue value="en-us"/></variableValues></reportVariable></reportVariables><drillBehavior drillUpDown="true"/><XMLAttributes><XMLAttribute name="PromptAllRemainingOptional" value="true"/><XMLAttribute name="RS_CreateExtendedDataItems" output="no" value="false"/><XMLAttribute name="listSeparator" output="no" value=","/><XMLAttribute output="no" name="decimalSeparator" value="."/><XMLAttribute output="no" name="RS_modelModificationTime" value="2024-12-09T23:56:54.436Z"/></XMLAttributes><reportName>Amount by Term</reportName></report>
