@@ -1,0 +1,100 @@
+<report xmlns="http://developer.cognos.com/schemas/report/16.2/"           expressionLocale="en-us"><!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/14.3/" to "http://developer.cognos.com/schemas/report/16.2/" at 2024-12-10. 11:5:46--><!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/9.0/" to "http://developer.cognos.com/schemas/report/14.3/" at 2020-8-5. 13:30:4--><!--RSU-SPC-0093 The report specification was upgraded from &amp;amp;amp;amp;amp;amp;amp;quot;http://developer.cognos.com/schemas/report/8.0/&amp;amp;amp;amp;amp;amp;amp;quot; to &amp;amp;amp;amp;amp;amp;amp;quot;http://developer.cognos.com/schemas/report/9.0/&amp;amp;amp;amp;amp;amp;amp;quot; at 2013-8-5. 14:18:18--><modelPath>/content/folder[@name=&apos;Accounts Receivable&apos;]/folder[@name=&apos;Data Sources&apos;]/folder[@name=&apos;ODS Custom Packages&apos;]/package[@name=&apos;Receivable_Customer_C&apos;]/model[@name=&apos;model&apos;]</modelPath><reportName>Amount By Current Term</reportName><queries><query name="Query"><source><model/></source><selection><dataItem aggregate="none" name="VPDI"><expression>[Receivable Customer].[Receivable Account Detail].[MULTI_SOURCE]</expression></dataItem><dataItem aggregate="none" name="ID"><expression>[Receivable Customer].[Receivable Account Detail].[ID]</expression></dataItem><dataItem aggregate="none" name="Name"><expression>[Receivable Customer].[Receivable Account Detail].[NAME]</expression></dataItem><dataItem aggregate="none" label="Ent" name="Ent"><expression>[Receivable Customer].[Receivable Account].[ACCOUNT_ENTITY_IND]</expression></dataItem><dataItem aggregate="none" name="ACADEMIC_PERIOD" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account Detail].[ACADEMIC_PERIOD]</expression></dataItem><dataItem aggregate="none" name="DETAIL_CODE"><expression>[Receivable Customer].[Receivable Account Detail].[DETAIL_CODE]</expression></dataItem><dataItem aggregate="none" name="DETAIL_CODE_TYPE"><expression>[Receivable Customer].[Receivable Account Detail].[DETAIL_CODE_TYPE]</expression></dataItem><dataItem aggregate="none" name="ENTRY_DATE"><expression>[Receivable Customer].[Receivable Account Detail].[ENTRY_DATE]</expression></dataItem><dataItem aggregate="none" name="SysDate"><expression>trunc({sysdate})</expression></dataItem><dataItem aggregate="none" name="DaysBetween"><expression>_days_between([SysDate], ([ENTRY_DATE]))</expression></dataItem><dataItem aggregate="total" name="AMOUNT" rollupAggregate="total"><expression>[Receivable Customer].[Receivable Account Detail].[AMOUNT]</expression></dataItem><dataItem aggregate="none" name="CurrTrm"><expression>201310</expression></dataItem><dataItem aggregate="summarize" name="Amt" rollupAggregate="summarize"><expression>IF([DETAIL_CODE_TYPE]=&apos;P&apos;) THEN ([AMOUNT]*1) ELSE
+([AMOUNT])
+</expression></dataItem><dataItem aggregate="summarize" name="ContEd" rollupAggregate="summarize"><expression>IF ([ACADEMIC_PERIOD]&gt;&apos;80000&apos;)
+THEN ([Amt])
+ELSE (0.00)</expression></dataItem><dataItem aggregate="summarize" name="Prior" rollupAggregate="summarize"><expression>IF ([ACADEMIC_PERIOD]&lt;[CurrTerm]  )
+THEN ([Amt])
+ELSE (0.00)</expression></dataItem><dataItem aggregate="summarize" name="Current" rollupAggregate="summarize"><expression>IF ([ACADEMIC_PERIOD]=[CurrTerm]  )
+THEN ([Amt])
+ELSE (0.00)
+</expression></dataItem><dataItem aggregate="summarize" name="Future" rollupAggregate="summarize"><expression>IF ([ACADEMIC_PERIOD]&gt;[CurrTerm]  and 
+[ACADEMIC_PERIOD]&lt;&apos;80000&apos; )
+THEN ([Amt])
+ELSE (0.00)</expression></dataItem><dataItem aggregate="calculated" name="CurrTerm" rollupAggregate="none"><expression>IF (_day_of_year([SysDate])&lt;136)
+THEN (cast(extract( year, [SysDate]), varchar(4))||&apos;30&apos;)
+ELSE (IF (_day_of_year([SysDate])&gt;226)
+THEN (cast(extract( year, [NextYear]), varchar(4))||&apos;20&apos;)
+ELSE (cast(extract( year, [NextYear]), varchar(4))||&apos;10&apos;))</expression></dataItem><dataItem aggregate="none" name="NextYear"><expression>_add_years([SysDate],1)</expression></dataItem><dataItem aggregate="summarize" name="Select" rollupAggregate="summarize"><expression>ABS(total([ContEd]))+ABS(total([Prior]))+ABS(total([Current]))+ABS(total([Future]))</expression></dataItem></selection><detailFilters><detailFilter use="optional"><filterExpression>[VPDI] = ?ParameterVPDI?</filterExpression></detailFilter><detailFilter postAutoAggregation="true"><filterExpression>[Select] &gt; .001</filterExpression></detailFilter></detailFilters></query><query name="QueryVPDI"><source><model/></source><selection><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Multi Source LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>[List of Values].[Multi Source LOV].[VALUE]</expression></dataItem></selection></query></queries><layouts><layout><reportPages><page name="Page1"><pageHeader><style><CSS value="padding-bottom:10px;"/><defaultStyles><defaultStyle refStyle="ph"/></defaultStyles></style><contents><block><style><defaultStyles><defaultStyle refStyle="ta"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem name="reportTitle"><style><defaultStyles><defaultStyle refStyle="tt"/></defaultStyles></style><dataSource><staticValue>Amount by Current Term</staticValue></dataSource></textItem></contents></block><block><style><defaultStyles><defaultStyle refStyle="ft"/></defaultStyles></style><contents/></block></contents></pageHeader><pageBody><style><defaultStyles><defaultStyle refStyle="pb"/></defaultStyles></style><contents><list keepWithFooter="2" keepWithHeader="2" name="List1" refQuery="Query"><noDataHandler><contents><block><contents><textItem><dataSource><staticValue>No data available</staticValue></dataSource><style><CSS value="padding:10px 18px;"/></style></textItem></contents></block></contents></noDataHandler><listColumns><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C1"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="VPDI"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C1"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>VPDI</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="VPDI"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="CurrTerm"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="CurrTerm"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Ent"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Ent"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="ID"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="ID"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C3"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="Name"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C3"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Name</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="Name"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:right;;white-space:nowrap"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C31"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="Amt"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C31"/></XMLAttributes><contents><textItem><dataSource><staticValue>Amt</staticValue></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="ContEd"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="ContEd"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Prior"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Prior"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Current"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Current"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="Future"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="Future"/></dataSource></textItem></contents></listColumnBody></listColumn></listColumns><style><CSS value="border-collapse: collapse;"/><defaultStyles><defaultStyle refStyle="ls"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="ls"/></XMLAttributes><listOverallGroup><listFooter><listRows><listRow><rowCells><rowCell colSpan="5"><style><defaultStyles><defaultStyle refStyle="of"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="of"/><XMLAttribute name="tag" value="footertag"/></XMLAttributes><contents><textItem><dataSource><staticValue>Summary</staticValue></dataSource></textItem></contents></rowCell><rowCell><style><defaultStyles><defaultStyle refStyle="os"/></defaultStyles><CSS value="text-align:right;white-space:nowrap"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="os"/><XMLAttribute name="tag" value="C31"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="Amt"/></dataSource></textItem></contents></rowCell><rowCell><contents/><style><defaultStyles><defaultStyle refStyle="of"/></defaultStyles></style></rowCell><rowCell><contents/><style><defaultStyles><defaultStyle refStyle="of"/></defaultStyles></style></rowCell><rowCell><contents/><style><defaultStyles><defaultStyle refStyle="of"/></defaultStyles></style></rowCell><rowCell><contents/><style><defaultStyles><defaultStyle refStyle="of"/></defaultStyles></style></rowCell></rowCells></listRow></listRows></listFooter></listOverallGroup></list></contents></pageBody><pageFooter><style><CSS value="padding-top:10px;"/><defaultStyles><defaultStyle refStyle="pf"/></defaultStyles></style><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%;"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><reportExpression>AsOfDate()</reportExpression></dataSource></textItem></contents><style><CSS value="vertical-align:top;text-align:left;width:25%;"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue> - </staticValue></dataSource></textItem><textItem><dataSource><reportExpression>PageNumber()</reportExpression></dataSource></textItem><textItem><dataSource><staticValue> - </staticValue></dataSource></textItem></contents><style><CSS value="vertical-align:top;text-align:center;width:50%;"/></style></tableCell><tableCell><contents><textItem><dataSource><reportExpression>AsOfTime()</reportExpression></dataSource></textItem></contents><style><CSS value="vertical-align:top;text-align:right;width:25%;"/></style></tableCell></tableCells></tableRow></tableRows></table></contents></pageFooter><style><defaultStyles><defaultStyle refStyle="pg"/></defaultStyles></style><XMLAttributes><XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/></XMLAttributes></page></reportPages><promptPages><page name="Prompt page1">
+			<pageHeader>
+				<contents>
+					<block>
+						<contents>
+							<textItem>
+								<dataSource>
+									<staticValue/>
+								</dataSource>
+								<style>
+									<defaultStyles>
+										<defaultStyle refStyle="tt"/>
+									</defaultStyles>
+								</style>
+							</textItem>
+						</contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="ta"/>
+							</defaultStyles>
+						</style>
+					</block>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="hp"/>
+					</defaultStyles>
+				</style>
+			</pageHeader>
+			<pageBody>
+				<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>VPDI:</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><selectValue parameter="ParameterVPDI" refQuery="QueryVPDI"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow></tableRows></table></contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="py"/>
+					</defaultStyles>
+				</style>
+			</pageBody>
+			<pageFooter>
+				<contents>
+					<promptButton type="cancel">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="back">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="next">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="finish">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="fp"/>
+					</defaultStyles>
+				</style>
+			</pageFooter>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="pp"/>
+				</defaultStyles>
+			</style>
+		</page></promptPages></layout></layouts><reportVariables><reportVariable name="locale" type="locale"><reportExpression>ReportLocale()</reportExpression><variableValues><variableValue value="en-us"/></variableValues></reportVariable></reportVariables><drillBehavior drillUpDown="true"/><XMLAttributes><XMLAttribute name="PromptAllRemainingOptional" value="true"/><XMLAttribute name="RS_CreateExtendedDataItems" output="no" value="false"/><XMLAttribute name="listSeparator" output="no" value=","/><XMLAttribute output="no" name="decimalSeparator" value="."/><XMLAttribute output="no" name="RS_modelModificationTime" value="2024-12-09T23:56:54.436Z"/></XMLAttributes></report>
