@@ -1,4 +1,4 @@
-''' This Code  will be used to automate Holds on student accounts'''
+''' This Code  will be used to automate Charge Applications on student accounts'''
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -75,37 +75,42 @@ try:
     print("Resuming process for 2FA pause.")
     actionKeys = ActionChains(driver)
 
-    driver.get(f'https://banner.cccs.edu/BannerAdmin/?form=TSAAREV')
+    driver.get(f'https://banner.cccs.edu/BannerAdmin?form=TSAAREV&vpdi_code=FRCC&appnav_vpdi_code=FRCC&ban_args=&ban_mode=xe#eyJ0eXBlIjoiY29udGV4dCIsImNvbnRleHQiOnsicGFnZU5hbWUiOiJUU0FBUkVWIiwidmFsdWVzIjp7fSwiaG9zdCI6Imh0dHBzOi8vYmFubmVyLmNjY3MuZWR1L2FwcGxpY2F0aW9uTmF2aWdhdG9yIiwiYXBwaWQiOiJiYW5uZXJIUyIsInBsYXRmb3JtIjoiYmFubmVySFMifX0=')
     print(f"Found {Search_key} Webpage")
     countdown(15)
 
     # Action keys for closing TOADEST
-    countdown(3)
     print(f"Action Keys to close Toadest")
     Close_TOADEST = ActionChains(driver)
     Close_TOADEST.pause(1).key_down(Keys.CONTROL).send_keys('q').key_up(Keys.CONTROL).perform()
+    countdown(3)
 
     index = 0
     while index < len(df):
         row = df.iloc[index]
         try:
             ID = str(row["SID"])
-            Detail_Code = str(row["Detail Code"])
-            Term = str(row["Term"])
-            Amount = str(row["Void"])
+            Detail_Code = str(row["DETAIL CODE"])
+            Term = str(row["TERM"])
+            Amount = str(row["VOID"])
 
-            countdown(4)
-            TSAAREV_ID = wait.until(EC.presence_of_element_located((
-                By.ID, 'inp:key_block_id'
-                )))
-            print("Found ID input box")
-            TSAAREV_ID.clear()
-            print("Cleared ID box")
-            time.sleep(.5)
-            TSAAREV_ID.send_keys(ID)
-            print(f"Input {ID}")
+            try:
+                TSAAREV_ID = wait.until(EC.presence_of_element_located((
+                    By.ID, 'inp:key_block_id'
+                    )))
+                print("Found ID input box")
+                TSAAREV_ID.clear()
+                print("Cleared ID box")
+                time.sleep(.75)
+                TSAAREV_ID.send_keys(ID)
+                print(f"Input {ID}")
+                countdown(2)
+            except TimeoutException:
+                print(f"SID Input not found. Skipping row and {ID}")
+                index += 1
+                continue
 
-            countdown(5)
+            countdown(1)
             GO = wait.until(EC.presence_of_element_located((
                 By.CLASS_NAME, 'ui-button-text'
             )))
@@ -113,7 +118,7 @@ try:
             GO.click() 
 
             # Insert Button (F6)
-            countdown(5)
+            countdown(2)
             Insert = wait.until(EC.presence_of_element_located((
                 By.XPATH, "(//a[@title='Insert (F6)'])[1]"
             )))
@@ -123,8 +128,8 @@ try:
             # Using Action Keys since the Insert Button places us directly in the Detail Code Input Box
             countdown(2)
             print(f"Action Keys to input Detil Code of: {Detail_Code}")
-            HT = ActionChains(driver)
-            HT.pause(1).send_keys(Detail_Code).perform()
+            DC = ActionChains(driver)
+            DC.pause(1).send_keys(Detail_Code).perform()
 
             # Utilize TAB Key to move to Description block
             countdown(2)
@@ -154,13 +159,18 @@ try:
             save = ActionChains(driver)
             save.key_down(Keys.F10).key_up(Keys.F10).perform()
 
+            #F5 to startove and move process along
+            time.sleep(0.5)
+            save = ActionChains(driver)
+            save.key_down(Keys.F5).key_up(Keys.F5).perform()
+
             # Last step (or near it) of the loop
-            countdown(3)
-            Start_Over = wait.until(EC.presence_of_element_located((
-                By.ID, 'frames16'
-            )))
-            print('Found Start Over Button')
-            Start_Over.click()         
+            #countdown(2)
+            #Start_Over = wait.until(EC.presence_of_element_located((
+            #    By.ID, 'frames19'
+            #)))
+            #print('Found Start Over Button')
+            #Start_Over.click()         
             
             counter += 1
             print(f"Processed {counter} rows")
@@ -170,13 +180,14 @@ try:
         except Exception as e:
             print(f"An error occurred while processing row {index}: {e}")
             continue
+        countdown(2)
             
         
         index += 1
         print(f"Processed row {index}",f"\n SID: {ID} ... AMT: {Amount}")
         
 
-    time.sleep(5)
+    time.sleep(2)
 
 except KeyboardInterrupt:
     print("Process interrupted by user.")
