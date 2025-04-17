@@ -1,0 +1,320 @@
+<report xmlns="http://developer.cognos.com/schemas/report/16.2/"           expressionLocale="en-us"><!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/14.3/" to "http://developer.cognos.com/schemas/report/16.2/" at 2023-8-14. 16:40:47--><!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/9.0/" to "http://developer.cognos.com/schemas/report/14.1/" at 2018-4-12. 9:42:35--><modelPath>/content/folder[@name=&apos;Accounts Receivable&apos;]/folder[@name=&apos;Data Sources&apos;]/folder[@name=&apos;ODS Custom Packages&apos;]/package[@name=&apos;Receivable_Customer_C&apos;]/model[@name=&apos;model&apos;]</modelPath><queries><query name="QueryTerm"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="Data Item1"><expression>[List of Values].[Academic Period LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE" sort="ascending"><expression>[List of Values].[Academic Period LOV].[VALUE]</expression></dataItem></selection><detailFilters><detailFilter><filterExpression>[List of Values].[Academic Period LOV].[VALUE] in_range {&apos;000000&apos;:&apos;000000&apos;}
+or
+(
+[VALUE] &lt; (to_char(extract(year, current_date)+1)+&apos;99&apos;)
+and
+[VALUE] &gt; (to_char(extract(year, current_date)-10)+&apos;00&apos;)
+)
+
+or
+[List of Values].[Academic Period LOV].[VALUE] in_range {&apos;820061&apos;:&apos;820419&apos;}
+</filterExpression></detailFilter></detailFilters></query><query name="QueryCat"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Receivable Category LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>[List of Values].[Receivable Category LOV].[VALUE]</expression></dataItem></selection></query><query name="QueryDC"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Receivable Detail Code LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>[List of Values].[Receivable Detail Code LOV].[VALUE]</expression></dataItem></selection></query><query name="QuerySrc"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Receivable Source LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>[List of Values].[Receivable Source LOV].[VALUE]</expression></dataItem></selection></query><query name="QueryZB"><source><model/></source><selection><dataItem aggregate="none" name="Data Item1"><expression>[List of Values].[All Values LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE" sort="ascending"><expression>[List of Values].[All Values LOV].[VALUE]</expression></dataItem></selection><detailFilters><detailFilter><filterExpression>[Data Item1] in (&apos;N&apos;,&apos;Y&apos;)</filterExpression></detailFilter></detailFilters></query><query name="QueryVPDI"><source><model/></source><selection><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Multi Source LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE_DESCRIPTION" sort="ascending"><expression>[List of Values].[Multi Source LOV].[VALUE_DESCRIPTION]</expression></dataItem></selection></query><query name="Report Query SQL">
+			<source>
+				
+			<sqlQuery dataSource="ODS" name="SQL1">
+			<sqlText>with money as (
+select AD.multi_source, AD.academic_period, AD.amount, AD.account_uid as pidm, AD.name,  
+AD.id, AD.category, AD.detail_code, AD.source,  AD.account_UID,
+ZGKFUNC.F_GET_PHONE(account_uid,&apos;LO&apos;) PHONE_NUMBER,
+ZGKFUNC.F_GET_PHONE(account_uid,&apos;CELL&apos;) CELL_PHONE_NUMBER,
+ZGKFUNC.F_GET_EMAIL(account_uid,&apos;STU&apos;) E_MAIL,
+ZGKFUNC.F_GET_EMAIL(account_uid,&apos;PERS&apos;) PERSONAL_E_MAIL
+
+from receivable_account_detail  AD
+where AD.multi_source = #prompt(&apos;P_Multi_Source&apos;)# 
+and academic_period in (#promptmany(&apos;P_ACADEMIC_PERIOD&apos;)#)  
+--group by id, name, account_uid, multi_source, academic_period, category, detail_code, source
+--having sum(amount) &lt;&gt;0 
+) ,
+
+course as (
+select person_uid, mif_value, academic_period,
+listagg(course_reference_number, &apos;, &apos;) within group (order by course_reference_number) as CRN,
+listagg(course_campus, &apos;, &apos;) within group (order by course_reference_number) as Course_Campus,
+listagg(sub_academic_period, &apos;, &apos;) within group (order by course_reference_number) as Sub_Academic_Period,
+listagg(course_identification || course_section_number, &apos;, &apos;) within group (order by course_reference_number) as Course_ID_Section,
+listagg(course_credits, &apos;, &apos;) within group (order by course_reference_number) as Course_Credits
+from mst_student_course
+where academic_period in (#promptmany(&apos;P_ACADEMIC_PERIOD&apos;)#)  and mif_value = #prompt(&apos;P_Multi_Source&apos;)# and
+transfer_course_ind = &apos;N&apos; and course_register_ind = &apos;Y&apos; --and person_uid in (2454329, 1375708, 2483705)
+group by person_uid,  mif_value, academic_period),
+
+
+ACCEPTED_AMOUNT as (
+select RPRATRM_PIDM,RPRATRM_TERM_CODE,RPRATRM_VPDI_CODE,SUM(RPRATRM_ACCEPT_AMT) AS ACCEPTED_AMOUNT from rpratrm
+where RPRATRM_ACCEPT_AMT is not null
+and RPRATRM_TERM_CODE in (#promptmany(&apos;P_ACADEMIC_PERIOD&apos;)#) 
+and RPRATRM_VPDI_CODE = #prompt(&apos;P_Multi_Source&apos;)#
+group by RPRATRM_PIDM,RPRATRM_TERM_CODE,RPRATRM_VPDI_CODE
+),
+
+disbursed as (
+select person_uid, multi_source, academic_period,  max(award_paid_date) disbursed_date  
+from award_by_person
+where academic_period in (#promptmany(&apos;P_ACADEMIC_PERIOD&apos;)#)  and multi_source = #prompt(&apos;P_Multi_Source&apos;)# 
+group by  person_uid, multi_source, academic_period
+),
+
+census as (select a.person_uid, a.mif_value, a.academic_period, max(b.census_enrollment_date1) maxcensus
+from mst_student_course a, MSVGVC1 b
+where 
+a.mif_value = b.multi_source and
+a.academic_period = b.academic_period and
+a.course_reference_number = b.course_reference_number
+ and a.mif_value = #prompt(&apos;P_Multi_Source&apos;)# and a.academic_period in (#promptmany(&apos;P_ACADEMIC_PERIOD&apos;)#)  
+and course_register_ind = &apos;Y&apos;
+group by a.person_uid, a.mif_value, a.academic_period
+),
+
+element9 as (
+select sgbuser_vpdi_code, sgbuser_pidm, sgbuser_term_code, SGBUSER_SUDI_CODE element9_code 
+from sgbuser where sgbuser_vpdi_code = #prompt(&apos;P_Multi_Source&apos;)# and sgbuser_term_code in (#promptmany(&apos;P_ACADEMIC_PERIOD&apos;)#) ),
+
+receviable_account as (
+select account_uid, account_entity_ind, id, multi_source
+from receivable_account where multi_source = #prompt(&apos;P_Multi_Source&apos;)# and account_entity_ind = &apos;P&apos;) -- you need this to filter out the C and P&apos;s, don&apos;t need any columns below.
+
+,
+address as (select PA.person_UID,
+PA.STREET_LINE1 STREET_LINE1,
+PA.STREET_LINE2 STREET_LINE2,
+PA.CITY CITY,
+PA.STATE_PROVINCE STATE,
+PA.POSTAL_CODE POSTAL_CODE
+from Person_Address PA 
+where PA.ADDRESS_TYPE = &apos;LO&apos; 
+ AND PA.ADDRESS_RULE =&apos;STDNADDR&apos; 
+) 
+
+select
+m.multi_source, m.academic_period, m.amount, m.pidm, m.name,  m.id, m.PHONE_NUMBER,  m.CELL_PHONE_NUMBER, m.E_MAIL, m.PERSONAL_E_MAIL, 
+PA.STREET_LINE1, PA.STREET_LINE2, PA.CITY, PA.STATE, PA.POSTAL_CODE,
+m.detail_code, m.source, m.category,
+c.CRN, c.Course_Campus, c.Sub_Academic_Period, c.Course_ID_Section, c.Course_Credits,
+aa.ACCEPTED_AMOUNT,
+--d.disbursed_amount,
+d.disbursed_date,
+e.element9_code ,
+cen.maxcensus
+
+from money m, course c, accepted_amount aa, element9 e, receviable_account ra, disbursed d, census cen, address PA
+where m.multi_source = c.mif_value(+)
+and m.pidm= c.person_uid(+)
+and m.academic_period = c.academic_period(+)
+and m.pidm = aa.RPRATRM_PIDM(+)
+and m.academic_period = aa.RPRATRM_TERM_CODE(+)
+and m.multi_source = aa.RPRATRM_VPDI_CODE(+)
+and m.academic_period = cen.academic_period(+)
+and m.multi_source = cen.mif_value(+)
+and m.pidm = cen.person_uid(+)
+and m.multi_source = e.sgbuser_vpdi_code(+)
+and m.pidm= e.sgbuser_pidm(+)
+and m.academic_period = e.sgbuser_term_code (+)
+and m.multi_source = ra.multi_source
+and m.pidm= ra.account_uid
+and m.multi_source = d.multi_source(+)
+and m.pidm= d.person_uid(+)
+and m.academic_period = d.academic_period(+)
+ and m.account_UID = PA.Person_uid (+)
+
+and m.multi_source
+in
+(CASE 
+WHEN REGEXP_SUBSTR(#sq($account.parameters.Domain)#,&apos;[^/]+&apos;,1,2) = &apos;CCCS&apos; 
+THEN m.multi_source
+ELSE  REGEXP_SUBSTR(#sq($account.parameters.Domain)#,&apos;[^/]+&apos;,1,2) 
+END) 
+</sqlText>
+		<mdProjectedItems><mdProjectedItem name="MULTI_SOURCE"/><mdProjectedItem name="ACADEMIC_PERIOD"/><mdProjectedItem name="AMOUNT"/><mdProjectedItem name="PIDM"/><mdProjectedItem name="NAME"/><mdProjectedItem name="ID"/><mdProjectedItem name="PHONE_NUMBER"/><mdProjectedItem name="CELL_PHONE_NUMBER"/><mdProjectedItem name="E_MAIL"/><mdProjectedItem name="PERSONAL_E_MAIL"/><mdProjectedItem name="STREET_LINE1"/><mdProjectedItem name="STREET_LINE2"/><mdProjectedItem name="CITY"/><mdProjectedItem name="STATE"/><mdProjectedItem name="POSTAL_CODE"/><mdProjectedItem name="DETAIL_CODE"/><mdProjectedItem name="SOURCE"/><mdProjectedItem name="CATEGORY"/><mdProjectedItem name="CRN"/><mdProjectedItem name="COURSE_CAMPUS"/><mdProjectedItem name="SUB_ACADEMIC_PERIOD"/><mdProjectedItem name="COURSE_ID_SECTION"/><mdProjectedItem name="COURSE_CREDITS"/><mdProjectedItem name="ACCEPTED_AMOUNT"/><mdProjectedItem name="DISBURSED_DATE"/><mdProjectedItem name="ELEMENT9_CODE"/><mdProjectedItem name="MAXCENSUS"/></mdProjectedItems></sqlQuery></source>
+			<selection><dataItem name="MULTI_SOURCE"><expression>[SQL1].[MULTI_SOURCE]</expression></dataItem><dataItem name="ACADEMIC_PERIOD"><expression>[SQL1].[ACADEMIC_PERIOD]</expression></dataItem><dataItem aggregate="total" name="AMOUNT" rollupAggregate="total"><expression>[SQL1].[AMOUNT]</expression></dataItem><dataItem aggregate="total" name="AMOUNT1" rollupAggregate="total"><expression>IF (?ParameterZB? = &apos;N&apos;)
+THEN (0)
+ELSE (-99999999999)</expression></dataItem><dataItem name="PIDM"><expression>[SQL1].[PIDM]</expression></dataItem><dataItem name="NAME"><expression>[SQL1].[NAME]</expression></dataItem><dataItem name="ID"><expression>[SQL1].[ID]</expression></dataItem><dataItem name="PHONE_NUMBER"><expression>[SQL1].[PHONE_NUMBER]</expression></dataItem><dataItem name="CELL_PHONE_NUMBER"><expression>[SQL1].[CELL_PHONE_NUMBER]</expression></dataItem><dataItem name="E_MAIL"><expression>[SQL1].[E_MAIL]</expression></dataItem><dataItem name="PERSONAL_E_MAIL"><expression>[SQL1].[PERSONAL_E_MAIL]</expression></dataItem><dataItem name="STREET_LINE1"><expression>[SQL1].[STREET_LINE1]</expression></dataItem><dataItem name="STREET_LINE2"><expression>[SQL1].[STREET_LINE2]</expression></dataItem><dataItem name="CITY"><expression>[SQL1].[CITY]</expression></dataItem><dataItem name="STATE"><expression>[SQL1].[STATE]</expression></dataItem><dataItem name="POSTAL_CODE"><expression>[SQL1].[POSTAL_CODE]</expression></dataItem><dataItem name="DETAIL_CODE"><expression>[SQL1].[DETAIL_CODE]</expression></dataItem><dataItem name="SOURCE"><expression>[SQL1].[SOURCE]</expression></dataItem><dataItem name="CATEGORY"><expression>[SQL1].[CATEGORY]</expression></dataItem><dataItem name="CRN"><expression>[SQL1].[CRN]</expression></dataItem><dataItem name="COURSE_CAMPUS"><expression>[SQL1].[COURSE_CAMPUS]</expression></dataItem><dataItem name="SUB_ACADEMIC_PERIOD"><expression>[SQL1].[SUB_ACADEMIC_PERIOD]</expression></dataItem><dataItem name="COURSE_ID_SECTION"><expression>[SQL1].[COURSE_ID_SECTION]</expression></dataItem><dataItem name="COURSE_CREDITS"><expression>[SQL1].[COURSE_CREDITS]</expression></dataItem><dataItem name="ACCEPTED_AMOUNT"><expression>[SQL1].[ACCEPTED_AMOUNT]</expression></dataItem><dataItem name="DISBURSED_DATE"><expression>[SQL1].[DISBURSED_DATE]</expression></dataItem><dataItem name="ELEMENT9_CODE"><expression>[SQL1].[ELEMENT9_CODE]</expression></dataItem><dataItem name="MAXCENSUS"><expression>[SQL1].[MAXCENSUS]</expression></dataItem></selection>
+		<detailFilters><detailFilter use="optional"><filterExpression>[DETAIL_CODE] in (?ParameterDC?)</filterExpression></detailFilter><detailFilter postAutoAggregation="true"><filterExpression>not([AMOUNT] = [AMOUNT1])</filterExpression></detailFilter><detailFilter use="prohibited"><filterExpression>[ID] = &apos;S00022969&apos;</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[SOURCE] in (?ParameterSrc?)</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[CATEGORY] in (?ParameterCat?)</filterExpression></detailFilter></detailFilters></query></queries><layouts><layout><reportPages><page name="Report Page"><pageHeader><style><CSS value="padding-bottom:10px;"/><defaultStyles><defaultStyle refStyle="ph"/></defaultStyles></style><contents><block><style><defaultStyles><defaultStyle refStyle="ta"/></defaultStyles><CSS value="text-align:center"/></style><contents><textItem><dataSource><staticValue>Non-Payment Contact List by Census Date</staticValue></dataSource></textItem></contents></block><block>
+			<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF8"><dataSource><reportExpression>if (ParamDisplayValue(&apos;P_Multi_Source&apos;)is not null) then &quot;VPDI: &quot; +  ParamDisplayValue(&apos;P_Multi_Source&apos;) else &quot;VPDI: All&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF9"><dataSource><reportExpression>if (ParamDisplayValue(&apos;P_ACADEMIC_PERIOD&apos;) is not null) then &quot;Term: &quot; +  ParamDisplayValue(&apos;P_ACADEMIC_PERIOD&apos;) else &quot;Term: All &quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF10"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterCat&apos;) is not null) then &quot;Category: &quot; + ParamDisplayValue(&apos;ParameterCat&apos;) else &quot;Category: All&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF11"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterDC&apos;) is not null) then &quot;Detail Code: &quot; +  ParamDisplayValue(&apos;ParameterDC&apos;) else &quot;Detail Code: All&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF12"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterSrc&apos;) is not null) then &quot;Source: &quot; +  ParamDisplayValue(&apos;ParameterSrc&apos;) else &quot;Source: All &quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><block>
+			<contents><textItem name="FilterValueF15"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterZB&apos;) is not null) then &quot;Include Zero Balances: &quot; +   ParamDisplayValue(&apos;ParameterZB&apos;) else &quot;Include Zero Balances: Y&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents>
+		</block></contents></tableCell></tableCells></tableRow></tableRows></table></contents>
+		<style><defaultStyles><defaultStyle refStyle="ft"/></defaultStyles></style></block></contents></pageHeader><pageBody><style><defaultStyles><defaultStyle refStyle="pb"/></defaultStyles><CSS value="text-align:center"/></style><contents><list horizontalPagination="true" name="List2" refQuery="Report Query SQL">
+			
+			
+			
+			<noDataHandler>
+				<contents>
+					<block>
+						<contents>
+							<textItem>
+								<dataSource>
+									<staticValue>No Data Available</staticValue>
+								</dataSource>
+								<style>
+									<CSS value="padding:10px 18px;"/>
+								</style>
+							</textItem>
+						</contents>
+					</block>
+				</contents>
+			</noDataHandler>
+			<style>
+				<CSS value="border-collapse:collapse"/>
+				<defaultStyles>
+					<defaultStyle refStyle="ls"/>
+				</defaultStyles>
+			</style>
+		<listColumns><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="MULTI_SOURCE"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="MULTI_SOURCE"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="ACADEMIC_PERIOD"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="ACADEMIC_PERIOD"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="NAME"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="NAME"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="ID"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="ID"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="PHONE_NUMBER"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="PHONE_NUMBER"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="CELL_PHONE_NUMBER"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="CELL_PHONE_NUMBER"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="E_MAIL"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="E_MAIL"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="PERSONAL_E_MAIL"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="PERSONAL_E_MAIL"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="STREET_LINE1"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="STREET_LINE1"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="STREET_LINE2"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="STREET_LINE2"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="CITY"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="CITY"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="STATE"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="STATE"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="POSTAL_CODE"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="POSTAL_CODE"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="CRN"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="CRN"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="COURSE_CAMPUS"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="COURSE_CAMPUS"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="SUB_ACADEMIC_PERIOD"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="SUB_ACADEMIC_PERIOD"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="COURSE_ID_SECTION"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="COURSE_ID_SECTION"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="COURSE_CREDITS"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="COURSE_CREDITS"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="MAXCENSUS"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="MAXCENSUS"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="ELEMENT9_CODE"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="ELEMENT9_CODE"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="AMOUNT"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="AMOUNT"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="ACCEPTED_AMOUNT"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="ACCEPTED_AMOUNT"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="DISBURSED_DATE"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="DISBURSED_DATE"/></dataSource></textItem></contents></listColumnBody></listColumn></listColumns></list></contents></pageBody><pageFooter><style><CSS value="padding-top:10px;"/><defaultStyles><defaultStyle refStyle="pf"/></defaultStyles></style><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%;"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><reportExpression>AsOfDate()</reportExpression></dataSource></textItem></contents><style><CSS value="vertical-align:top;text-align:left;width:25%;"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue> - </staticValue></dataSource></textItem><textItem><dataSource><reportExpression>PageNumber()</reportExpression></dataSource></textItem><textItem><dataSource><staticValue> - </staticValue></dataSource></textItem></contents><style><CSS value="vertical-align:top;text-align:center;width:50%;"/></style></tableCell><tableCell><contents><textItem><dataSource><reportExpression>AsOfTime()</reportExpression></dataSource></textItem></contents><style><CSS value="vertical-align:top;text-align:right;width:25%;"/></style></tableCell></tableCells></tableRow></tableRows></table></contents></pageFooter><style><defaultStyles><defaultStyle refStyle="pg"/></defaultStyles></style><XMLAttributes><XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/></XMLAttributes></page></reportPages><promptPages><page name="Mandatory Prompt Page">
+			<pageHeader>
+				<contents>
+					<block>
+						<contents>
+							<block>
+			<contents><textItem><dataSource><staticValue>Please Provide Prompt Values for</staticValue></dataSource></textItem></contents>
+		</block><block>
+			<contents><textItem><dataSource><staticValue>Non-Payment Contact List by Census Date</staticValue></dataSource></textItem></contents>
+		</block>
+						</contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="ta"/>
+							</defaultStyles>
+						<CSS value="text-align:center"/></style>
+					</block>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="hp"/>
+					</defaultStyles>
+				</style>
+			</pageHeader>
+			<pageBody>
+				<contents><block>
+			<contents/>
+		<style><CSS value="padding-top:25px;padding-bottom:25px"/></style></block><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>VPDI: </staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="P_Multi_Source" refQuery="QueryVPDI" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE_DESCRIPTION"/></useItem><sortList><sortItem refDataItem="VALUE"/></sortList></selectValue></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue> </staticValue></dataSource></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue> </staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue> </staticValue></dataSource></textItem><textItem><dataSource><staticValue>Term: </staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents><style><CSS value="text-align:right"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="P_ACADEMIC_PERIOD" refQuery="QueryTerm" required="false" selectValueUI="listBox"><useItem refDataItem="Data Item1"><displayItem refDataItem="VALUE"/></useItem><sortList><sortItem refDataItem="VALUE"/></sortList></selectValue></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue> </staticValue></dataSource></textItem></contents><style><CSS value="vertical-align:top;text-align:right"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue> </staticValue></dataSource></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Include Zero Balances:</staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents></tableCell><tableCell><contents><selectValue parameter="ParameterZB" selectValueUI="radioGroup"><style><CSS value="width:200px;height:50px"/></style><selectOptions><selectOption useValue="N"><displayValue>N</displayValue></selectOption><selectOption useValue="Y"><displayValue>Y</displayValue></selectOption></selectOptions></selectValue></contents></tableCell></tableCells></tableRow></tableRows></table></contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="py"/>
+					</defaultStyles>
+				<CSS value="text-align:center"/></style>
+			</pageBody>
+			<pageFooter>
+				<contents>
+					<promptButton type="cancel">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="back">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="next">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="finish">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="fp"/>
+					</defaultStyles>
+				<CSS value="text-align:center"/></style>
+			</pageFooter>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="pp"/>
+				</defaultStyles>
+			</style>
+		</page><page name="Optional Prompt Page">
+			<pageHeader>
+				<contents>
+					<block>
+						<contents>
+							
+						<block>
+			<contents><textItem><dataSource><staticValue>Please Provide Optional Prompt Values for</staticValue></dataSource></textItem></contents>
+		</block><block>
+			<contents><textItem><dataSource><staticValue>Non-Payment Contact List by Census Date</staticValue></dataSource></textItem></contents>
+		</block></contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="ta"/>
+							</defaultStyles>
+						</style>
+					</block>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="hp"/>
+					</defaultStyles>
+				</style>
+			</pageHeader>
+			<pageBody>
+				<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow></tableRows></table><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Source:</staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterSrc" refQuery="QuerySrc" required="false" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents></tableCell><tableCell><contents/><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Category: </staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterCat" refQuery="QueryCat" required="false" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents></tableCell><tableCell><contents/><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents/><style><CSS value="vertical-align:top"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents><textItem><dataSource><staticValue>The report defaults to all detail codes.</staticValue></dataSource></textItem></contents></tableCell><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Detail Code: </staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterDC" refQuery="QueryDC" required="false" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents></tableCell><tableCell><contents/><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents/><style><CSS value="vertical-align:top"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents><textItem><dataSource><staticValue>Selection of more than 1000 detail codes will abort.</staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents></tableCell><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow></tableRows></table></contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="py"/>
+					</defaultStyles>
+				</style>
+			</pageBody>
+			<pageFooter>
+				<contents>
+					<promptButton type="cancel">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="back">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="next">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="finish">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="fp"/>
+					</defaultStyles>
+				<CSS value="text-align:center"/></style>
+			</pageFooter>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="pp"/>
+				</defaultStyles>
+			</style>
+		</page></promptPages></layout></layouts><reportVariables><reportVariable name="locale" type="locale"><reportExpression>ReportLocale()</reportExpression><variableValues><variableValue value="en-us"/></variableValues></reportVariable></reportVariables><drillBehavior drillUpDown="true"/><XMLAttributes><XMLAttribute name="RS_CreateExtendedDataItems" output="no" value="true"/><XMLAttribute name="listSeparator" output="no" value=","/><XMLAttribute output="no" name="decimalSeparator" value="."/><XMLAttribute output="no" name="RS_modelModificationTime" value="2024-12-09T23:56:54.436Z"/></XMLAttributes><reportName>Non-Payment Contact List by Census Date NEW</reportName></report>
