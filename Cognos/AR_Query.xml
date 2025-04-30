@@ -1,0 +1,269 @@
+<report xmlns="http://developer.cognos.com/schemas/report/16.2/"           expressionLocale="en-us"><!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/14.1/" to "http://developer.cognos.com/schemas/report/16.2/" at 2023-2-16. 13:20:34--><!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/12.0/" to "http://developer.cognos.com/schemas/report/14.0/" at 2017-8-9. 10:23:1--><!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/9.0/" to "http://developer.cognos.com/schemas/report/12.0/" at 2016-3-9. 13:50:30--><modelPath>/content/folder[@name=&apos;Accounts Receivable&apos;]/folder[@name=&apos;Data Sources&apos;]/folder[@name=&apos;ODS Custom Packages&apos;]/package[@name=&apos;Receivable_Customer_C&apos;]/model[@name=&apos;model&apos;]</modelPath><queries><query name="Query"><source><model/></source><selection><dataItem aggregate="none" name="MULTI_SOURCE" label="VPDI"><expression>[Receivable Customer].[Receivable Account Detail].[MULTI_SOURCE]</expression></dataItem><dataItem aggregate="none" name="ID"><expression>[Receivable Customer].[Receivable Account Detail].[ID]</expression></dataItem><dataItem aggregate="none" rollupAggregate="none" name="ACCOUNT_UID"><expression>[Receivable Customer].[Receivable Account Detail].[ACCOUNT_UID]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="9"/><XMLAttribute output="no" name="RS_dataUsage" value="1"/></XMLAttributes></dataItem><dataItem aggregate="none" name="NAME" label="Name"><expression>[Receivable Customer].[Receivable Account Detail].[NAME]</expression></dataItem><dataItem aggregate="none" name="ACADEMIC_PERIOD" label="Term"><expression>[Receivable Customer].[Receivable Account Detail].[ACADEMIC_PERIOD]</expression></dataItem><dataItem aggregate="none" name="CATEGORY" label="Cat"><expression>[Receivable Customer].[Receivable Account Detail].[CATEGORY]</expression></dataItem><dataItem aggregate="none" name="DETAIL_CODE" label="Detail Code"><expression>[Receivable Customer].[Receivable Account Detail].[DETAIL_CODE]</expression></dataItem><dataItem aggregate="none" name="DETAIL_CODE_DESC" label="Detail Code Description"><expression>[Receivable Customer].[Receivable Account Detail].[DETAIL_CODE_DESC]</expression></dataItem><dataItem aggregate="none" name="TRANSACTION_DESC" label="Transaction Description"><expression>[Receivable Customer].[Receivable Account Detail].[TRANSACTION_DESC]</expression></dataItem><dataItem aggregate="total" name="AMOUNT" rollupAggregate="total" label="Amount"><expression>[Receivable Customer].[Receivable Account Detail].[AMOUNT]</expression></dataItem><dataItem aggregate="total" name="BALANCE" rollupAggregate="total" label="Balance"><expression>[Receivable Customer].[Receivable Account Detail].[BALANCE]</expression></dataItem><dataItem aggregate="none" name="SOURCE" label="Src"><expression>[Receivable Customer].[Receivable Account Detail].[SOURCE]</expression></dataItem><dataItem aggregate="none" label="Tran Numb" name="TRANSACTION_NUMBER" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account Detail].[TRANSACTION_NUMBER]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="9"/><XMLAttribute name="RS_dataUsage" output="no" value="identifier"/></XMLAttributes></dataItem><dataItem aggregate="none" name="ENTRY_DATE" label="Entry Date"><expression>[Receivable Customer].[Receivable Account Detail].[ENTRY_DATE]</expression></dataItem><dataItem aggregate="none" name="POST_CASHIER" label="Cashier"><expression>[Receivable Customer].[Receivable Account Detail].[POST_CASHIER]</expression></dataItem><dataItem aggregate="none" name="CASHIER_SESSION_NUMBER" label="Session"><expression>[Receivable Customer].[Receivable Account Detail].[CASHIER_SESSION_NUMBER]</expression></dataItem><dataItem aggregate="none" name="CASHIER_END_DATE" label="Cashier End Date"><expression>[Receivable Customer].[Receivable Account Detail].[CASHIER_END_DATE]</expression></dataItem><dataItem aggregate="none" name="POSTING_DATE" label="Posting Date"><expression>[Receivable Customer].[Receivable Account Detail].[POSTING_DATE]</expression></dataItem><dataItem aggregate="none" name="POSTING_DOCUMENT" label="Feed Doc"><expression>[Receivable Customer].[Receivable Account Detail].[POSTING_DOCUMENT]</expression></dataItem><dataItem aggregate="none" label="Fed Ind" name="ACCOUNT_POSTING_STATUS" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account Detail].[ACCOUNT_POSTING_STATUS]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" label="Ent" name="ACCOUNT_ENTITY_IND" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account].[ACCOUNT_ENTITY_IND]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" rollupAggregate="none" name="AID_YEAR"><expression>[Receivable Customer].[Receivable Account Detail].[AID_YEAR]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="3"/><XMLAttribute output="no" name="RS_dataUsage" value="0"/></XMLAttributes></dataItem><dataItem aggregate="calculated" name="Total(AMOUNT)" rollupAggregate="total"><expression>[AMOUNT]</expression></dataItem><dataItem aggregate="calculated" name="Total(BALANCE)" rollupAggregate="total"><expression>[BALANCE]</expression></dataItem><dataItem aggregate="none" rollupAggregate="none" name="ACCOUNT_UID1"><expression>[Receivable Customer].[Receivable Account Detail].[ACCOUNT_UID]</expression><XMLAttributes><XMLAttribute output="no" name="RS_dataType" value="9"/><XMLAttribute output="no" name="RS_dataUsage" value="1"/></XMLAttributes></dataItem></selection><detailFilters><detailFilter><filterExpression>[Receivable Customer].[Receivable Account Detail].[MULTI_SOURCE] = ?ParameterVPDI?</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Receivable Customer].[Receivable Account Detail].[ACADEMIC_PERIOD] in (?ParameterTerm?)</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Receivable Customer].[Receivable Account Detail].[CATEGORY] in (?ParameterCat?)</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Receivable Customer].[Receivable Account Detail].[DETAIL_CODE] in (?ParameterDC?)</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[ENTRY_DATE] in_range ?ParameterEntDate?</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[POSTING_DATE] in_range ?ParameterFeedDate?</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Receivable Customer].[Receivable Account Detail].[SOURCE] in (?ParameterSrc?)</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Receivable Customer].[Receivable Account Detail].[ACCOUNT_POSTING_STATUS] in (?ParameterFeedInd?)</filterExpression></detailFilter><detailFilter use="optional"><filterExpression>[Receivable Customer].[Receivable Account].[ACCOUNT_ENTITY_IND] in (?ParameterEnt?)</filterExpression></detailFilter></detailFilters></query><query name="QueryTerm"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="Data Item1"><expression>[List of Values].[Academic Period LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE" sort="ascending"><expression>IF([List of Values].[Academic Period LOV].[VALUE]=&apos;000000&apos;)
+THEN (&apos;000000-Non Term AR&apos;)
+ELSE (
+[List of Values].[Academic Period LOV].[VALUE]
+||&apos;-&apos;||
+[List of Values].[Academic Period LOV].[VALUE_DESCRIPTION]
+)</expression></dataItem></selection><detailFilters><detailFilter><filterExpression>[List of Values].[Academic Period LOV].[VALUE] in_range {&apos;000000&apos;:&apos;000000&apos;}
+or
+[List of Values].[Academic Period LOV].[VALUE] in_range {&apos;200610&apos;:&apos;202999&apos;}
+or
+[List of Values].[Academic Period LOV].[VALUE] in_range {&apos;820061&apos;:&apos;820299&apos;}
+</filterExpression></detailFilter></detailFilters></query><query name="QueryCat"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Receivable Category LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>[List of Values].[Receivable Category LOV].[VALUE]
+||&apos;-&apos;||
+[List of Values].[Receivable Category LOV].[VALUE_DESCRIPTION]</expression></dataItem></selection></query><query name="QueryDC"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Receivable Detail Code LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>[List of Values].[Receivable Detail Code LOV].[VALUE]
+||&apos;-&apos;||
+[List of Values].[Receivable Detail Code LOV].[VALUE_DESCRIPTION]</expression></dataItem></selection><detailFilters><detailFilter use="optional"><filterExpression>[List of Values].[Receivable Detail Code LOV].[MULTI_SOURCE] = ?ParameterVPDI?</filterExpression></detailFilter></detailFilters></query><query name="QuerySrc"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Receivable Source LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>[List of Values].[Receivable Source LOV].[VALUE]
+||&apos;-&apos;||
+[List of Values].[Receivable Source LOV].[VALUE_DESCRIPTION]</expression></dataItem></selection></query><query name="QueryFeedInd"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[All Values LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>IF([List of Values].[All Values LOV].[VALUE]=&apos;F&apos;)
+THEN (&apos;F-Fed&apos;)
+ELSE (&apos;Y-Yet to Feed&apos;)
+</expression></dataItem></selection><detailFilters><detailFilter use="optional"><filterExpression>[List of Values].[All Values LOV].[VALUE] in (&apos;F&apos;,&apos;Y&apos;)</filterExpression></detailFilter></detailFilters></query><query name="QueryEnt"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Receivable Source LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>IF([List of Values].[Receivable Source LOV].[VALUE]=&apos;P&apos;)
+THEN (&apos;P-Person&apos;)
+ELSE (&apos;C-Company&apos;)
+
+</expression></dataItem></selection><detailFilters><detailFilter use="optional"><filterExpression>[VALUE] in (&apos;P&apos;,&apos;C&apos;)</filterExpression></detailFilter></detailFilters></query><query name="QueryVPDI"><source><model/></source><selection><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Multi Source LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE_DESCRIPTION" sort="ascending"><expression>[List of Values].[Multi Source LOV].[VALUE_DESCRIPTION]</expression></dataItem></selection></query></queries><layouts><layout><reportPages><page name="ReportPage"><pageHeader><style><CSS value="padding-bottom:10px;"/><defaultStyles><defaultStyle refStyle="ph"/></defaultStyles></style><contents><block><style><defaultStyles><defaultStyle refStyle="ta"/></defaultStyles><CSS value="font-family:Arial;font-size:14pt;font-weight:bold;font-style:normal"/></style><contents><block>
+			<contents><textItem><dataSource><staticValue>A/R Query</staticValue></dataSource></textItem></contents>
+		</block></contents></block><block>
+			<contents><block>
+			<contents><textItem name="FilterValueF16"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterVPDI&apos;) is not null) then &quot;VPDI: &quot; +  ParamDisplayValue(&apos;ParameterVPDI&apos;) else &quot;VPDI: All&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes><style><CSS value="font-family:Arial;font-size:10pt"/></style></textItem></contents>
+		</block><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF8"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterEnt&apos;) is not null) then &quot;Entity: &quot; +  ParamDisplayValue(&apos;ParameterEnt&apos;) else &quot;Entity: All&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF9"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterTerm&apos;) is not null) then &quot;Term: &quot; +  ParamDisplayValue(&apos;ParameterTerm&apos;) else &quot;Term: All &quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF10"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterCat&apos;) is not null) then &quot;Category: &quot; + ParamDisplayValue(&apos;ParameterCat&apos;) else &quot;Category: All&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF11"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterDC&apos;) is not null) then &quot;Detail Code: &quot; +  ParamDisplayValue(&apos;ParameterDC&apos;) else &quot;Detail Code: All&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF12"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterSrc&apos;) is not null) then &quot;Source: &quot; +  ParamDisplayValue(&apos;ParameterSrc&apos;) else &quot;Source: All &quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF13"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterEntDate&apos;) is not null) then &quot;Entry Date: &quot; +  ParamDisplayValue(&apos;ParameterEntDate&apos;) else &quot;Entry Date: All&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF17"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterFeedDate&apos;) is not null) then &quot;Feed Date: &quot; +   ParamDisplayValue(&apos;ParameterFeedDate&apos;) else &quot;Feed Date: All&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF18"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterFeedInd&apos;) is not null) then &quot;Fed Ind: &quot; +   ParamDisplayValue(&apos;ParameterFeedInd&apos;) else &quot;Fed Ind: All&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow></tableRows></table></contents>
+		<style><defaultStyles><defaultStyle refStyle="ft"/></defaultStyles></style></block></contents></pageHeader><pageBody><style><defaultStyles><defaultStyle refStyle="pb"/></defaultStyles></style><contents><list keepWithFooter="2" keepWithHeader="2" name="List1" refQuery="Query"><noDataHandler><contents><block><contents><textItem><dataSource><staticValue>No data available</staticValue></dataSource><style><CSS value="padding:10px 18px;"/></style></textItem></contents></block></contents></noDataHandler><listColumns><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C1"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="MULTI_SOURCE"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C1"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>VPDI</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="MULTI_SOURCE"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="ACCOUNT_ENTITY_IND"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="ACCOUNT_ENTITY_IND"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C2"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="ID"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C2"/></XMLAttributes><contents><textItem><dataSource><dataItemLabel refDataItem="ID"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="ACCOUNT_UID1"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="ACCOUNT_UID1"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C3"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="NAME"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C3"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Name</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="NAME"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C4"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="ACADEMIC_PERIOD"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C4"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Term</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="ACADEMIC_PERIOD"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C5"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="CATEGORY"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C5"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Cat</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="CATEGORY"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C6"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="DETAIL_CODE"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C6"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Code</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="DETAIL_CODE"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C7"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="DETAIL_CODE_DESC"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C7"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Description</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="DETAIL_CODE_DESC"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C8"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="TRANSACTION_DESC"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C8"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Trans Description</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="TRANSACTION_DESC"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:right;;white-space:nowrap"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C9"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="AMOUNT"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:right"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C9"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Amount</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="AMOUNT"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:right;;white-space:nowrap"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C10"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="BALANCE"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:right"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C10"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Balance</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="BALANCE"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:center"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C11"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="SOURCE"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:center"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C11"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Src</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="SOURCE"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:center"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="AID_YEAR"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:center"/></style><contents><textItem><dataSource><dataItemValue refDataItem="AID_YEAR"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="TRANSACTION_NUMBER"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><contents><textItem><dataSource><dataItemValue refDataItem="TRANSACTION_NUMBER"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C12"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="ENTRY_DATE"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C12"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Entry Date</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="ENTRY_DATE"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="ACCOUNT_POSTING_STATUS"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="text-align:center"/></style><contents><textItem><dataSource><dataItemValue refDataItem="ACCOUNT_POSTING_STATUS"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C13"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="POST_CASHIER"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C13"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>User</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="POST_CASHIER"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles><CSS value="white-space:nowrap"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C14"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="CASHIER_SESSION_NUMBER"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C14"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Sess</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="CASHIER_SESSION_NUMBER"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C15"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="CASHIER_END_DATE"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C15"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Csh End Date</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="CASHIER_END_DATE"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C16"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="POSTING_DATE"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C16"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Feed Date</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="POSTING_DATE"/></dataSource></textItem></contents></listColumnTitle></listColumn><listColumn><listColumnBody><style><defaultStyles><defaultStyle refStyle="lc"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lc"/><XMLAttribute name="tag" value="C17"/></XMLAttributes><contents><textItem><dataSource><dataItemValue refDataItem="POSTING_DOCUMENT"/></dataSource></textItem></contents></listColumnBody><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:left"/></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="lt"/><XMLAttribute name="tag" value="C17"/></XMLAttributes><contents><textItem><conditionalDataSources refVariable="locale"><conditionalDataSource refVariableValue="en-us"><staticValue>Feed Doc</staticValue></conditionalDataSource></conditionalDataSources><dataSource><dataItemLabel refDataItem="POSTING_DOCUMENT"/></dataSource></textItem></contents></listColumnTitle></listColumn></listColumns><style><CSS value="border-collapse: collapse;"/><defaultStyles><defaultStyle refStyle="ls"/></defaultStyles></style><XMLAttributes><XMLAttribute name="qsc" output="HTML" value="ls"/></XMLAttributes><listOverallGroup><listFooter><listRows><listRow><rowCells><rowCell colSpan="10"><contents><textItem><dataSource><staticValue>Overall</staticValue></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="if"/></defaultStyles></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Total(AMOUNT)"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="is"/></defaultStyles></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Total(BALANCE)"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="is"/></defaultStyles></style></rowCell><rowCell colSpan="10"><contents/><style><defaultStyles><defaultStyle refStyle="if"/></defaultStyles></style></rowCell></rowCells></listRow></listRows></listFooter></listOverallGroup><sortList><sortItem refDataItem="MULTI_SOURCE"/><sortItem refDataItem="ID"/><sortItem refDataItem="TRANSACTION_NUMBER"/></sortList></list></contents></pageBody><pageFooter><style><CSS value="padding-top:10px;"/><defaultStyles><defaultStyle refStyle="pf"/></defaultStyles></style><contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%;"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><reportExpression>AsOfDate()</reportExpression></dataSource></textItem></contents><style><CSS value="vertical-align:top;text-align:left;width:25%;"/></style></tableCell><tableCell><contents><textItem><dataSource><staticValue> - </staticValue></dataSource></textItem><textItem><dataSource><reportExpression>PageNumber()</reportExpression></dataSource></textItem><textItem><dataSource><staticValue> - </staticValue></dataSource></textItem></contents><style><CSS value="vertical-align:top;text-align:center;width:50%;"/></style></tableCell><tableCell><contents><textItem><dataSource><reportExpression>AsOfTime()</reportExpression></dataSource></textItem></contents><style><CSS value="vertical-align:top;text-align:right;width:25%;"/></style></tableCell></tableCells></tableRow></tableRows></table></contents></pageFooter><style><defaultStyles><defaultStyle refStyle="pg"/></defaultStyles></style><XMLAttributes><XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/></XMLAttributes></page></reportPages><promptPages><page name="Mandatory Prompt Page">
+			<pageHeader>
+				<contents>
+					<block>
+						<contents>
+							
+						<table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Please Provide Prompt Values for</staticValue></dataSource></textItem></contents><style><CSS value="font-size:14pt;font-weight:bold;text-align:center;font-family:Arial;font-style:normal"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>AR Query</staticValue></dataSource><style><CSS value="font-size:14pt;font-weight:bold"/></style></textItem></contents><style><CSS value="text-align:center;font-family:Arial;font-size:14pt;font-weight:bold;font-style:normal"/></style></tableCell></tableCells></tableRow></tableRows></table></contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="ta"/>
+							</defaultStyles>
+						</style>
+					</block>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="hp"/>
+					</defaultStyles>
+				</style>
+			</pageHeader>
+			<pageBody>
+				<contents><block>
+			<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>VDPI:</staticValue></dataSource></textItem></contents><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></tableCell><tableCell><contents><selectValue parameter="ParameterVPDI" refQuery="QueryVPDI"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE_DESCRIPTION"/></useItem><sortList><sortItem refDataItem="VALUE"/></sortList></selectValue></contents></tableCell></tableCells></tableRow></tableRows></table></contents>
+		<style><CSS value="text-align:center"/></style></block><block>
+			<contents><textItem><dataSource><staticValue> </staticValue></dataSource></textItem></contents>
+		</block><block>
+			<contents><textItem><dataSource><staticValue>The only required field in this report is VPDI.</staticValue></dataSource></textItem></contents>
+		<style><CSS value="text-align:center"/></style></block><block>
+			<contents><textItem><dataSource><staticValue> </staticValue></dataSource></textItem></contents>
+		</block><block>
+			<contents><textItem><dataSource><staticValue>The parameters on the remaining pages default to All values. There is no need to Select All. </staticValue></dataSource></textItem></contents>
+		<style><CSS value="text-align:center"/></style></block><block>
+			<contents><textItem><dataSource><staticValue>Using Select All with the Detail Codes may cause the report to abort if your college has more than 1000 detail codes. </staticValue></dataSource></textItem></contents>
+		<style><CSS value="text-align:center"/></style></block></contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="py"/>
+					</defaultStyles>
+				</style>
+			</pageBody>
+			<pageFooter>
+				<contents>
+					<promptButton type="cancel">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="back">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="next">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="finish">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="fp"/>
+					</defaultStyles>
+				<CSS value="text-align:center"/></style>
+			</pageFooter>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="pp"/>
+				</defaultStyles>
+			</style>
+		</page><page name="Optional Prompt Page">
+			<pageHeader>
+				<contents>
+					<block>
+						<contents>
+							
+						<table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;font-family:Arial;font-size:14pt;font-weight:bold;font-style:normal"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Please Provide Optional Prompt Values for</staticValue></dataSource><style><CSS value="font-size:14pt;font-weight:bold"/></style></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>AR Query</staticValue></dataSource><style><CSS value="font-size:14pt;font-weight:bold"/></style></textItem></contents><style><CSS value="text-align:center"/></style></tableCell></tableCells></tableRow></tableRows></table></contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="ta"/>
+							</defaultStyles>
+						<CSS value="text-align:center"/></style>
+					</block>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="hp"/>
+					</defaultStyles>
+				</style>
+			</pageHeader>
+			<pageBody>
+				<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow></tableRows></table><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Term: </staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterTerm" refQuery="QueryTerm" required="false" selectValueUI="listBox"><useItem refDataItem="Data Item1"><displayItem refDataItem="VALUE"/></useItem><sortList><sortItem refDataItem="VALUE"/></sortList></selectValue></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Source:</staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterSrc" refQuery="QuerySrc" required="false" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Category: </staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterCat" refQuery="QueryCat" required="false" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Fed Ind:</staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterFeedInd" refQuery="QueryFeedInd" required="false" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents><style><CSS value="vertical-align:top"/></style></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents><textItem><dataSource><staticValue> </staticValue></dataSource></textItem></contents></tableCell><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Detail Code: </staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents><selectValue cascadeOn="ParameterVPDI" multiSelect="true" parameter="ParameterDC" refQuery="QueryDC" required="false" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Entity:</staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents><style><CSS value="text-align:right;vertical-align:top"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterEnt" refQuery="QueryEnt" required="false" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><block>
+			<contents/>
+		</block></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Selection of more than 1000 detail codes will abort.</staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents></tableCell><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow></tableRows></table><block>
+			<contents/>
+		</block></contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="py"/>
+					</defaultStyles>
+				</style>
+			</pageBody>
+			<pageFooter>
+				<contents>
+					<promptButton type="cancel">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="back">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="next">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="finish">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="fp"/>
+					</defaultStyles>
+				<CSS value="text-align:center"/></style>
+			</pageFooter>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="pp"/>
+				</defaultStyles>
+			</style>
+		</page><page name="Optional Prompt Page2">
+			<pageHeader>
+				<contents>
+					<block>
+						<contents>
+							
+						<table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;font-family:Arial;font-size:14pt;font-weight:bold;font-style:normal"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Please Provide Optional Prompt Values for</staticValue></dataSource><style><CSS value="font-size:14pt;font-weight:bold"/></style></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>AR Query</staticValue></dataSource><style><CSS value="font-size:14pt;font-weight:bold"/></style></textItem></contents><style><CSS value="text-align:center"/></style></tableCell></tableCells></tableRow></tableRows></table></contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="ta"/>
+							</defaultStyles>
+						<CSS value="text-align:center"/></style>
+					</block>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="hp"/>
+					</defaultStyles>
+				</style>
+			</pageHeader>
+			<pageBody>
+				<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse"/></style><tableRows><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Entry Date</staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents></tableCell><tableCell><contents><textItem><dataSource><staticValue>Feed Date</staticValue></dataSource><style><CSS value="font-family:Arial;font-weight:bold;font-style:normal"/></style></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><selectDate parameter="ParameterEntDate" range="true" required="false"/></contents></tableCell><tableCell><contents><selectDate parameter="ParameterFeedDate" range="true" required="false"/></contents></tableCell></tableCells></tableRow></tableRows></table></contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="py"/>
+					</defaultStyles>
+				<CSS value="text-align:center"/></style>
+			</pageBody>
+			<pageFooter>
+				<contents>
+					<promptButton type="cancel">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="back">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="next">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="finish">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="fp"/>
+					</defaultStyles>
+				<CSS value="text-align:center"/></style>
+			</pageFooter>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="pp"/>
+				</defaultStyles>
+			</style>
+		</page></promptPages></layout></layouts><reportVariables><reportVariable name="locale" type="locale"><reportExpression>ReportLocale()</reportExpression><variableValues><variableValue value="en-us"/></variableValues></reportVariable></reportVariables><drillBehavior drillUpDown="true"/><XMLAttributes><XMLAttribute name="PromptAllRemainingOptional" value="true"/><XMLAttribute name="RS_CreateExtendedDataItems" output="no" value="false"/><XMLAttribute name="listSeparator" output="no" value=","/><XMLAttribute output="no" name="decimalSeparator" value="."/><XMLAttribute output="no" name="RS_modelModificationTime" value="2024-12-09T23:56:54.436Z"/></XMLAttributes><reportName>AR Query</reportName></report>
