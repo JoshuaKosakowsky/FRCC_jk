@@ -1,14 +1,13 @@
-Sub ImportTuitionTables_AllOnOneSheet()
+Sub ImportAdjustedTuitionTables()
     Dim ws As Worksheet
     Dim qt As QueryTable
-    Dim rngStart As Range
+    Dim i As Integer
     Dim startRow As Long
     Dim url As String
-    Dim i As Long
     
     url = "https://www.frontrange.edu/admissions-aid/paying-for-college/tuition-fees/tuition-rates.html"
     
-    ' Create or clear the TuitionData sheet
+    ' Prepare or clear the sheet
     On Error Resume Next
     Set ws = ThisWorkbook.Sheets("TuitionData")
     If ws Is Nothing Then
@@ -19,17 +18,28 @@ Sub ImportTuitionTables_AllOnOneSheet()
     End If
     On Error GoTo 0
     
-    Set rngStart = ws.Range("A1")
+    startRow = 1
     
-    ' Pull the entire page
-    Set qt = ws.QueryTables.Add(Connection:="URL;" & url, Destination:=rngStart)
-    With qt
-        .WebSelectionType = xlEntirePage
-        .WebFormatting = xlWebFormattingAll
-        .Refresh BackgroundQuery:=False
-        .Delete
-    End With
-
-    ' Optional: Add a line between tables if needed or reformat
-    MsgBox "Tuition tables imported successfully. You may need to separate them manually based on headers.", vbInformation
+    ' Power Query Tables 0–3 = QueryTables 1–4
+    For i = 0 To 3
+        ' Add label for clarity
+        ws.Cells(startRow, 1).Value = "Power Query Table " & i
+        
+        Set qt = ws.QueryTables.Add( _
+            Connection:="URL;" & url, _
+            Destination:=ws.Cells(startRow + 1, 1))
+        
+        With qt
+            .WebSelectionType = xlSpecifiedTables
+            .WebTables = CStr(i + 1) ' Shift index
+            .WebFormatting = xlWebFormattingAll
+            .Refresh BackgroundQuery:=False
+            .Delete
+        End With
+        
+        ' Find next empty row + buffer space
+        startRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row + 3
+    Next i
+    
+    MsgBox "Adjusted tuition tables imported successfully!", vbInformation
 End Sub
