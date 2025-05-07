@@ -22,6 +22,7 @@ Sub CFL_Formatting()
     ws.Range("V1").Value = "ACTIVITY DATE"
     ws.Range("W1").Value = "DETAIL CODE"
     ws.Range("Y1").Value = "FEE"
+    ws.Range("Z1").Value = "LEVEL CODE"
     ws.Range("AA1").Value = "CODE TYPE"
 
     ' Overwrite cell A2 to remove hidden/invalid character
@@ -32,7 +33,7 @@ Sub CFL_Formatting()
     ' Format header row
     With ws.Range("A1:AT1")
         .Font.Bold = True
-        .Interior.Color = 15773696 ' Light yellow color
+        .Interior.Color = 15773696
     End With
 
     ' Apply AutoFilter to header row
@@ -45,7 +46,6 @@ Sub CFL_Formatting()
     ' Hide unnecessary columns
     ws.Columns("H:T").EntireColumn.Hidden = True
     ws.Columns("X:X").EntireColumn.Hidden = True
-    ws.Columns("Z:Z").EntireColumn.Hidden = True
     ws.Columns("AB:AT").EntireColumn.Hidden = True
 
     ' Freeze top row
