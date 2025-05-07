@@ -3,102 +3,70 @@ Sub CFL_Formatting()
 ' CFL_Formatting Macro
 '
 
-'
-    Rows("1:1").Select
-    Selection.Delete Shift:=xlUp
-    Selection.AutoFilter
-    Range("A1").Select
-    ActiveCell.FormulaR1C1 = "COLLEGE"
-    Range("B1").Select
-    ActiveCell.FormulaR1C1 = "TERM"
-    Range("C1").Select
-    ActiveCell.FormulaR1C1 = "CRN"
-    Range("D1").Select
-    ActiveCell.FormulaR1C1 = "SUBJECT"
-    Range("E1").Select
-    ActiveCell.FormulaR1C1 = "COURSE NUMBER"
-    Range("F1").Select
-    ActiveCell.FormulaR1C1 = "SECTION"
-    Range("G1").Select
-    ActiveCell.FormulaR1C1 = "CAMPUS"
-    Range("U1").Select
-    ActiveCell.FormulaR1C1 = "ATTRIBUTE"
-    Range("V1").Select
-    ActiveCell.FormulaR1C1 = "ACTIVITY DATE"
-    Range("W1").Select
-    ActiveCell.FormulaR1C1 = "DETAIL CODE"
-    Range("Y1").Select
-    ActiveCell.FormulaR1C1 = "FEE"
-    Range("AA1").Select
-    ActiveCell.FormulaR1C1 = "CODE TYPE"
-    Rows("1:1").Select
-    Selection.Font.Bold = True
-    Cells.Select
-    Selection.Columns.AutoFit
-    Selection.Rows.AutoFit
-    ActiveWindow.SmallScroll ToRight:=7
-    Columns("H:T").Select
-    Selection.EntireColumn.Hidden = True
-    Columns("X:X").Select
-    Selection.EntireColumn.Hidden = True
-    Columns("Z:Z").Select
-    Selection.EntireColumn.Hidden = True
-    Columns("AB:AT").Select
-    Selection.EntireColumn.Hidden = True
-    ActiveWindow.ScrollColumn = 1
-    Range(Selection, Selection.End(xlToLeft)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    Range(Selection, Selection.End(xlUp)).Select
-    With Selection.Interior
-        .Pattern = xlSolid
-        .PatternColorIndex = xlAutomatic
-        .Color = 15773696
-        .TintAndShade = 0
-        .PatternTintAndShade = 0
+    Dim ws As Worksheet
+    Dim lastRow As Long
+    Set ws = ActiveSheet
+
+    ' Delete old header row
+    ws.Rows("1:1").Delete Shift:=xlUp
+
+    ' Set new headers
+    ws.Range("A1").Value = "COLLEGE"
+    ws.Range("B1").Value = "TERM"
+    ws.Range("C1").Value = "CRN"
+    ws.Range("D1").Value = "SUBJECT"
+    ws.Range("E1").Value = "COURSE NUMBER"
+    ws.Range("F1").Value = "SECTION"
+    ws.Range("G1").Value = "CAMPUS"
+    ws.Range("U1").Value = "ATTRIBUTE"
+    ws.Range("V1").Value = "ACTIVITY DATE"
+    ws.Range("W1").Value = "DETAIL CODE"
+    ws.Range("Y1").Value = "FEE"
+    ws.Range("AA1").Value = "CODE TYPE"
+
+    ' Format header row
+    With ws.Range("A1:AT1")
+        .Font.Bold = True
+        .Interior.Color = 15773696 ' Light yellow color
     End With
-    Range("A3").Select
-    Selection.Copy
-    Range("A2").Select
-    ActiveSheet.Paste
-    Application.CutCopyMode = False
-    ActiveWorkbook.Worksheets("gokoutp").Sort.SortFields.Clear
-    ActiveWorkbook.Worksheets("gokoutp").Sort.SortFields.Add2 Key:=Range( _
-        "D2:D7084"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
-        xlSortNormal
-    ActiveWorkbook.Worksheets("gokoutp").Sort.SortFields.Add2 Key:=Range( _
-        "E2:E7084"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
-        xlSortNormal
-    ActiveWorkbook.Worksheets("gokoutp").Sort.SortFields.Add2 Key:=Range( _
-        "F2:F7084"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
-        xlSortNormal
-    ActiveWorkbook.Worksheets("gokoutp").Sort.SortFields.Add2 Key:=Range( _
-        "G2:G7084"), SortOn:=xlSortOnValues, Order:=xlAscending, DataOption:= _
-        xlSortNormal
-    With ActiveWorkbook.Worksheets("gokoutp").Sort
-        .SetRange Range("A1:AT7084")
+
+    ' Apply AutoFilter to header row
+    ws.Range("A1:AT1").AutoFilter
+
+    ' Autofit columns and rows
+    ws.Cells.Columns.AutoFit
+    ws.Cells.Rows.AutoFit
+
+    ' Hide unnecessary columns
+    ws.Columns("H:T").EntireColumn.Hidden = True
+    ws.Columns("X:X").EntireColumn.Hidden = True
+    ws.Columns("Z:Z").EntireColumn.Hidden = True
+    ws.Columns("AB:AT").EntireColumn.Hidden = True
+
+    ' Freeze top row
+    With ActiveWindow
+        .SplitRow = 1
+        .FreezePanes = True
+    End With
+
+    ' Get last row based on column A
+    lastRow = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
+
+    ' Sort by SUBJECT, COURSE NUMBER, SECTION, and CAMPUS
+    With ws.Sort
+        .SortFields.Clear
+        .SortFields.Add2 Key:=ws.Range("D2:D" & lastRow), Order:=xlAscending
+        .SortFields.Add2 Key:=ws.Range("E2:E" & lastRow), Order:=xlAscending
+        .SortFields.Add2 Key:=ws.Range("F2:F" & lastRow), Order:=xlAscending
+        .SortFields.Add2 Key:=ws.Range("G2:G" & lastRow), Order:=xlAscending
+        .SetRange ws.Range("A1:AT" & lastRow)
         .Header = xlYes
         .MatchCase = False
         .Orientation = xlTopToBottom
         .SortMethod = xlPinYin
         .Apply
     End With
-    ActiveWindow.Zoom = 115
+
+    ' Optional zoom
     ActiveWindow.Zoom = 130
-    ActiveWindow.SmallScroll Down:=-42
 End Sub
