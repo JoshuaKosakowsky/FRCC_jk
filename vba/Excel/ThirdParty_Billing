@@ -1,0 +1,47 @@
+Sub ImportAllTuitionTables()
+    Dim ws As Worksheet
+    Dim qt As QueryTable
+    Dim tableIndex As Integer
+    Dim startRow As Long
+    Dim url As String
+    
+    url = "https://www.frontrange.edu/admissions-aid/paying-for-college/tuition-fees/tuition-rates.html"
+    
+    ' Create or clear the TuitionData sheet
+    On Error Resume Next
+    Set ws = ThisWorkbook.Sheets("TuitionData")
+    If ws Is Nothing Then
+        Set ws = ThisWorkbook.Sheets.Add
+        ws.Name = "TuitionData"
+    Else
+        ws.Cells.Clear
+    End If
+    On Error GoTo 0
+    
+    startRow = 1
+
+    ' Loop through all 4 tables
+    For tableIndex = 0 To 3
+        ' Add a label to identify the table
+        ws.Cells(startRow, 1).Value = "Table " & tableIndex
+        startRow = startRow + 1
+        
+        ' Add the query table
+        Set qt = ws.QueryTables.Add( _
+            Connection:="URL;" & url, _
+            Destination:=ws.Cells(startRow, 1))
+        
+        With qt
+            .WebSelectionType = xlSpecifiedTables
+            .WebTables = CStr(tableIndex)
+            .WebFormatting = xlWebFormattingAll
+            .Refresh BackgroundQuery:=False
+            .Delete ' Remove the query connection after use
+        End With
+        
+        ' Find the next empty row after import
+        startRow = ws.Cells(ws.Rows.Count, 1).End(xlUp).Row + 2
+    Next tableIndex
+    
+    MsgBox "All tuition tables imported successfully!", vbInformation
+End Sub
