@@ -24,6 +24,11 @@ Sub CFL_Formatting()
     ws.Range("Y1").Value = "FEE"
     ws.Range("AA1").Value = "CODE TYPE"
 
+    ' Overwrite cell A2 to remove hidden/invalid character
+    ws.Range("A3").Copy
+    ws.Range("A2").PasteSpecial Paste:=xlPasteValues
+    Application.CutCopyMode = False
+
     ' Format header row
     With ws.Range("A1:AT1")
         .Font.Bold = True
