@@ -2,7 +2,7 @@ function main(workbook: ExcelScript.Workbook) {
   let today = new Date();
   let currentYear = today.getFullYear();
 
-  // If today is May (4) or later, next fiscal year
+  // If today is May or later, prepare for next FY
   let fiscalYear = today.getMonth() >= 4 ? currentYear + 1 : currentYear;
 
   const monthMap: {[key: string]: number} = {
@@ -17,9 +17,10 @@ function main(workbook: ExcelScript.Workbook) {
       let monthIndex = monthMap[sheetName];
       let year = (monthIndex >= 6) ? fiscalYear - 1 : fiscalYear;
 
-      let jsDate = new Date(year, monthIndex, 1); // JavaScript Date object
+      // Use UTC to avoid time zone issues
+      let jsDate = new Date(Date.UTC(year, monthIndex, 1));
 
-      // Excel date is the number of days since Jan 1, 1900
+      // Convert to Excel serial number using UTC-based approach
       let excelDate = convertJsDateToExcelSerial(jsDate);
 
       let cell = sheet.getRange("A3");
@@ -29,9 +30,9 @@ function main(workbook: ExcelScript.Workbook) {
   });
 }
 
-// Helper: Convert JavaScript Date to Excel serial number
+// Helper function: Use UTC to avoid timezone skew
 function convertJsDateToExcelSerial(date: Date): number {
   const msPerDay = 1000 * 60 * 60 * 24;
-  const excelStartDate = new Date(1899, 11, 30); // Excel's day 1
-  return (date.getTime() - excelStartDate.getTime()) / msPerDay;
+  const excelEpoch = Date.UTC(1899, 11, 30); // Excel's epoch (Dec 30, 1899)
+  return (date.getTime() - excelEpoch) / msPerDay;
 }
