@@ -19,20 +19,29 @@ function main(workbook: ExcelScript.Workbook) {
 
       // Use UTC to avoid time zone issues
       let jsDate = new Date(Date.UTC(year, monthIndex, 1));
-
-      // Convert to Excel serial number using UTC-based approach
       let excelDate = convertJsDateToExcelSerial(jsDate);
 
+      // Set A3 to date and format
       let cell = sheet.getRange("A3");
       cell.setValue(excelDate);
       cell.setNumberFormatLocal("M/D/YYYY");
+
+      // Copy A3 downward (entire used column A)
+      let lastRow = sheet.getUsedRange().getRowCount();
+      let colARange = sheet.getRangeByIndexes(2, 0, lastRow - 2, 1); // From A3 downward
+
+      // Get values from column A
+      let valuesOnly = colARange.getValues();
+
+      // Overwrite same range with just values (no formulas)
+      colARange.setValues(valuesOnly);
     }
   });
 }
 
-// Helper function: Use UTC to avoid timezone skew
+// Helper function: Convert JavaScript UTC date to Excel serial number
 function convertJsDateToExcelSerial(date: Date): number {
   const msPerDay = 1000 * 60 * 60 * 24;
-  const excelEpoch = Date.UTC(1899, 11, 30); // Excel's epoch (Dec 30, 1899)
+  const excelEpoch = Date.UTC(1899, 11, 30); // Dec 30, 1899
   return (date.getTime() - excelEpoch) / msPerDay;
 }
