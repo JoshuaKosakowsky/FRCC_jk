@@ -18,8 +18,18 @@ import re
 Variables to update depending on the FY/Term
 '''
 
-FY = 'FY25'
-Term = 'Summer' # Choices "Summer", "Fall", "Spring"
+FY = 'FY26'
+FY25_MED_HIGH = 8.85
+FY26_MED_HIGH = 9.05
+
+if FY == 'FY25':
+    FYFeeAmt = FY25_MED_HIGH
+elif FY == 'FY26':
+    FYFeeAmt = FY26_MED_HIGH
+else:
+    FYFeeAmt = 'Incorrect Format'
+
+Term = 'Fall' # Choices "Summer", "Fall", "Spring"
 
 if Term.capitalize() == "Summer":
     Dig_content_fee = 'A394'
@@ -55,8 +65,8 @@ xlsx_doc = '_' + current_date + '.xlsx'
 Next we will create paths to our folder directories for easy management 
 '''
 
-# Path to the specific folder were all the tables are saved to
-filepath = 'c:/Users/S03112819/OneDrive - Colorado Community College System/AR/Course Fees/Current Project/'
+# Path to the specific folder where all the tables are saved to
+filepath = 'c:/Users/S03112819/OneDrive - Colorado Community College System/AR/Course Fees/Rate Table/'
 
 # The file from Banner (Course Fee Listing) that has all the data about current courses per term.
 BANNER_CourseFeeListing = 'gokoutp.csv' # input file
@@ -204,6 +214,7 @@ df_CSF.columns = df_CSF.columns.str.upper().str.strip()
 # Remove any white space from the string valueS in the columns below
 df_CSF['CAMPUS'] = df_CSF['CAMPUS'].astype(str).str.strip()
 df_CSF['SUBJECT'] = df_CSF['SUBJECT'].astype(str).str.strip()
+df_CSF['COURSE NUMBER'] = df_CSF['COURSE NUMBER'].astype(str).str.strip()
 df_CSF['SECTION'] = df_CSF['SECTION'].astype(str).str.strip()
 df_CSF['FREQUENCY'] = df_CSF['FREQUENCY'].astype(str).str.strip()
 df_CSF['EXPLANATION'] = df_CSF['EXPLANATION'].astype(str).str.strip()
@@ -344,8 +355,8 @@ def filter_out_high_med_attr(df):
 
     # Filtering out "HIGH" or "MED" in the "EXPLANATION" column
     df = df[~((df['EXPLANATION'].str.contains('HIGH|MED', case=False, na=False)) & 
-    # Filtering out where above criteria is met AND "FY25 FEE AMOUNT" == 8.85
-        (df['FY25 FEE AMOUNT'] == 8.85))]
+    # Filtering out where above criteria is met AND "FY FEE AMOUNT" == Specified Amt
+        (df[f'{FY} FEE AMOUNT'] == FYFeeAmt))]
 
     return df
 
@@ -417,8 +428,8 @@ df_RT = hs_filter(df_RT)
 
 # Function to see if Fee Amounts have changed 
 def CRN_fee_changed(group):
-    previous_fee = set(group['AMOUNT'])
-    current_fee = set(group[f'{FY} FEE AMOUNT'])
+    previous_fee = set(group['AMOUNT'].astype(float).round(2))
+    current_fee = set(group[f'{FY} FEE AMOUNT'].astype(float).round(2))
 
     # Check Previous Fee Amount for Any Matching value in Current Fee Amount for the specific CRN
     unchanged = group['AMOUNT'].apply(lambda x: x in current_fee)
@@ -435,8 +446,8 @@ def CRN_fee_changed(group):
 
 # Function to see if Detail Codes have changed
 def CRN_DC_changed(group):
-    prev_dc = set(group['DET CODE'])
-    current_dc = set(group['DETAIL CODE'])
+    prev_dc = set(group['DET CODE'].astype(str).str.strip().str.upper())
+    current_dc = set(group['DETAIL CODE'].astype(str).str.strip().str.upper())
 
     # Any code from Previous appearing in Current Detail Code(s)
     unchanged = group['DET CODE'].apply(lambda x: x in current_dc)
@@ -453,8 +464,8 @@ def CRN_DC_changed(group):
 
 # Function to see if Fee Types have changed
 def CRN_FT_changed(group):
-    prev_ft = set(group['FEE TYPE (OLD)'])
-    current_ft = set(group['FEE TYPE'])
+    prev_ft = set(group['FEE TYPE (OLD)'].astype(str).str.strip().str.upper())
+    current_ft = set(group['FEE TYPE'].astype(str).str.strip().str.upper())
 
     # Any code from Previous appearing in Current Fee Type(s)
     unchanged = group['FEE TYPE (OLD)'].apply(lambda x: x in current_ft)
@@ -484,9 +495,9 @@ df_RT.loc[df_RT['EXPLANATION'].str.contains("Malpractice Insurance", na=False), 
 df_RT = df_RT.sort_values(by=['SUBJECT', 'COURSE NUMBER_CFL', 'CRN'], ascending = [True, True, True])
 
 # Changing column order so related columns from the two datasets are near each other
-column_order = ['SEMESTER', 'CRN', 'SUBJECT', 'COURSE NUMBER_CFL', 'COURSE NUMBER_CSF', 'SECTION_CFL', 'MODIFIED_SECTION', 'SECTION_CSF', 'CAMPUS_CFL', 'CAMPUS_CSF', 'ATTR', 'DET CODE', 'DETAIL CODE', 'AMOUNT', 'FY25 FEE AMOUNT', 'FEE TYPE (OLD)', 'FEE TYPE', 'COURSE NAME', 'FREQUENCY', 'EXPLANATION', 'UNCHANGED']
+column_order = ['SEMESTER', 'CRN', 'SUBJECT', 'COURSE NUMBER_CFL', 'COURSE NUMBER_CSF', 'SECTION_CFL', 'MODIFIED_SECTION', 'SECTION_CSF', 'CAMPUS_CFL', 'CAMPUS_CSF', 'ATTR', 'DET CODE', 'DETAIL CODE', 'AMOUNT', f'{FY} FEE AMOUNT', 'FEE TYPE (OLD)', 'FEE TYPE', 'COURSE NAME', 'FREQUENCY', 'EXPLANATION', 'UNCHANGED']
 df_RT = df_RT[column_order]
 
 # Getting a quick preview of what the data will look like, along with the count of columns and rows, before creating an excel file.
-print("\nInformation about the transformed Rate Table Dataset\n",df_RT.head(15),"\n",f"Columns: {df_RT.shape[1]} \nRows: {df_RT.shape[0]}")
+print("\nInformation about the transformed Rate Table Dataset\n",df_RT.head(10),"\n",f"Columns: {df_RT.shape[1]} \nRows: {df_RT.shape[0]}")
 df_RT.to_excel(filepath + Rate_Table, index=False)
