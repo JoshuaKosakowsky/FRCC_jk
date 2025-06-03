@@ -280,8 +280,30 @@
         <mxCell id="SXvU554oP_KsTAu_gEnV-69" value="Continue with Correct Detail Code" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="662" y="1400" width="125" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-89" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-73" target="SXvU554oP_KsTAu_gEnV-86">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-92" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-89">
+          <mxGeometry x="-0.2369" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-90" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-73" target="SXvU554oP_KsTAu_gEnV-88">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-91" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-90">
+          <mxGeometry x="-0.2594" y="1" relative="1" as="geometry">
+            <mxPoint x="-4" y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="SXvU554oP_KsTAu_gEnV-73" value="Q: Is the Frequency Column&lt;div&gt;&quot;Per Credit Hour&quot;?&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=13;" vertex="1" parent="1">
-          <mxGeometry x="328" y="1550" width="210" height="60" as="geometry" />
+          <mxGeometry x="328" y="1559" width="210" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-86" value="Fee Type:&lt;div&gt;&quot;FLAT&quot;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="478.5" y="1680" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-88" value="Fee Type:&lt;div&gt;&quot;CRED&quot;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="268" y="1680" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
