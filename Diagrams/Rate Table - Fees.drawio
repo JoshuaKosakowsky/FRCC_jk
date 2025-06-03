@@ -1,21 +1,21 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36" version="27.1.3">
   <diagram name="Page-1" id="Fy1r2IXZ9v4l79hZBatR">
-    <mxGraphModel dx="2276" dy="743" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2208" dy="708" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="SXvU554oP_KsTAu_gEnV-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=13;" edge="1" parent="1" source="v3ATiPwjfi1gJON-RTef-1" target="SXvU554oP_KsTAu_gEnV-10">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-16" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-11">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-16" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-11">
           <mxGeometry x="-0.1396" y="1" relative="1" as="geometry">
-            <mxPoint as="offset" />
+            <mxPoint x="6" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="SXvU554oP_KsTAu_gEnV-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="v3ATiPwjfi1gJON-RTef-1" target="SXvU554oP_KsTAu_gEnV-19">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-21" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-20">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-21" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-20">
           <mxGeometry x="-0.2593" y="2" relative="1" as="geometry">
             <mxPoint x="-3" as="offset" />
           </mxGeometry>
@@ -56,12 +56,12 @@
         <mxCell id="SXvU554oP_KsTAu_gEnV-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=13;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-12" target="SXvU554oP_KsTAu_gEnV-5">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-15" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=13;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-14">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-15" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-14">
           <mxGeometry x="-0.139" y="5" relative="1" as="geometry">
             <mxPoint y="-4" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-17" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-12" target="SXvU554oP_KsTAu_gEnV-18">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-17" value="No" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=16;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-12" target="SXvU554oP_KsTAu_gEnV-18">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="870" y="464" as="targetPoint" />
           </mxGeometry>
@@ -75,7 +75,7 @@
         <mxCell id="SXvU554oP_KsTAu_gEnV-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-19" target="SXvU554oP_KsTAu_gEnV-22">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-24" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-23">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-24" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-23">
           <mxGeometry x="-0.0764" y="4" relative="1" as="geometry">
             <mxPoint x="-4" as="offset" />
           </mxGeometry>
@@ -83,9 +83,9 @@
         <mxCell id="SXvU554oP_KsTAu_gEnV-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-19" target="SXvU554oP_KsTAu_gEnV-10">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-26" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-25">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-26" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-25">
           <mxGeometry x="-0.2828" y="2" relative="1" as="geometry">
-            <mxPoint x="-26" as="offset" />
+            <mxPoint x="-33" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="SXvU554oP_KsTAu_gEnV-19" value="Q: Do the Courses Match or is there and All/Blank?" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
@@ -94,15 +94,15 @@
         <mxCell id="SXvU554oP_KsTAu_gEnV-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-22" target="SXvU554oP_KsTAu_gEnV-10">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-28" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-27">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-28" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-27">
           <mxGeometry x="-0.7871" y="-1" relative="1" as="geometry">
-            <mxPoint x="21" y="-1" as="offset" />
+            <mxPoint x="10" y="-1" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="SXvU554oP_KsTAu_gEnV-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-22" target="SXvU554oP_KsTAu_gEnV-29">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-33" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-30">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-33" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-30">
           <mxGeometry x="-0.2381" y="-1" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
@@ -115,15 +115,15 @@
             <mxPoint x="680" y="650" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-32" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-31">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-32" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-31">
           <mxGeometry x="-0.7486" y="-3" relative="1" as="geometry">
-            <mxPoint y="-3" as="offset" />
+            <mxPoint x="-13" y="-3" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="SXvU554oP_KsTAu_gEnV-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-29" target="SXvU554oP_KsTAu_gEnV-34">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-36" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-35">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-36" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-35">
           <mxGeometry x="0.0085" y="3" relative="1" as="geometry">
             <mxPoint x="-3" as="offset" />
           </mxGeometry>
@@ -134,7 +134,7 @@
         <mxCell id="SXvU554oP_KsTAu_gEnV-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-34" target="SXvU554oP_KsTAu_gEnV-38">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-42" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-39">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-42" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-39">
           <mxGeometry x="-0.0743" y="7" relative="1" as="geometry">
             <mxPoint x="-1" y="-6" as="offset" />
           </mxGeometry>
@@ -144,9 +144,9 @@
             <mxPoint x="630" y="1149" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-43" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-41">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-43" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-41">
           <mxGeometry x="-0.0816" y="-4" relative="1" as="geometry">
-            <mxPoint y="-3" as="offset" />
+            <mxPoint x="-15" y="-3" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="SXvU554oP_KsTAu_gEnV-34" value="Q: Is the Explanation Column&lt;div&gt;&quot;Digital Content Fee&quot;?&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=13;" vertex="1" parent="1">
@@ -155,7 +155,7 @@
         <mxCell id="SXvU554oP_KsTAu_gEnV-45" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-38" target="SXvU554oP_KsTAu_gEnV-44">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-46" value="Summer&lt;div&gt;20XX10&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-45">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-46" value="Summer&lt;div&gt;20XX10&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=15;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-45">
           <mxGeometry x="0.215" relative="1" as="geometry">
             <mxPoint x="13" y="-14" as="offset" />
           </mxGeometry>
@@ -163,17 +163,17 @@
         <mxCell id="SXvU554oP_KsTAu_gEnV-50" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-38" target="SXvU554oP_KsTAu_gEnV-49">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-53" value="Spring&lt;div&gt;20XX30&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-50">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-53" value="Spring&lt;div&gt;20XX30&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=15;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-50">
           <mxGeometry x="-0.1888" y="4" relative="1" as="geometry">
-            <mxPoint x="6" y="7" as="offset" />
+            <mxPoint x="8" y="10" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="SXvU554oP_KsTAu_gEnV-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-38" target="SXvU554oP_KsTAu_gEnV-48">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-52" value="Fall&lt;div&gt;20XX20&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-51">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-52" value="Fall&lt;div&gt;20XX20&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=15;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-51">
           <mxGeometry x="-0.1008" relative="1" as="geometry">
-            <mxPoint y="-5" as="offset" />
+            <mxPoint y="-6" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="SXvU554oP_KsTAu_gEnV-38" value="Follow Path depending on Term" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
@@ -208,7 +208,7 @@
         <mxCell id="SXvU554oP_KsTAu_gEnV-55" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-61" target="SXvU554oP_KsTAu_gEnV-62">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-56" value="Summer&lt;div&gt;20XX10&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-55">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-56" value="Summer&lt;div&gt;20XX10&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=15;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-55">
           <mxGeometry x="0.215" relative="1" as="geometry">
             <mxPoint x="13" y="-14" as="offset" />
           </mxGeometry>
@@ -216,21 +216,21 @@
         <mxCell id="SXvU554oP_KsTAu_gEnV-57" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-61" target="SXvU554oP_KsTAu_gEnV-64">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-58" value="Spring&lt;div&gt;20XX30&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-57">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-58" value="Spring&lt;div&gt;20XX30&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=15;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-57">
           <mxGeometry x="-0.1888" y="4" relative="1" as="geometry">
-            <mxPoint x="6" y="7" as="offset" />
+            <mxPoint x="7" y="8" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="SXvU554oP_KsTAu_gEnV-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-61" target="SXvU554oP_KsTAu_gEnV-63">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-60" value="Fall&lt;div&gt;20XX20&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-59">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-60" value="Fall&lt;div&gt;20XX20&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=15;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-59">
           <mxGeometry x="-0.1008" relative="1" as="geometry">
             <mxPoint y="-5" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="SXvU554oP_KsTAu_gEnV-61" value="Follow Path depending on Term" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="680" y="1104" width="90" height="90" as="geometry" />
+          <mxGeometry x="680" y="1103" width="90" height="90" as="geometry" />
         </mxCell>
         <mxCell id="SXvU554oP_KsTAu_gEnV-70" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-62" target="SXvU554oP_KsTAu_gEnV-69">
           <mxGeometry relative="1" as="geometry">
@@ -283,7 +283,7 @@
         <mxCell id="SXvU554oP_KsTAu_gEnV-89" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-73" target="SXvU554oP_KsTAu_gEnV-86">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-92" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-89">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-92" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-89">
           <mxGeometry x="-0.2369" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
@@ -291,7 +291,7 @@
         <mxCell id="SXvU554oP_KsTAu_gEnV-90" style="rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-73" target="SXvU554oP_KsTAu_gEnV-88">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="SXvU554oP_KsTAu_gEnV-91" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-90">
+        <mxCell id="SXvU554oP_KsTAu_gEnV-91" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-90">
           <mxGeometry x="-0.2594" y="1" relative="1" as="geometry">
             <mxPoint x="-4" y="1" as="offset" />
           </mxGeometry>
@@ -299,11 +299,60 @@
         <mxCell id="SXvU554oP_KsTAu_gEnV-73" value="Q: Is the Frequency Column&lt;div&gt;&quot;Per Credit Hour&quot;?&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;fontSize=13;" vertex="1" parent="1">
           <mxGeometry x="328" y="1559" width="210" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-94" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-86" target="SXvU554oP_KsTAu_gEnV-93">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="SXvU554oP_KsTAu_gEnV-86" value="Fee Type:&lt;div&gt;&quot;FLAT&quot;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
           <mxGeometry x="478.5" y="1680" width="120" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-95" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-88" target="SXvU554oP_KsTAu_gEnV-93">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="SXvU554oP_KsTAu_gEnV-88" value="Fee Type:&lt;div&gt;&quot;CRED&quot;&lt;/div&gt;" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
           <mxGeometry x="268" y="1680" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-97" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-93" target="SXvU554oP_KsTAu_gEnV-96">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-93" value="Continue with Correct Fee Type" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="370.5" y="1800" width="125" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-99" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-96" target="SXvU554oP_KsTAu_gEnV-98">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-96" value="Input the Associated Fee" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="370.5" y="1921" width="125" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-100" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-98" target="SXvU554oP_KsTAu_gEnV-34">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-140" y="949.9999999999998" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="-110" y="2075" />
+              <mxPoint x="-110" y="1070" />
+              <mxPoint x="380" y="1070" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-101" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-100">
+          <mxGeometry x="-0.8151" y="3" relative="1" as="geometry">
+            <mxPoint x="114" y="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-102" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SXvU554oP_KsTAu_gEnV-98" target="SXvU554oP_KsTAu_gEnV-10">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1040" y="2075" />
+              <mxPoint x="1040" y="604" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-103" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=16;" vertex="1" connectable="0" parent="SXvU554oP_KsTAu_gEnV-102">
+          <mxGeometry x="-0.9178" y="-6" relative="1" as="geometry">
+            <mxPoint x="-30" y="-7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="SXvU554oP_KsTAu_gEnV-98" value="Q: Are there more fees that are align with the CRN in process?" style="rounded=0;whiteSpace=wrap;html=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="328" y="2045" width="210" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
