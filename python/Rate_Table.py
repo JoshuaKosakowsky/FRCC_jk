@@ -18,13 +18,13 @@ import re
 Variables to update depending on the FY/Term
 '''
 
-FY = 'FY26'
+FY = '26'
 FY25_MED_HIGH = 8.85
 FY26_MED_HIGH = 9.05
 
-if FY == 'FY25':
+if FY == '25':
     FYFeeAmt = FY25_MED_HIGH
-elif FY == 'FY26':
+elif FY == '26':
     FYFeeAmt = FY26_MED_HIGH
 else:
     FYFeeAmt = 'Incorrect Format'
@@ -34,15 +34,19 @@ Term = 'Fall' # Choices "Summer", "Fall", "Spring"
 if Term.capitalize() == "Summer":
     Dig_content_fee = 'A394'
     Not_DCF = 'A385'
+    Semester = '10'
 elif Term.capitalize() == 'Fall':
     Dig_content_fee = 'A392'
     Not_DCF = 'A383'
+    Semester = '20'
 elif Term.capitalize() == 'Spring':
     Dig_content_fee = 'A393'
     Not_DCF = 'A384'
+    Semester = '30'
 else: 
     Dig_content_fee = "Please input a valid term"
     Not_DCF = "Please input a valid term"
+    Semester = "Please input a valid term"
 
 # {'A392':'FALL', 'A393':'SPRING', 'A394':'Summer'} # Digital Content Fee
 # {'A383':'FALL', 'A384':'SPRING', 'A385':'Summer'} # Course Specific Fee
@@ -73,11 +77,11 @@ BANNER_CourseFeeListing = 'gokoutp.csv' # input file
 Cleaned_CFL = f'Cleaned_CFL{xlsx_doc}' # output file
 
 # The file from Lori/Dina pertaining to the New Course Specific Fees for the fiscal year.
-FRCC_CourseSpecificFees = 'Course Specific Fees.xlsx'
-Cleaned_CSF = f'Cleaned Course Specific Fees{xlsx_doc}'
+FRCC_CourseSpecificFees = f'FY{FY} Course Specific Fees.xlsx'
+Cleaned_CSF = f'FY{FY} Cleaned Course Specific Fees{xlsx_doc}'
 
 # This file is the final combined output from the Course Fee Listing and Course Specific Fees.
-Rate_Table = f'Rate Table{xlsx_doc}'
+Rate_Table = f'20{FY}{Semester} Rate Table{xlsx_doc}'
 
 # Add more below as they become needed
 
@@ -164,7 +168,6 @@ df_B_CFL.to_excel(filepath + 'afterDrops.xlsx', index=False)
 
 df_B_CFL['SECTION'] = df_B_CFL['SECTION'].astype(str).str.zfill(3)
 
-
 # Drop rows where "CAMPUS" is FCX, FCW, FCZ, or FZZ
 df_B_CFL = df_B_CFL[~df_B_CFL['CAMPUS'].str.contains('FCX|FCW|FCZ|FZZ', na=False)]
 
@@ -232,7 +235,6 @@ def text_num(CourseNumber):
         return CourseNumber
 
 df_CSF['COURSE NUMBER'] = df_CSF['COURSE NUMBER'].apply(text_num)
-
 
 # Utilize regex matching to remove any hyphens at the end of a string in "SECTION" with nothing.
 df_CSF['SECTION'] = df_CSF['SECTION'].str.replace(r'-$', '', regex = True)
@@ -334,7 +336,6 @@ df_CSF['DETAIL CODE'] = df_CSF.apply(lambda row: detail_code(row['EXPLANATION'])
 # Sort values by SUBJECT then COURSE NUMBER
 df_CSF = df_CSF.sort_values(by=['SUBJECT', 'COURSE NUMBER'], ascending = [True, True])
 
-
 print("\nInformation about the transformed Course Specific Fees Dataset\n",df_CSF.head(15),"\n",f"Columns: {df_CSF.shape[1]} \nRows: {df_CSF.shape[0]}")
 df_CSF.to_excel(filepath + Cleaned_CSF, index=False)
 
@@ -348,7 +349,7 @@ This in effect is the Rate Table and will be used to assign costs to courses.
 df_RT = pd.merge(df_B_CFL, df_CSF, how='inner', on=['SUBJECT'], suffixes=('_CFL', '_CSF'))
 
 # Creating a new Column "UNCHANGED" to see if the fee amount has is the same as what is in Banner's Course Fee Listing
-df_RT['UNCHANGED'] = df_RT[f'{FY} FEE AMOUNT'] == df_RT['AMOUNT']
+df_RT['UNCHANGED'] = df_RT[f'FY{FY} FEE AMOUNT'] == df_RT['AMOUNT']
 
 # Function to seperate HIGH and MED Attributes two dateframes (Since they are attribute costs, not course costs)
 def filter_out_high_med_attr(df):
@@ -356,7 +357,7 @@ def filter_out_high_med_attr(df):
     # Filtering out "HIGH" or "MED" in the "EXPLANATION" column
     df = df[~((df['EXPLANATION'].str.contains('HIGH|MED', case=False, na=False)) & 
     # Filtering out where above criteria is met AND "FY FEE AMOUNT" == Specified Amt
-        (df[f'{FY} FEE AMOUNT'] == FYFeeAmt))]
+        (df[f'FY{FY} FEE AMOUNT'] == FYFeeAmt))]
 
     return df
 
@@ -429,7 +430,7 @@ df_RT = hs_filter(df_RT)
 # Function to see if Fee Amounts have changed 
 def CRN_fee_changed(group):
     previous_fee = set(group['AMOUNT'].astype(float).round(2))
-    current_fee = set(group[f'{FY} FEE AMOUNT'].astype(float).round(2))
+    current_fee = set(group[f'FY{FY} FEE AMOUNT'].astype(float).round(2))
 
     # Check Previous Fee Amount for Any Matching value in Current Fee Amount for the specific CRN
     unchanged = group['AMOUNT'].apply(lambda x: x in current_fee)
@@ -495,7 +496,7 @@ df_RT.loc[df_RT['EXPLANATION'].str.contains("Malpractice Insurance", na=False), 
 df_RT = df_RT.sort_values(by=['SUBJECT', 'COURSE NUMBER_CFL', 'CRN'], ascending = [True, True, True])
 
 # Changing column order so related columns from the two datasets are near each other
-column_order = ['SEMESTER', 'CRN', 'SUBJECT', 'COURSE NUMBER_CFL', 'COURSE NUMBER_CSF', 'SECTION_CFL', 'MODIFIED_SECTION', 'SECTION_CSF', 'CAMPUS_CFL', 'CAMPUS_CSF', 'ATTR', 'DET CODE', 'DETAIL CODE', 'AMOUNT', f'{FY} FEE AMOUNT', 'FEE TYPE (OLD)', 'FEE TYPE', 'COURSE NAME', 'FREQUENCY', 'EXPLANATION', 'UNCHANGED']
+column_order = ['SEMESTER', 'CRN', 'SUBJECT', 'COURSE NUMBER_CFL', 'COURSE NUMBER_CSF', 'SECTION_CFL', 'MODIFIED_SECTION', 'SECTION_CSF', 'CAMPUS_CFL', 'CAMPUS_CSF', 'ATTR', 'DET CODE', 'DETAIL CODE', 'AMOUNT', f'FY{FY} FEE AMOUNT', 'FEE TYPE (OLD)', 'FEE TYPE', 'COURSE NAME', 'FREQUENCY', 'EXPLANATION', 'UNCHANGED']
 df_RT = df_RT[column_order]
 
 # Getting a quick preview of what the data will look like, along with the count of columns and rows, before creating an excel file.
