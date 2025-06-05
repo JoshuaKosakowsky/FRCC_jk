@@ -19,6 +19,8 @@ Variables to update depending on the FY/Term
 '''
 
 FY = '26'
+Term = 'Fall' # Choices "Summer", "Fall", "Spring"
+
 FY25_MED_HIGH = 8.85
 FY26_MED_HIGH = 9.05
 
@@ -28,8 +30,6 @@ elif FY == '26':
     FYFeeAmt = FY26_MED_HIGH
 else:
     FYFeeAmt = 'Incorrect Format'
-
-Term = 'Fall' # Choices "Summer", "Fall", "Spring"
 
 if Term.capitalize() == "Summer":
     Dig_content_fee = 'A394'
@@ -93,7 +93,7 @@ This file is the list of all current courses offered at CRN for a specific term
 # The below out code is working as expected for the Course Fee Listing from Banner, onto the next section.
 
 # Loading in the dataset so Python can manipulate it.
-df_B_CFL = pd.read_csv(filepath + BANNER_CourseFeeListing, delimiter=',', quotechar='"')
+df_Banner_CFL = pd.read_csv(filepath + BANNER_CourseFeeListing, delimiter=',', quotechar='"')
 
 # Function to clean column names
 def clean_column_names(df):
@@ -106,7 +106,7 @@ def clean_column_names(df):
     df.columns = df.columns.str.replace(r'^[^\w]*|[^\w]*$', '', regex=True).str.replace(r'[^\w]+', '_', regex=True)
 
 # Applying the function to clean the data
-clean_column_names(df_B_CFL)
+clean_column_names(df_Banner_CFL)
 
 # Creating a Dictionary to rename columns into something more human friendly
 rename_columns = {
@@ -123,10 +123,10 @@ rename_columns = {
                 }
 
 # Renaming the columns
-df_B_CFL.rename(columns=rename_columns, inplace=True, errors = 'ignore')
+df_Banner_CFL.rename(columns=rename_columns, inplace=True, errors = 'ignore')
 
 # Drop columns
-df_B_CFL.drop(['SSBSECT_VPDI_CODE','SSBSECT_CREDIT_HRS', 'SSBSECT_BILL_HRS', 'SSBSECT_ENRL', 'SSBSECT_WAIT_COUNT', 'SSBSECT_LAB_HR', 'SSBSECT_LEC_HR', 'SSBSECT_OTH_HR', 'SSBSECT_PRNT_IND', 'SSBSECT_PTRM_CODE', 'SSBSECT_ACTIVITY_DATE', 'SSBSECT_PTRM_START_DATE', 'SSBSECT_PTRM_END_DATE', 'SSBSECT_CENSUS_ENRL_DATE', 'SSRATTR_ACTIVITY_DATE', 'SSRFEES_FEE_IND', 'SSRFEES_LEVL_CODE', 'SSBOVRR_COLL_CODE', 'SSBOVRR_DEPT_CODE', 'SSBOVRR_DIVS_CODE', 'SSBOVRR_TOPS_CODE', 'SSRMEET_BLDG_CODE', 'SSRMEET_START_DATE', 'SSRMEET_END_DATE', 'SSRMEET_BEGIN_TIME', 'SSRMEET_END_TIME', 'SSRMEET_HRS_WEEK', 'SSRMEET_ROOM_CODE', 'SSRMEET_CATAGORY', 'SSRMEET_SUN_DAY', 'SSRMEET_MON_DAY', 'SSRMEET_TUE_DAY', 'SSRMEET_WED_DAY', 'SSRMEET_THU_DAY', 'SSRMEET_FRI_DAY', 'SSRMEET_SAT_DAY'], axis=1, inplace=True)
+df_Banner_CFL.drop(['SSBSECT_VPDI_CODE','SSBSECT_CREDIT_HRS', 'SSBSECT_BILL_HRS', 'SSBSECT_ENRL', 'SSBSECT_WAIT_COUNT', 'SSBSECT_LAB_HR', 'SSBSECT_LEC_HR', 'SSBSECT_OTH_HR', 'SSBSECT_PRNT_IND', 'SSBSECT_PTRM_CODE', 'SSBSECT_ACTIVITY_DATE', 'SSBSECT_PTRM_START_DATE', 'SSBSECT_PTRM_END_DATE', 'SSBSECT_CENSUS_ENRL_DATE', 'SSRATTR_ACTIVITY_DATE', 'SSRFEES_FEE_IND', 'SSRFEES_LEVL_CODE', 'SSBOVRR_COLL_CODE', 'SSBOVRR_DEPT_CODE', 'SSBOVRR_DIVS_CODE', 'SSBOVRR_TOPS_CODE', 'SSRMEET_BLDG_CODE', 'SSRMEET_START_DATE', 'SSRMEET_END_DATE', 'SSRMEET_BEGIN_TIME', 'SSRMEET_END_TIME', 'SSRMEET_HRS_WEEK', 'SSRMEET_ROOM_CODE', 'SSRMEET_CATAGORY', 'SSRMEET_SUN_DAY', 'SSRMEET_MON_DAY', 'SSRMEET_TUE_DAY', 'SSRMEET_WED_DAY', 'SSRMEET_THU_DAY', 'SSRMEET_FRI_DAY', 'SSRMEET_SAT_DAY'], axis=1, inplace=True)
 
 
 ''' Some data manipulation to refine out output and ensure we catch CONC attributes and drop duplicates'''
@@ -138,41 +138,41 @@ def conc_only(value):
         return "CONC"
 
 # Creating a dataset only where CRN's have a CONC attribute
-CONC_df_CFL = df_B_CFL[df_B_CFL['ATTR'] == 'CONC']
+CONC_df_CFL = df_Banner_CFL[df_Banner_CFL['ATTR'] == 'CONC']
 
 # Creating a dateset only where there is a unique value in amount.
-Unique_AMT_df_CFL = df_B_CFL.dropna(subset=['AMOUNT']).drop_duplicates(subset=['CRN', 'AMOUNT'])
+Unique_AMT_df_CFL = df_Banner_CFL.dropna(subset=['AMOUNT']).drop_duplicates(subset=['CRN', 'AMOUNT'])
 Unique_AMT_df_CFL['ATTR'] = Unique_AMT_df_CFL['ATTR'].apply(conc_only)
 
 # Creating a dataset where amount is nan
-na_amt_df_CFL = df_B_CFL[df_B_CFL['AMOUNT'].isna()].drop_duplicates(subset=['CRN', 'ATTR'])
+na_amt_df_CFL = df_Banner_CFL[df_Banner_CFL['AMOUNT'].isna()].drop_duplicates(subset=['CRN', 'ATTR'])
 na_amt_df_CFL['ATTR'] = na_amt_df_CFL['ATTR'].apply(conc_only)
 
 # Concatenating the three created datasets above to drop duplicates the required way.
-df_B_CFL = pd.concat([CONC_df_CFL, Unique_AMT_df_CFL, na_amt_df_CFL])
+df_Banner_CFL = pd.concat([CONC_df_CFL, Unique_AMT_df_CFL, na_amt_df_CFL])
 
-df_B_CFL['ATTR2'] = df_B_CFL['ATTR'].apply(lambda x: 'MISSING' if pd.isna(x) or x == '' else x)
-df_B_CFL['AMOUNT2'] = df_B_CFL['AMOUNT'].fillna('MISSING')
+df_Banner_CFL['ATTR2'] = df_Banner_CFL['ATTR'].apply(lambda x: 'MISSING' if pd.isna(x) or x == '' else x)
+df_Banner_CFL['AMOUNT2'] = df_Banner_CFL['AMOUNT'].fillna('MISSING')
 
-df_B_CFL['ATTR'] = df_B_CFL['ATTR'].apply(conc_only)
+df_Banner_CFL['ATTR'] = df_Banner_CFL['ATTR'].apply(conc_only)
 
-df_B_CFL.sort_values(by=['CRN', 'ATTR'], ascending = [True, False], inplace=True)
+df_Banner_CFL.sort_values(by=['CRN', 'ATTR'], ascending = [True, False], inplace=True)
 
-df_B_CFL.to_excel(filepath + 'b4Drops.xlsx', index=False)
+df_Banner_CFL.to_excel(filepath + 'b4Drops.xlsx', index=False)
 
 # Dropping duplicate values to ensure we are keeping any CONC that may have been dropped before this proccess
-df_B_CFL = df_B_CFL.drop_duplicates(subset=['CRN', 'AMOUNT2'], keep='first')
-df_B_CFL = df_B_CFL.drop(columns=['ATTR2', 'AMOUNT2'])
+df_Banner_CFL = df_Banner_CFL.drop_duplicates(subset=['CRN', 'AMOUNT2'], keep='first')
+df_Banner_CFL = df_Banner_CFL.drop(columns=['ATTR2', 'AMOUNT2'])
 
-df_B_CFL.to_excel(filepath + 'afterDrops.xlsx', index=False)
+df_Banner_CFL.to_excel(filepath + 'afterDrops.xlsx', index=False)
 
-df_B_CFL['SECTION'] = df_B_CFL['SECTION'].astype(str).str.zfill(3)
+df_Banner_CFL['SECTION'] = df_Banner_CFL['SECTION'].astype(str).str.zfill(3)
 
 # Drop rows where "CAMPUS" is FCX, FCW, FCZ, or FZZ
-df_B_CFL = df_B_CFL[~df_B_CFL['CAMPUS'].str.contains('FCX|FCW|FCZ|FZZ', na=False)]
+df_Banner_CFL = df_Banner_CFL[~df_Banner_CFL['CAMPUS'].str.contains('FCX|FCW|FCZ|FZZ', na=False)]
 
 # Drop rows where Section is High School (37X, 38X, 39X, or 78X), Campus is FWO or FWC, and the Attribute is Concurrent (CONC)
-df_B_CFL = df_B_CFL[~((df_B_CFL['SECTION'].str.contains(r'37[A-Z]|38[A-Z]|39[A-Z]|78[A-Z]', na=False)) & ~((df_B_CFL['CAMPUS'].isin(['FWO', 'FWC'])) & (df_B_CFL['ATTR'] == 'CONC')))]
+df_Banner_CFL = df_Banner_CFL[~((df_Banner_CFL['SECTION'].str.contains(r'37[A-Z]|38[A-Z]|39[A-Z]|78[A-Z]', na=False)) & ~((df_Banner_CFL['CAMPUS'].isin(['FWO', 'FWC'])) & (df_Banner_CFL['ATTR'] == 'CONC')))]
 
 # Function to find HS courses and normalize them to all end in X or XX, have all else just end in XX except ALL
 def modify_for_matching(value):
@@ -185,7 +185,7 @@ def modify_for_matching(value):
         else:
             return section_str[0] + 'XX'
 
-df_B_CFL['MODIFIED_SECTION'] = df_B_CFL['SECTION'].apply(modify_for_matching)
+df_Banner_CFL['MODIFIED_SECTION'] = df_Banner_CFL['SECTION'].apply(modify_for_matching)
 
 # Function to remove any value from Attribute column that isn't CONC
 def conc_only(value):
@@ -194,13 +194,13 @@ def conc_only(value):
     else:
         return "CONC"
     
-df_B_CFL['ATTR'] = df_B_CFL['ATTR'].apply(conc_only)
+df_Banner_CFL['ATTR'] = df_Banner_CFL['ATTR'].apply(conc_only)
 
 # Sort values by SUBJECT then COURSE NUMBER 
-df_B_CFL.sort_values(by=['SUBJECT', 'COURSE NUMBER'], ascending = [True, True], inplace=True)
+df_Banner_CFL.sort_values(by=['SUBJECT', 'COURSE NUMBER'], ascending = [True, True], inplace=True)
 
-print("\nInformation about the transformed Course Fee Listing Dataset\n",df_B_CFL.head(),"\n",f"Columns: {df_B_CFL.shape[1]} \nRows: {df_B_CFL.shape[0]}")
-df_B_CFL.to_excel(filepath + Cleaned_CFL, index=False)
+print("\nInformation about the transformed Course Fee Listing Dataset\n",df_Banner_CFL.head(),"\n",f"Columns: {df_Banner_CFL.shape[1]} \nRows: {df_Banner_CFL.shape[0]}")
+df_Banner_CFL.to_excel(filepath + Cleaned_CFL, index=False)
 
 
 '''
@@ -346,7 +346,7 @@ This in effect is the Rate Table and will be used to assign costs to courses.
 
 # Merging the two DataFrames together, with a indicator from where each duplicate column is from.
 # Can only mergy by "SUBJECT". Cannot merge by "COURSE NUMBER" since there are a few subjects where ALL courses have a fee. (Like CSC)
-df_RT = pd.merge(df_B_CFL, df_CSF, how='inner', on=['SUBJECT'], suffixes=('_CFL', '_CSF'))
+df_RT = pd.merge(df_Banner_CFL, df_CSF, how='inner', on=['SUBJECT'], suffixes=('_CFL', '_CSF'))
 
 # Creating a new Column "UNCHANGED" to see if the fee amount has is the same as what is in Banner's Course Fee Listing
 df_RT['UNCHANGED'] = df_RT[f'FY{FY} FEE AMOUNT'] == df_RT['AMOUNT']
