@@ -1,0 +1,275 @@
+<report xmlns="http://developer.cognos.com/schemas/report/16.2/"           expressionLocale="en-us" useStyleVersion="10"><!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/14.3/" to "http://developer.cognos.com/schemas/report/16.2/" at 2023-2-16. 13:44:47--><!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/12.0/" to "http://developer.cognos.com/schemas/report/14.0/" at 2017-4-19. 13:4:30--><!--RSU-SPC-0093 The report specification was upgraded from "http://developer.cognos.com/schemas/report/9.0/" to "http://developer.cognos.com/schemas/report/12.0/" at 2016-1-6. 14:41:52-->
+				<modelPath>/content/folder[@name=&apos;Accounts Receivable&apos;]/folder[@name=&apos;Data Sources&apos;]/folder[@name=&apos;ODS Custom Packages&apos;]/package[@name=&apos;Receivable_Customer_C&apos;]/model[@name=&apos;model&apos;]</modelPath>
+				<drillBehavior/>
+				<queries>
+					<query name="Query1">
+						<source>
+							<model/>
+						</source>
+						<selection><dataItem aggregate="none" name="Key1" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account Detail].[MULTI_SOURCE]||
+[Receivable Customer].[Receivable Account Detail].[ID]||
+[Receivable Customer].[Receivable Account Detail].[ACADEMIC_PERIOD]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="MULTI_SOURCE" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account Detail].[MULTI_SOURCE]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="NAME" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account Detail].[NAME]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="ID" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account Detail].[ID]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="DELINQUENCY" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account].[DELINQUENCY]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="BILL_HOLD_TYPE" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account].[BILL_HOLD_TYPE]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="ACADEMIC_PERIOD" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account Detail].[ACADEMIC_PERIOD]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="DETAIL_CODE" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account Detail].[DETAIL_CODE]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="DETAIL_CODE_DESC" rollupAggregate="none"><expression>IF ([Receivable Customer].[Receivable Account Detail].[DETAIL_CODE]&lt;&apos;X801&apos;)
+THEN (&apos;Colorado Central Collection&apos;)
+ELSE ([Receivable Customer].[Receivable Account Detail].[DETAIL_CODE_DESC])
+
+
+</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="CATEGORY" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account Detail].[CATEGORY]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="total" name="AMOUNT"><expression>[Receivable Customer].[Receivable Account Detail].[AMOUNT]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="9"/><XMLAttribute name="RS_dataUsage" output="no" value="fact"/></XMLAttributes></dataItem><dataItem aggregate="total" name="BALANCE"><expression>[Receivable Customer].[Receivable Account Detail].[BALANCE]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="9"/><XMLAttribute name="RS_dataUsage" output="no" value="fact"/></XMLAttributes></dataItem><dataItem aggregate="total" name="AMOUNT_Coll"><expression>IF ([Receivable Customer].[Receivable Account Detail].[CATEGORY]=&apos;COL&apos; 
+AND 
+[Receivable Customer].[Receivable Account Detail].[DETAIL_CODE_TYPE]=&apos;C&apos;
+)
+THEN ([Receivable Customer].[Receivable Account Detail].[AMOUNT])
+ELSE (0)
+</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="9"/><XMLAttribute name="RS_dataUsage" output="no" value="fact"/></XMLAttributes></dataItem><dataItem aggregate="total" name="AMOUNT_NonColl"><expression>[AMOUNT]-[AMOUNT_Coll]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="9"/><XMLAttribute name="RS_dataUsage" output="no" value="fact"/></XMLAttributes></dataItem></selection>
+					<detailFilters><detailFilter use="optional"><filterExpression>[Receivable Customer].[Receivable Account Detail].[ACADEMIC_PERIOD] in (?ParameterTerm?)</filterExpression></detailFilter><detailFilter><filterExpression>[Receivable Customer].[Receivable Account Detail].[MULTI_SOURCE] in (?ParameterVPDI?)</filterExpression></detailFilter></detailFilters></query>
+				<query name="Query2">
+						<source>
+							<model/>
+						</source>
+						<selection><dataItem aggregate="none" name="Key2" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account Detail].[MULTI_SOURCE]||
+[Receivable Customer].[Receivable Account Detail].[ID]||
+[Receivable Customer].[Receivable Account Detail].[ACADEMIC_PERIOD]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="MULTI_SOURCE" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account Detail].[MULTI_SOURCE]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="ACCOUNT_ENTITY_IND" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account].[ACCOUNT_ENTITY_IND]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="ID" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account Detail].[ID]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="ACADEMIC_PERIOD" rollupAggregate="none"><expression>[Receivable Customer].[Receivable Account Detail].[ACADEMIC_PERIOD]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="total" name="AMOUNT2"><expression>[Receivable Customer].[Receivable Account Detail].[AMOUNT]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="9"/><XMLAttribute name="RS_dataUsage" output="no" value="fact"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Last_Used" rollupAggregate="none"><expression>maximum([Receivable Customer].[Receivable Account Detail].[ENTRY_DATE])</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="identifier"/></XMLAttributes></dataItem><dataItem aggregate="none" name="Last_Billed" rollupAggregate="none"><expression>maximum([Receivable Customer].[Receivable Account Detail].[BILL_DATE])</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="4"/><XMLAttribute name="RS_dataUsage" output="no" value="identifier"/></XMLAttributes></dataItem></selection>
+					<detailFilters><detailFilter><filterExpression>[AMOUNT2]&lt;&gt;0</filterExpression></detailFilter><detailFilter><filterExpression>[Receivable Customer].[Receivable Account Detail].[MULTI_SOURCE] in (?ParameterVPDI?)</filterExpression></detailFilter></detailFilters></query><query name="Query3">
+						<source>
+							
+						<joinOperation>
+			<joinOperands>
+				<joinOperand cardinality="0:1"><queryRef refQuery="Query1"/></joinOperand>
+				<joinOperand><queryRef refQuery="Query2"/></joinOperand>
+			</joinOperands>
+			<joinFilter>
+				<filterExpression>[Query1].[Key1] = [Query2].[Key2]</filterExpression>
+			</joinFilter>
+		</joinOperation></source>
+						<selection><dataItem name="Key1"><expression>[Query1].[Key1]</expression></dataItem><dataItem label="College" name="MULTI_SOURCE"><expression>[Query1].[MULTI_SOURCE]</expression></dataItem><dataItem name="ACCOUNT_ENTITY_IND"><expression>[Query2].[ACCOUNT_ENTITY_IND]</expression></dataItem><dataItem name="ID"><expression>[Query1].[ID]</expression></dataItem><dataItem label="Name" name="NAME"><expression>[Query1].[NAME]</expression></dataItem><dataItem label="Del Code" name="DELINQUENCY"><expression>[Query1].[DELINQUENCY]</expression></dataItem><dataItem label="Bill Code" name="BILL_HOLD_TYPE"><expression>[Query1].[BILL_HOLD_TYPE]</expression></dataItem><dataItem label="Term" name="ACADEMIC_PERIOD"><expression>[Query1].[ACADEMIC_PERIOD]</expression></dataItem><dataItem label="Detail Code" name="DETAIL_CODE"><expression>[Query1].[DETAIL_CODE]</expression></dataItem><dataItem name="DETAIL_CODE_DESC"><expression>[Query1].[DETAIL_CODE_DESC]</expression></dataItem><dataItem label="Amount" name="AMOUNT"><expression>[Query1].[AMOUNT]</expression></dataItem><dataItem label="Balance" name="BALANCE"><expression>[Query1].[BALANCE]</expression></dataItem><dataItem label="Term Amount" name="AMOUNT2"><expression>[Query2].[AMOUNT2]</expression></dataItem><dataItem name="AMOUNT_Coll"><expression>[Query1].[AMOUNT_Coll]</expression></dataItem><dataItem name="AMOUNT_NonColl"><expression>[Query1].[AMOUNT_NonColl]</expression></dataItem><dataItem name="Last_Used"><expression>[Query2].[Last_Used]</expression></dataItem><dataItem name="Last_Billed"><expression>[Query2].[Last_Billed]</expression></dataItem></selection>
+					<detailFilters><detailFilter><filterExpression>[MULTI_SOURCE] in (?ParameterVPDI?)</filterExpression></detailFilter><detailFilter><filterExpression>[AMOUNT2]&lt;&gt;0</filterExpression></detailFilter></detailFilters></query><query name="Query4">
+			<source>
+				<model/>
+			</source>
+			<selection><dataItem aggregate="none" name="ID" rollupAggregate="none"><expression>[Receivable Customer].[Hold].[ID]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="HOLD" rollupAggregate="none"><expression>[Receivable Customer].[Hold].[HOLD]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem><dataItem aggregate="none" name="ACTIVE_HOLD_IND" rollupAggregate="none"><expression>[Receivable Customer].[Hold].[ACTIVE_HOLD_IND]</expression><XMLAttributes><XMLAttribute name="RS_dataType" output="no" value="3"/><XMLAttribute name="RS_dataUsage" output="no" value="attribute"/></XMLAttributes></dataItem></selection>
+		<detailFilters><detailFilter><filterExpression>[ACTIVE_HOLD_IND] = &apos;Y&apos;</filterExpression></detailFilter><detailFilter><filterExpression>[HOLD] = &apos;T2&apos;</filterExpression></detailFilter></detailFilters></query><query name="Query5">
+			<source>
+				
+			<joinOperation>
+			<joinOperands>
+				<joinOperand cardinality="0:N"><queryRef refQuery="Query3"/></joinOperand>
+				<joinOperand cardinality="0:N"><queryRef refQuery="Query4"/></joinOperand>
+			</joinOperands>
+			<joinFilter>
+				<filterExpression>[Query3].[ID] = [Query4].[ID]</filterExpression>
+			</joinFilter>
+		</joinOperation></source>
+			<selection><dataItem label="College" name="MULTI_SOURCE"><expression>[Query3].[MULTI_SOURCE]</expression></dataItem><dataItem label="Ent" name="ACCOUNT_ENTITY_IND"><expression>[Query3].[ACCOUNT_ENTITY_IND]</expression></dataItem><dataItem label="Code" name="DETAIL_CODE"><expression>[Query3].[DETAIL_CODE]</expression></dataItem><dataItem label="Agency" name="DETAIL_CODE_DESC"><expression>[Query3].[DETAIL_CODE_DESC]</expression></dataItem><dataItem name="ID"><expression>[Query3].[ID]</expression></dataItem><dataItem label="Name" name="NAME"><expression>[Query3].[NAME]</expression></dataItem><dataItem label="Hold" name="HOLD"><expression>[Query4].[HOLD]</expression></dataItem><dataItem label="Del Code" name="DELINQUENCY"><expression>[Query3].[DELINQUENCY]</expression></dataItem><dataItem label="Bill Code" name="BILL_HOLD_TYPE"><expression>[Query3].[BILL_HOLD_TYPE]</expression></dataItem><dataItem label="Term" name="ACADEMIC_PERIOD"><expression>[Query3].[ACADEMIC_PERIOD]</expression></dataItem><dataItem label="Term Balance" name="AMOUNT"><expression>[Query3].[AMOUNT]</expression></dataItem><dataItem label="Balance" name="BALANCE"><expression>[Query3].[BALANCE]</expression></dataItem><dataItem label="Term Balance" name="AMOUNT2"><expression>[Query3].[AMOUNT2]</expression></dataItem><dataItem label="Coll Amt" name="AMOUNT_Coll"><expression>[Query3].[AMOUNT_Coll]</expression></dataItem><dataItem label="NonColl Amt" name="AMOUNT_NonColl"><expression>[Query3].[AMOUNT_NonColl]</expression></dataItem><dataItem name="Last_Used"><expression>[Query3].[Last_Used]</expression></dataItem><dataItem name="Last_Billed"><expression>[Query3].[Last_Billed]</expression></dataItem><dataItemListSummary aggregateMethod="total" name="Total(AMOUNT_Coll)" refDataItem="AMOUNT_Coll"/><dataItemListSummary aggregateMethod="total" name="Total(AMOUNT_NonColl)" refDataItem="AMOUNT_NonColl"/><dataItemListSummary aggregateMethod="total" name="Total(AMOUNT)" refDataItem="AMOUNT"/><dataItemListSummary aggregateMethod="countDistinct" name="Count Distinct(ID)" refDataItem="ID"/></selection>
+		</query><query name="QueryTerm"><source><model/></source><selection><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Academic Period LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>IF([List of Values].[Academic Period LOV].[VALUE]=&apos;000000&apos;)
+THEN (&apos;000000 - Non Term AR&apos;)
+ELSE (
+[List of Values].[Academic Period LOV].[VALUE]
+||&apos;-&apos;||
+[List of Values].[Academic Period LOV].[VALUE_DESCRIPTION]
+)</expression></dataItem></selection><detailFilters><detailFilter><filterExpression>[List of Values].[Academic Period LOV].[VALUE] in_range {&apos;200620&apos;:&apos;202999&apos;}
+or
+[List of Values].[Academic Period LOV].[VALUE] in_range {&apos;820061&apos;:&apos;820299&apos;}
+or
+[List of Values].[Academic Period LOV].[VALUE] in_range {&apos;000000&apos;:&apos;000000&apos;}
+</filterExpression></detailFilter></detailFilters></query><query name="QueryVPDI"><source><model/></source><selection><dataItem aggregate="none" name="VALUE"><expression>[List of Values].[Multi Source LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE1" sort="ascending"><expression>[List of Values].[Multi Source LOV].[VALUE]</expression></dataItem></selection></query></queries>
+				<layouts>
+					<layout>
+						<reportPages>
+							<page name="Page1"><style><defaultStyles><defaultStyle refStyle="pg"/></defaultStyles></style>
+								<pageBody><style><defaultStyles><defaultStyle refStyle="pb"/></defaultStyles></style>
+									<contents>
+										<list horizontalPagination="true" name="List1" refQuery="Query5">
+											
+											
+											
+											<noDataHandler>
+												<contents>
+													<block>
+														<contents>
+															<textItem>
+																<dataSource>
+																	<staticValue>No Data Available</staticValue>
+																</dataSource>
+																<style>
+																	<CSS value="padding:10px 18px;"/>
+																</style>
+															</textItem>
+														</contents>
+													</block>
+												</contents>
+											</noDataHandler>
+											<style>
+												<defaultStyles>
+													<defaultStyle refStyle="ls"/>
+												</defaultStyles>
+												<CSS value="border-collapse:collapse"/>
+											</style>
+										<listColumns><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="MULTI_SOURCE"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><dataFormat><stringFormat/></dataFormat><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="MULTI_SOURCE"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="ACCOUNT_ENTITY_IND"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="ACCOUNT_ENTITY_IND"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="ID"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="ID"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="NAME"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="NAME"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="HOLD"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:center"/></style><contents><textItem><dataSource><dataItemValue refDataItem="HOLD"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="DELINQUENCY"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:center"/></style><contents><textItem><dataSource><dataItemValue refDataItem="DELINQUENCY"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="BILL_HOLD_TYPE"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:center"/></style><contents><textItem><dataSource><dataItemValue refDataItem="BILL_HOLD_TYPE"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:center"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Last_Used"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:center"/><dataFormat><dateFormat dateSeparator="/" dateStyle="short" displayOrder="MDY" showDays="2-digits" showEra="false" showMonths="2-digits" showWeekday="false" showYears="hideCentury"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Last_Used"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles><CSS value="text-align:center"/></style><contents><textItem><dataSource><dataItemLabel refDataItem="Last_Billed"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:center"/><dataFormat><dateFormat dateSeparator="/" dateStyle="short" displayOrder="MDY" showDays="2-digits" showEra="false" showMonths="2-digits" showWeekday="false" showYears="hideCentury"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="Last_Billed"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="ACADEMIC_PERIOD"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:left"/></style><contents><textItem><dataSource><dataItemValue refDataItem="ACADEMIC_PERIOD"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="AMOUNT_Coll"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:right"/><dataFormat><numberFormat decimalDelimiter="." decimalSize="2" groupDelimiter="," sign="-" useGrouping="true" useTrailingSign="false"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="AMOUNT_Coll"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="AMOUNT_NonColl"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:right"/><dataFormat><numberFormat decimalDelimiter="." decimalSize="2" groupDelimiter="," sign="-" useGrouping="true" useTrailingSign="false"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="AMOUNT_NonColl"/></dataSource></textItem></contents></listColumnBody></listColumn><listColumn><listColumnTitle><style><defaultStyles><defaultStyle refStyle="lt"/></defaultStyles></style><contents><textItem><dataSource><dataItemLabel refDataItem="AMOUNT"/></dataSource></textItem></contents></listColumnTitle><listColumnBody><style><defaultStyles><defaultStyle refStyle="lm"/></defaultStyles><CSS value="text-align:right"/><dataFormat><numberFormat decimalDelimiter="." decimalSize="2" groupDelimiter="," sign="-" useGrouping="true" useTrailingSign="false"/></dataFormat></style><contents><textItem><dataSource><dataItemValue refDataItem="AMOUNT"/></dataSource></textItem></contents></listColumnBody></listColumn></listColumns><sortList><sortItem refDataItem="MULTI_SOURCE"/><sortItem refDataItem="NAME"/><sortItem refDataItem="ACADEMIC_PERIOD"/></sortList><listOverallGroup><listFooter><listRows><listRow><rowCells><rowCell colSpan="10"><contents><textItem><dataSource><staticValue>Overall</staticValue></dataSource></textItem><textItem><dataSource><staticValue> - </staticValue></dataSource></textItem><textItem><dataSource><staticValue>Total</staticValue></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="if"/></defaultStyles></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Total(AMOUNT_Coll)"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="is"/></defaultStyles><dataFormat><numberFormat decimalDelimiter="." decimalSize="2" groupDelimiter="," sign="-" useGrouping="true" useTrailingSign="false"/></dataFormat></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Total(AMOUNT_NonColl)"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="is"/></defaultStyles><dataFormat><numberFormat decimalDelimiter="." decimalSize="2" groupDelimiter="," sign="-" useGrouping="true" useTrailingSign="false"/></dataFormat></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Total(AMOUNT)"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="is"/></defaultStyles><dataFormat><numberFormat decimalDelimiter="." decimalSize="2" groupDelimiter="," sign="-" useGrouping="true" useTrailingSign="false"/></dataFormat></style></rowCell></rowCells></listRow><listRow><rowCells><rowCell colSpan="2"><contents><textItem><dataSource><staticValue>Overall</staticValue></dataSource></textItem><textItem><dataSource><staticValue> - </staticValue></dataSource></textItem><textItem><dataSource><staticValue>Count Distinct</staticValue></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="if"/></defaultStyles></style></rowCell><rowCell><contents><textItem><dataSource><dataItemValue refDataItem="Count Distinct(ID)"/></dataSource></textItem></contents><style><defaultStyles><defaultStyle refStyle="is"/></defaultStyles></style></rowCell><rowCell colSpan="10"><contents/><style><defaultStyles><defaultStyle refStyle="if"/></defaultStyles></style></rowCell></rowCells></listRow></listRows></listFooter></listOverallGroup></list>
+									</contents>
+								</pageBody>
+								<pageHeader>
+									<contents>
+										<block><style><defaultStyles><defaultStyle refStyle="ta"/></defaultStyles><CSS value="text-align:left"/></style>
+											<contents>
+												<textItem><style><defaultStyles><defaultStyle refStyle="tt"/></defaultStyles></style>
+													<dataSource>
+														<staticValue>Collection Analysis by Term</staticValue>
+													</dataSource>
+												</textItem>
+											</contents>
+										</block>
+									<table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF12"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterVPDI&apos;) is not null) then &quot;VPDI(s): &quot; + ParamDisplayValue(&apos;ParameterVPDI&apos;) else &quot;VPDIs: All&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem name="FilterValueF13"><dataSource><reportExpression>if (ParamDisplayValue(&apos;ParameterTerm&apos;) is not null) then &quot;Term(s): &quot; + ParamDisplayValue(&apos;ParameterTerm&apos;) else &quot;Terms: All&quot;</reportExpression></dataSource><XMLAttributes><XMLAttribute name="filter" value="F0"/></XMLAttributes></textItem></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell></tableCells></tableRow></tableRows></table></contents>
+									<style>
+										<defaultStyles>
+											<defaultStyle refStyle="ph"/>
+										</defaultStyles>
+										<CSS value="padding-bottom:10px"/>
+									</style>
+								</pageHeader>
+								<pageFooter>
+									<contents>
+										<table>
+											<tableRows>
+												<tableRow>
+													<tableCells>
+														<tableCell>
+															<contents>
+																<date>
+																	<style>
+																		<dataFormat>
+																			<dateFormat/>
+																		</dataFormat>
+																	</style>
+																</date>
+															</contents>
+															<style>
+																<CSS value="vertical-align:top;text-align:left;width:25%"/>
+															</style>
+														</tableCell>
+														<tableCell>
+															<contents>
+																<pageNumber/>
+															</contents>
+															<style>
+																<CSS value="vertical-align:top;text-align:center;width:50%"/>
+															</style>
+														</tableCell>
+														<tableCell>
+															<contents>
+																<time>
+																	<style>
+																		<dataFormat>
+																			<timeFormat/>
+																		</dataFormat>
+																	</style>
+																</time>
+															</contents>
+															<style>
+																<CSS value="vertical-align:top;text-align:right;width:25%"/>
+															</style>
+														</tableCell>
+													</tableCells>
+												</tableRow>
+											</tableRows>
+											<style>
+												<defaultStyles>
+													<defaultStyle refStyle="tb"/>
+												</defaultStyles>
+												<CSS value="border-collapse:collapse;width:100%"/>
+											</style>
+										</table>
+									</contents>
+									<style>
+										<defaultStyles>
+											<defaultStyle refStyle="pf"/>
+										</defaultStyles>
+										<CSS value="padding-top:10px"/>
+									</style>
+								</pageFooter>
+							<XMLAttributes><XMLAttribute output="no" name="RS_legacyDrillDown" value="0"/></XMLAttributes></page>
+						</reportPages>
+					<promptPages><page name="Prompt Page1">
+			<pageHeader>
+				<contents>
+					<block>
+						<contents>
+							<textItem>
+								<dataSource>
+									<staticValue/>
+								</dataSource>
+								<style>
+									<defaultStyles>
+										<defaultStyle refStyle="tt"/>
+									</defaultStyles>
+								</style>
+							</textItem>
+						</contents>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="ta"/>
+							</defaultStyles>
+						</style>
+					</block>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="hp"/>
+					</defaultStyles>
+				</style>
+			</pageHeader>
+			<pageBody>
+				<contents><table><style><defaultStyles><defaultStyle refStyle="tb"/></defaultStyles><CSS value="border-collapse:collapse;width:100%"/></style><tableRows><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>College: </staticValue></dataSource></textItem></contents><style><CSS value="text-align:right"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterVPDI" refQuery="QueryVPDI" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents><textItem><dataSource><staticValue>Term: </staticValue></dataSource></textItem></contents><style><CSS value="text-align:right"/></style></tableCell><tableCell><contents><selectValue multiSelect="true" parameter="ParameterTerm" refQuery="QueryTerm" selectValueUI="listBox"><useItem refDataItem="VALUE"><displayItem refDataItem="VALUE1"/></useItem></selectValue></contents></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow><tableRow><tableCells><tableCell><contents/></tableCell><tableCell><contents/></tableCell></tableCells></tableRow></tableRows></table></contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="py"/>
+					</defaultStyles>
+				</style>
+			</pageBody>
+			<pageFooter>
+				<contents>
+					<promptButton type="cancel">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="back">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="next">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+					<promptButton type="finish">
+						<contents/>
+						<style>
+							<defaultStyles>
+								<defaultStyle refStyle="bp"/>
+							</defaultStyles>
+						</style>
+					</promptButton>
+				</contents>
+				<style>
+					<defaultStyles>
+						<defaultStyle refStyle="fp"/>
+					</defaultStyles>
+				</style>
+			</pageFooter>
+			<style>
+				<defaultStyles>
+					<defaultStyle refStyle="pp"/>
+				</defaultStyles>
+			</style>
+		</page></promptPages></layout>
+				</layouts>
+			<XMLAttributes><XMLAttribute name="RS_CreateExtendedDataItems" output="no" value="true"/><XMLAttribute name="listSeparator" output="no" value=","/><XMLAttribute output="no" name="decimalSeparator" value="."/><XMLAttribute output="no" name="RS_modelModificationTime" value="2024-12-09T23:56:54.436Z"/></XMLAttributes><reportName>Collection Analysis by Term</reportName></report>
