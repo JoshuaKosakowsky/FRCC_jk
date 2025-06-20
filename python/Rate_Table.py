@@ -171,8 +171,8 @@ df_Banner_CFL['SECTION'] = df_Banner_CFL['SECTION'].astype(str).str.zfill(3)
 # Drop rows where "CAMPUS" is FCX, FCW, FCZ, or FZZ
 df_Banner_CFL = df_Banner_CFL[~df_Banner_CFL['CAMPUS'].str.contains('FCX|FCW|FCZ|FZZ', na=False)]
 
-# Drop rows where Section is High School (37X, 38X, 39X, or 78X), Campus is FWO or FWC, and the Attribute is Concurrent (CONC)
-df_Banner_CFL = df_Banner_CFL[~((df_Banner_CFL['SECTION'].str.contains(r'37[A-Z]|38[A-Z]|39[A-Z]|78[A-Z]', na=False)) & ~((df_Banner_CFL['CAMPUS'].isin(['FWO', 'FWC'])) & (df_Banner_CFL['ATTR'] == 'CONC')))]
+# Drop rows where Section is High School (37X, 38X, 39X, or 78X), Campus is FWO or FWC, and the Attribute is Concurrent (CONC) ## Added the other Campuses to match them
+df_Banner_CFL = df_Banner_CFL[~((df_Banner_CFL['SECTION'].str.contains(r'37[A-Z]|38[A-Z]|39[A-Z]|78[A-Z]', na=False)) & ~((df_Banner_CFL['CAMPUS'].isin(['FWO', 'FWC', 'FLO', 'FLC', 'FBO', 'FBC'])) & (df_Banner_CFL['ATTR'] == 'CONC')))]
 
 # Function to find HS courses and normalize them to all end in X or XX, have all else just end in XX except ALL
 def modify_for_matching(value):
@@ -390,19 +390,19 @@ def dropHS_all(row):
 # Function to match the "CAMPUS_CFL" to the "CAMPUS_CSF" column Based off specific Campus codes for matching
 def campus_filter(row):
 
-    # Snippet to match Boulder Online campus with Boulder Online and Boulder Campus
+    # Snippet to match Boulder Off-Site Campus with Boulder Off-Site and Boulder Campus
     if row['CAMPUS_CFL'] == 'FBO':
-        campus_match = row['CAMPUS_CSF'] in ['FBO', 'FBC']
-    # Snippet to match Westminster Online campus with Westminster Online and Westminster Campus
+        campus_match = row['CAMPUS_CSF'] in ['FBO', 'FBC', 'ALL']
+    # Snippet to match Westminster Off-Site Campus with Westminster Off-Site and Westminster Campus
     elif row['CAMPUS_CFL'] == 'FWO':
-        campus_match = row['CAMPUS_CSF'] in ['FWO', 'FWC']
-    # Snippet to match Fort Collins Online campus with Fort Collins Online and Fort Collins Campus
+        campus_match = row['CAMPUS_CSF'] in ['FWO', 'FWC', 'ALL']
+    # Snippet to match Fort Collins Off-Site campus with Fort Collins Off-Site and Fort Collins Campus
     elif row['CAMPUS_CFL'] == 'FLO':
-        campus_match = row['CAMPUS_CSF'] in ['FLO', 'FLC']
-    # Snippet to match Colorado Online campus with Online and Colorado Online
+        campus_match = row['CAMPUS_CSF'] in ['FLO', 'FLC', 'ALL']
+    # Snippet to match Colorado Online Campus with Online and Colorado Online
     elif row['CAMPUS_CFL'] == 'FCY':
-        campus_match = row['CAMPUS_CSF'] in ['FON', 'FCY']
-    # Snippet to match for "ALL" or the same campus code
+        campus_match = row['CAMPUS_CSF'] in ['FON', 'FCY', 'ALL'] # Added 'ALL' for testing
+    # Snippet to match for "ALL" or the same Campus code
     else:
         campus_match = (
                 (row['CAMPUS_CFL'] == row['CAMPUS_CSF']) or
@@ -501,4 +501,129 @@ df_RT = df_RT[column_order]
 
 # Getting a quick preview of what the data will look like, along with the count of columns and rows, before creating an excel file.
 print("\nInformation about the transformed Rate Table Dataset\n",df_RT.head(10),"\n",f"Columns: {df_RT.shape[1]} \nRows: {df_RT.shape[0]}")
-df_RT.to_excel(filepath + Rate_Table, index=False)
+#df_RT.to_excel(filepath + Rate_Table, index=False)
+
+
+''' Code to make a duplicate of df_RT but for fees that need to be removed'''
+
+# Get the list of valid subjects from Course Specific Fees
+valid_subjects = set(df_CSF['SUBJECT'].unique())
+
+# Filter Banner rows where the subject does NOT exist in CSF
+df_subject_not_in_CSF = df_Banner_CFL[~df_Banner_CFL['SUBJECT'].isin(valid_subjects)].copy()
+
+# Add a column to indicate the removal reason
+df_subject_not_in_CSF['REMOVAL_REASON'] = 'Subject not in CSF'
+
+# Step 2: Flag course numbers in Banner that do not exist in CSF for the same subject
+
+# Only consider Banner rows where SUBJECT exists in CSF
+df_Banner_subject_match = df_Banner_CFL[df_Banner_CFL['SUBJECT'].isin(df_CSF['SUBJECT'])].copy()
+
+# Build valid (SUBJECT, COURSE NUMBER) pairs from CSF
+valid_subj_course = df_CSF[['SUBJECT', 'COURSE NUMBER']].drop_duplicates()
+valid_subj_course_set = set([tuple(x) for x in valid_subj_course.values])
+
+# Identify (SUBJECT, COURSE NUMBER) pairs in Banner that don't exist in CSF
+df_Banner_subject_match['SUBJ_COURSE_PAIR'] = list(zip(df_Banner_subject_match['SUBJECT'], df_Banner_subject_match['COURSE NUMBER']))
+mask_invalid_course = ~df_Banner_subject_match['SUBJ_COURSE_PAIR'].isin(valid_subj_course_set)
+
+# Filter those rows and add reason
+df_course_not_in_CSF = df_Banner_subject_match[mask_invalid_course].copy()
+df_course_not_in_CSF['REMOVAL_REASON'] = 'Course Number not in CSF'
+
+# Filter to rows where subject and course number are valid (already handled by prior steps)
+df_Banner_course_match = df_Banner_CFL[
+    df_Banner_CFL['SUBJECT'].isin(df_CSF['SUBJECT']) &
+    df_Banner_CFL[['SUBJECT', 'COURSE NUMBER']].apply(tuple, axis=1).isin(
+        df_CSF[['SUBJECT', 'COURSE NUMBER']].drop_duplicates().apply(tuple, axis=1)
+    )
+].copy()
+
+
+# ✅ Normalize SECTIONs before anything else
+df_CSF['SECTION'] = df_CSF['SECTION'].fillna('ALL').replace('', 'ALL').str.strip().str.upper()
+df_Banner_CFL['SECTION'] = df_Banner_CFL['SECTION'].fillna('ALL').replace('', 'ALL').astype(str).str.strip().str.upper()
+
+# ✅ Rebuild MODIFIED_SECTION after normalization
+df_Banner_CFL['MODIFIED_SECTION'] = df_Banner_CFL['SECTION'].apply(
+    lambda s: s if s == 'ALL' else (s[:2] + 'X' if s[:2] in ['37', '38', '39', '27', '28', '78'] else s[0] + 'XX')
+)
+
+# ✅ Filter rows with matching SUBJECT and COURSE NUMBER only
+df_Banner_course_match = df_Banner_CFL[
+    df_Banner_CFL['SUBJECT'].isin(df_CSF['SUBJECT']) &
+    df_Banner_CFL[['SUBJECT', 'COURSE NUMBER']].apply(tuple, axis=1).isin(
+        df_CSF[['SUBJECT', 'COURSE NUMBER']].drop_duplicates().apply(tuple, axis=1)
+    )
+].copy()
+
+# ✅ Build valid exact (SUBJECT, COURSE NUMBER, SECTION) keys
+valid_sections = df_CSF[['SUBJECT', 'COURSE NUMBER', 'SECTION']].drop_duplicates()
+valid_section_keys = set([tuple(x) for x in valid_sections.values])
+
+# ✅ Build wildcard keys where SECTION == 'ALL'
+valid_wildcard_keys = set([
+    (row['SUBJECT'], row['COURSE NUMBER'], 'ALL')
+    for _, row in df_CSF.iterrows()
+])
+
+# ✅ Build SECTION_KEY for comparison using MODIFIED_SECTION
+df_Banner_course_match['SECTION_KEY'] = list(zip(
+    df_Banner_course_match['SUBJECT'],
+    df_Banner_course_match['COURSE NUMBER'],
+    df_Banner_course_match['MODIFIED_SECTION']
+))
+
+# ✅ Final allowed keys = exact matches + wildcards
+all_valid_keys = valid_section_keys.union(valid_wildcard_keys)
+
+def section_key_matches(key, valid_keys):
+    subj, course, section = key
+    is_hs = section in ['37X', '38X', '39X', '27X', '28X', '78X']
+
+    # Exact match is always OK
+    if (subj, course, section) in valid_keys:
+        return True
+
+    # HS sections must NOT be allowed to match 'ALL'
+    if is_hs and (subj, course, 'ALL') in valid_keys:
+        return False
+
+    # Otherwise, allow 'ALL' fallback
+    return (subj, course, 'ALL') in valid_keys
+
+df_Banner_course_match['SECTION_MATCH'] = df_Banner_course_match['SECTION_KEY'].apply(
+    lambda key: section_key_matches(key, valid_section_keys)
+)
+
+# Now flag anything that failed both exact and wildcard
+df_section_not_in_CSF = df_Banner_course_match[~df_Banner_course_match['SECTION_MATCH']].copy()
+df_section_not_in_CSF['REMOVAL_REASON'] = 'Section not found for Subject & Course Number in CSF'
+
+#Concat
+
+# Combine all flagged removal dataframes
+fees_to_remove = pd.concat([
+    df_subject_not_in_CSF,
+    df_course_not_in_CSF,
+    df_section_not_in_CSF
+], ignore_index=True)
+
+# Ensure AMOUNT is numeric for reliable filtering
+fees_to_remove['AMOUNT'] = pd.to_numeric(fees_to_remove['AMOUNT'], errors='coerce')
+
+# Filter out rows where AMOUNT is NaN or 0
+fees_to_remove = fees_to_remove[fees_to_remove['AMOUNT'].notna() & (fees_to_remove['AMOUNT'] != 0)]
+fees_to_remove.drop(columns=['SUBJ_COURSE_PAIR', 'SECTION_KEY', 'SECTION_MATCH'], errors='ignore', inplace=True)
+
+fees_to_remove.sort_values(
+    by=['SUBJECT', 'COURSE NUMBER', 'SECTION', 'CRN'],
+    ascending=[True, True, True, True],
+    inplace=True,
+    key=lambda col: col.astype(str).str.upper() if col.name in ['SUBJECT', 'SECTION'] else col
+)
+
+with pd.ExcelWriter(filepath + Rate_Table, engine='openpyxl') as writer:
+    df_RT.to_excel(writer, sheet_name='Rate Table', index=False)
+    fees_to_remove.to_excel(writer, sheet_name='Fee Removal', index=False)
