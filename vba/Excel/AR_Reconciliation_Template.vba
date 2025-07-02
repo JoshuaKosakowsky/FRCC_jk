@@ -1,7 +1,8 @@
-Attribute VB_Name = "Module10"
+'Attribute VB_Name = "Module10"
+'Attribute Process.VB_Description = "Macro recorded 6/5/2012 by CCCS"
+'Attribute Process.VB_ProcData.VB_Invoke_Func = " \n14"
 Sub Process()
-Attribute Process.VB_Description = "Macro recorded 6/5/2012 by CCCS"
-Attribute Process.VB_ProcData.VB_Invoke_Func = " \n14"
+
  Sheets("Instructions").Select
 
 'Prevent execution macro if no data in Instruction tab fields
