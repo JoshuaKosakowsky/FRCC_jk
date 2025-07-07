@@ -10,21 +10,20 @@ Sub NormalizeAndInsertCourseFees()
     Set ws = Worksheets("Invoice")
     studentID = ws.Range("C2").Value
 
-    ' === Always assume tuition data starts at row 7 and ends at row 9 ===
-    ' You can adjust this range if needed
+    ' === Tuition always in B7 to B13 (7 rows max) ===
     Dim firstRow As Long, lastRow As Long
     firstRow = 7
-    lastRow = 9 ' Change this if student has more than 3 courses
+    lastRow = 13
 
-    ' === Clear old fee output from B17:H50 (safe range) ===
+    ' === Clear old fee output from B17:H50 ===
     ws.Range("B17:H50").ClearContents
 
-    ' === Output fee table header at B17 ===
+    ' === Output headers at B17 ===
     outRow = 17
     ws.Range("B" & outRow & ":H" & outRow).Value = Array("Student Course(s)", "Campus", "Subject", "Course ID", "Section", "Course Specific Fee", "Fee Amount")
     outRow = outRow + 1
 
-    ' === Loop through tuition table from firstRow to lastRow ===
+    ' === Loop through fixed tuition range ===
     For srcRow = firstRow To lastRow
         If ws.Cells(srcRow, "B").Value = "" Then GoTo SkipRow
 
@@ -69,4 +68,3 @@ SkipRow:
     MsgBox "Course-specific fees added below tuition in Invoice sheet.", vbInformation
 
 End Sub
-
