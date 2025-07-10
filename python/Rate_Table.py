@@ -172,7 +172,7 @@ df_Banner_CFL['SECTION'] = df_Banner_CFL['SECTION'].astype(str).str.zfill(3)
 df_Banner_CFL = df_Banner_CFL[~df_Banner_CFL['CAMPUS'].str.contains('FCX|FCW|FCZ|FZZ', na=False)]
 
 # Drop rows where Section is High School (37X, 38X, 39X, or 78X), Campus is FWO or FWC, and the Attribute is Concurrent (CONC) ## Added the other Campuses to match them
-df_Banner_CFL = df_Banner_CFL[~((df_Banner_CFL['SECTION'].str.contains(r'37[A-Z]|38[A-Z]|39[A-Z]|78[A-Z]', na=False)) & ~((df_Banner_CFL['CAMPUS'].isin(['FWO', 'FWC', 'FLO', 'FLC', 'FBO', 'FBC'])) & (df_Banner_CFL['ATTR'] == 'CONC')))]
+df_Banner_CFL = df_Banner_CFL[~((df_Banner_CFL['SECTION'].str.contains(r'37[A-Z]|28[A-Z]|37[A-Z]|38[A-Z]|39[A-Z]|78[A-Z]', na=False)) & ~((df_Banner_CFL['CAMPUS'].isin(['FWO', 'FWC', 'FLO', 'FLC', 'FBO', 'FBC'])) & (df_Banner_CFL['ATTR'] == 'CONC')))]
 
 # Function to find HS courses and normalize them to all end in X or XX, have all else just end in XX except ALL
 def modify_for_matching(value):
@@ -541,16 +541,16 @@ df_Banner_course_match = df_Banner_CFL[
 ].copy()
 
 
-# ✅ Normalize SECTIONs before anything else
+# Normalize SECTIONs before anything else
 df_CSF['SECTION'] = df_CSF['SECTION'].fillna('ALL').replace('', 'ALL').str.strip().str.upper()
 df_Banner_CFL['SECTION'] = df_Banner_CFL['SECTION'].fillna('ALL').replace('', 'ALL').astype(str).str.strip().str.upper()
 
-# ✅ Rebuild MODIFIED_SECTION after normalization
+# Rebuild MODIFIED_SECTION after normalization
 df_Banner_CFL['MODIFIED_SECTION'] = df_Banner_CFL['SECTION'].apply(
     lambda s: s if s == 'ALL' else (s[:2] + 'X' if s[:2] in ['37', '38', '39', '27', '28', '78'] else s[0] + 'XX')
 )
 
-# ✅ Filter rows with matching SUBJECT and COURSE NUMBER only
+# Filter rows with matching SUBJECT and COURSE NUMBER only
 df_Banner_course_match = df_Banner_CFL[
     df_Banner_CFL['SUBJECT'].isin(df_CSF['SUBJECT']) &
     df_Banner_CFL[['SUBJECT', 'COURSE NUMBER']].apply(tuple, axis=1).isin(
@@ -558,24 +558,24 @@ df_Banner_course_match = df_Banner_CFL[
     )
 ].copy()
 
-# ✅ Build valid exact (SUBJECT, COURSE NUMBER, SECTION) keys
+# Build valid exact (SUBJECT, COURSE NUMBER, SECTION) keys
 valid_sections = df_CSF[['SUBJECT', 'COURSE NUMBER', 'SECTION']].drop_duplicates()
 valid_section_keys = set([tuple(x) for x in valid_sections.values])
 
-# ✅ Build wildcard keys where SECTION == 'ALL'
+# Build wildcard keys where SECTION == 'ALL'
 valid_wildcard_keys = set([
     (row['SUBJECT'], row['COURSE NUMBER'], 'ALL')
     for _, row in df_CSF.iterrows()
 ])
 
-# ✅ Build SECTION_KEY for comparison using MODIFIED_SECTION
+# Build SECTION_KEY for comparison using MODIFIED_SECTION
 df_Banner_course_match['SECTION_KEY'] = list(zip(
     df_Banner_course_match['SUBJECT'],
     df_Banner_course_match['COURSE NUMBER'],
     df_Banner_course_match['MODIFIED_SECTION']
 ))
 
-# ✅ Final allowed keys = exact matches + wildcards
+# Final allowed keys = exact matches + wildcards
 all_valid_keys = valid_section_keys.union(valid_wildcard_keys)
 
 def section_key_matches(key, valid_keys):
