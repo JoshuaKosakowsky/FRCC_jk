@@ -56,6 +56,8 @@ Sub Save_Daily_Reports()
                             SubFolderPath = MainFolderPath & "PPL AR Query\"
                         Case "Amount by Term and SID old.xlsx"
                             SubFolderPath = MainFolderPath & "Amount by Term and SID old\"
+                        Case "My Fiscal Student Attributes.xlsx"
+                            SubFolderPath = MainFolderPath & "My Fiscal Student Attributes\"
                         Case Else
                             SubFolderPath = MainFolderPath & "Other\"
                     End Select
