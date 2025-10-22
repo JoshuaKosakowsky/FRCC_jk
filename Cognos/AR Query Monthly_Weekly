@@ -2,9 +2,15 @@
   (?ParameterPeriod? = &apos;LAST7&apos;
     and [ENTRY_DATE] between _add_days(current_date,-8) and _add_days(current_date,-2))
   or
+  (?ParameterPeriod? = &apos;LAST30&apos;
+    and [ENTRY_DATE] between _add_days(current_date,-31) and _add_days(current_date,-2))
+  or
+  (?ParameterPeriod? = &apos;LAST60&apos;
+    and [ENTRY_DATE] between _add_days(current_date,-91) and _add_days(current_date,-2))
+  or
   (?ParameterPeriod? = &apos;LASTMONTH&apos;
-    and [ENTRY_DATE] between _first_of_month(_add_months(current_date,-1))
-                           and _last_of_month(_add_months(current_date,-1)))
+    and [ENTRY_DATE] between _first_of_month(_add_months(current_date,-2))
+                           and _last_of_month(_add_months(current_date,-2)))
 )
 </filterExpression></detailFilter></detailFilters></query><query name="QueryTerm"><source><model/></source><selection autoSummary="false"><dataItem aggregate="none" name="Data Item1"><expression>[List of Values].[Academic Period LOV].[VALUE]</expression></dataItem><dataItem aggregate="none" name="VALUE" sort="ascending"><expression>IF([List of Values].[Academic Period LOV].[VALUE]=&apos;000000&apos;)
 THEN (&apos;000000-Non Term AR&apos;)
