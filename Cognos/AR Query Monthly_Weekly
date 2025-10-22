@@ -5,7 +5,7 @@
   (?ParameterPeriod? = &apos;LAST30&apos;
     and [ENTRY_DATE] between _add_days(current_date,-31) and _add_days(current_date,-2))
   or
-  (?ParameterPeriod? = &apos;LAST60&apos;
+  (?ParameterPeriod? = &apos;LAST90&apos;
     and [ENTRY_DATE] between _add_days(current_date,-91) and _add_days(current_date,-2))
   or
   (?ParameterPeriod? = &apos;LASTMONTH&apos;
