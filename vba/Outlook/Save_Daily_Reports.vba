@@ -63,6 +63,8 @@ Sub Save_Daily_Reports()
                             SubFolderPath = MainFolderPath & "AR Query COF\"
                         Case Attachment.DisplayName = "AR Query Disbursements.xlsx"
                             SubFolderPath = MainFolderPath & "AR Query Disbursements\"
+                        Case Attachment.DisplayName = "AR Query ELM.xlsx"
+                            SubFolderPath = MainFolderPath & "AR Query ELM\"
                         Case Attachment.DisplayName = "AR Query PPL.xlsx"
                             SubFolderPath = MainFolderPath & "AR Query PPL\"
                         Case Attachment.DisplayName = "AR Query Refunds.xlsx"
