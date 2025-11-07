@@ -18,6 +18,8 @@ Sub CFL_Formatting()
     ws.Range("E1").Value = "COURSE NUMBER"
     ws.Range("F1").Value = "SECTION"
     ws.Range("G1").Value = "CAMPUS"
+    ws.Range("H1").Value = "CREDIT HRS"
+    ws.Range("I1").Value = "BILL HRS"
     ws.Range("U1").Value = "ATTRIBUTE"
     ws.Range("V1").Value = "ACTIVITY DATE"
     ws.Range("W1").Value = "DETAIL CODE"
@@ -44,7 +46,7 @@ Sub CFL_Formatting()
     ws.Cells.Rows.AutoFit
 
     ' Hide unnecessary columns
-    ws.Columns("H:T").EntireColumn.Hidden = True
+    ws.Columns("J:T").EntireColumn.Hidden = True
     ws.Columns("X:X").EntireColumn.Hidden = True
     ws.Columns("AB:AT").EntireColumn.Hidden = True
 
