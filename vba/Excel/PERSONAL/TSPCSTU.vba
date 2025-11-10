@@ -38,7 +38,7 @@ Private Function GetVendorName(ByVal vendorSid As String) As String
 End Function
 
 ' ===== ENTRY POINT =====
-Public Sub AR_CreateVendorCSV()
+Public Sub TSPCSTU()
     On Error GoTo CleanFail
     Application.ScreenUpdating = False
     Application.EnableEvents = False
