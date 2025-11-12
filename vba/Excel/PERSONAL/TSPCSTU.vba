@@ -13,14 +13,22 @@ Private Sub InitVendorLookup()
     VENDOR_LOOKUP_IDS = Array( _
         "S01850571", _
         "S01480021", _
+        "S01850574", _
         "S01912060", _
+        "S01762941", _
+        "S02577008", _
+        "S90002755", _
         "S01832028" _
     )
 
     VENDOR_LOOKUP_NAMES = Array( _
         "Adams 12 Five Star Schools CE", _
         "Adams-Weld School District 27J", _
+        "Boulder Valley SD CE", _
         "LC Colorado Early Colleges Fort Collins", _
+        "Poudre School District Concurrent Enrollment", _
+        "St Vrain Valley SD RE-1J PTECH", _
+        "ST Vrain Valley SD RE-1J", _
         "Thompson SD CE" _
     )
 End Sub
@@ -164,8 +172,8 @@ Public Sub TSPCSTU()
         fields(5) = SanitizeCSV(csvExpireTerm)  ' ExpireTerm
         fields(6) = SanitizeCSV(csvAuthorize)   ' Authorize
         fields(7) = SanitizeCSV(csvAuthNumber)  ' AuthNumber
-        fields(8) = SanitizeCSV(csvMaxAmount)   ' MaxAmount
-        fields(9) = sponsorRef                  ' SponsorReference
+        fields(8) = sponsorRef                  ' ? MaxAmount (numeric, now in column I)
+        fields(9) = ""                          ' SponsorReference (left blank)
     
         lines(i) = Join(fields, ",")
     Next i
@@ -292,5 +300,4 @@ Private Sub WriteAllText(ByVal filePath As String, ByVal content As String)
     Print #f, content
     Close #f
 End Sub
-
 
