@@ -2,6 +2,8 @@ Private Sub Application_Startup()
     Save_Daily_Reports
 End Sub
 
+' Note: This must be saved under "ThisOutlookSession" to work, not just any module will work.
+
 Sub Save_Daily_Reports()
     Dim OutlookNamespace As Object
     Dim Inbox As Object
