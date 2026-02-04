@@ -3,120 +3,154 @@ Sub Student_Payment_Agreement()
 ' Student_Payment_Agreement Macro
 '
 
-'
-    Cells.Select
-    Selection.UnMerge
-    Rows("1:6").Select
-    Selection.Delete Shift:=xlUp
-    Range("U1").Select
-    With Selection.Interior
-        .Pattern = xlSolid
-        .PatternColorIndex = xlAutomatic
-        .Color = 15066599
-        .TintAndShade = 0
-        .PatternTintAndShade = 0
-    End With
-    Selection.Borders(xlDiagonalDown).LineStyle = xlNone
-    Selection.Borders(xlDiagonalUp).LineStyle = xlNone
-    With Selection.Borders(xlEdgeLeft)
+    Dim ws As Worksheet
+    Dim lastRow As Long
+
+    Set ws = ActiveSheet
+    ws.Cells.UnMerge
+
+    ' Delete top rows
+    ws.Rows("1:6").Delete Shift:=xlUp
+
+    ' Determine last row based on DOB column D
+    lastRow = ws.Cells(ws.Rows.Count, "D").End(xlUp).Row
+    If lastRow < 2 Then Exit Sub
+
+    ' -----------------------------
+    ' Column U: "Y in K-T"
+    ' -----------------------------
+    ws.Range("U1").Interior.Color = 15066599
+
+    With ws.Range("U1").Borders(xlEdgeLeft)
         .LineStyle = xlContinuous
         .Color = -4144960
-        .TintAndShade = 0
         .Weight = xlMedium
     End With
-    Selection.Borders(xlEdgeTop).LineStyle = xlNone
-    Selection.Borders(xlEdgeBottom).LineStyle = xlNone
-    With Selection.Borders(xlEdgeRight)
+    With ws.Range("U1").Borders(xlEdgeRight)
         .LineStyle = xlContinuous
         .Color = -4144960
-        .TintAndShade = 0
         .Weight = xlMedium
     End With
-    Selection.Borders(xlInsideVertical).LineStyle = xlNone
-    Selection.Borders(xlInsideHorizontal).LineStyle = xlNone
-    With Selection
+
+    With ws.Range("U1")
         .HorizontalAlignment = xlCenter
         .VerticalAlignment = xlTop
         .WrapText = False
-        .Orientation = 0
-        .AddIndent = False
-        .ShrinkToFit = False
-        .ReadingOrder = xlContext
+        .MergeCells = False
+        .Value = "Y in K-T"
+    End With
+
+    ws.Range("U2").FormulaR1C1 = "=IF(COUNTIF(RC[-10]:RC[-1],""Y"")>0,""Y"",""N"")"
+    ws.Range("U2:U" & lastRow).FillDown
+
+    ' -----------------------------
+    ' Column V: Current Age
+    ' -----------------------------
+    With ws.Range("V1")
+        .Value = "Current Age"
+        .Interior.Pattern = xlSolid
+        .Interior.PatternColorIndex = xlAutomatic
+        .Interior.Color = 15066599
+        .Interior.TintAndShade = 0
+        .Interior.PatternTintAndShade = 0
+    
+        .Borders(xlDiagonalDown).LineStyle = xlNone
+        .Borders(xlDiagonalUp).LineStyle = xlNone
+    
+        With .Borders(xlEdgeLeft)
+            .LineStyle = xlContinuous
+            .Color = -4144960
+            .Weight = xlMedium
+        End With
+    
+        With .Borders(xlEdgeRight)
+            .LineStyle = xlContinuous
+            .Color = -4144960
+            .Weight = xlMedium
+        End With
+    
+        .Borders(xlEdgeTop).LineStyle = xlNone
+        .Borders(xlEdgeBottom).LineStyle = xlNone
+        .Borders(xlInsideVertical).LineStyle = xlNone
+        .Borders(xlInsideHorizontal).LineStyle = xlNone
+    
+        .HorizontalAlignment = xlCenter
+        .VerticalAlignment = xlTop
+        .WrapText = False
         .MergeCells = False
     End With
-    ActiveCell.FormulaR1C1 = "Y in K-T"
-    Range("U2").Select
-    ActiveCell.FormulaR1C1 = "=IF(COUNTIF(RC[-10]:RC[-1],""Y"")>0,""Y"",""N"")"
-    Range("U2").Select
-    Selection.AutoFill Destination:=Range("U2:U7879")
-    Range("U2:U7879").Select
-    Range("K2").Select
-    Range(Selection, Selection.End(xlToRight)).Select
-    Range(Selection, Selection.End(xlDown)).Select
-    Selection.FormatConditions.Add Type:=xlTextString, String:="Y", _
-        TextOperator:=xlContains
-    Selection.FormatConditions(Selection.FormatConditions.Count).SetFirstPriority
-    With Selection.FormatConditions(1).Font
-        .Color = -16383844
-        .TintAndShade = 0
+    
+    ' Age calc (completed years, handles birthdays correctly)
+    ws.Range("V2").Formula = "=IFERROR(DATEDIF(D2,TODAY(),""Y""),"""")"
+    ws.Range("V2:V" & lastRow).FillDown
+    ws.Columns("V").NumberFormat = "0"
+    
+    ' Conditional formatting: highlight <18 in red with black text
+    With ws.Range("V2:V" & lastRow)
+        .FormatConditions.Add Type:=xlExpression, Formula1:="=AND($V2<>"""",$V2<18)"
+        With .FormatConditions(.FormatConditions.Count)
+            .Interior.Color = RGB(255, 199, 206)
+            .Font.Color = RGB(0, 0, 0)
+            .StopIfTrue = False
+        End With
     End With
-    With Selection.FormatConditions(1).Interior
-        .PatternColorIndex = xlAutomatic
-        .Color = 13551615
-        .TintAndShade = 0
-    End With
-    Selection.FormatConditions(1).StopIfTrue = False
-    Range("A1:U7879").Select
-    Range("K2").Activate
-    Selection.AutoFilter
-    ActiveWindow.SmallScroll Down:=-24
-    ActiveSheet.Range("$A$1:$U$7879").AutoFilter Field:=9, Criteria1:="N/A"
-    ActiveSheet.Range("$A$1:$U$7879").AutoFilter Field:=8, Criteria1:= _
-        ">=500.00", Operator:=xlAnd
-    ActiveSheet.Range("$A$1:$U$7879").AutoFilter Field:=21, Criteria1:="Y"
-    Selection.Copy
-    Sheets.Add After:=ActiveSheet
-    Sheets("Sheet1").Select
-    Sheets("Sheet1").Name = "HS"
-    Range("A1").Select
-    Application.CutCopyMode = False
-    Sheets("Page1").Select
-    Selection.Copy
-    Sheets("HS").Select
-    Range("A1").Select
-    ActiveSheet.Paste
-    Cells.Select
-    Selection.Columns.AutoFit
-    Columns("A:A").Select
-    Selection.EntireColumn.Hidden = True
-    ActiveWindow.Zoom = 115
-    ActiveWindow.Zoom = 130
-    ActiveWindow.Zoom = 145
-    ActiveWindow.SmallScroll Down:=-18
-    Columns("D:D").Select
-    Selection.EntireColumn.Hidden = True
-    Sheets("Page1").Select
-    Application.CutCopyMode = False
-    ActiveSheet.Range("$A$1:$U$7879").AutoFilter Field:=21, Criteria1:="N"
-    Selection.Copy
-    Sheets.Add After:=ActiveSheet
-    ActiveSheet.Paste
-    Sheets("Sheet2").Select
-    Sheets("Sheet2").Name = "Regular"
-    Cells.Select
-    Application.CutCopyMode = False
-    ActiveCell.FormulaR1C1 = "hoi"
-    Range("A1:U157").Select
-    Range("D2").Activate
-    Selection.Columns.AutoFit
-    Range("A:A,D:D").Select
-    Range("D1").Activate
-    Selection.EntireColumn.Hidden = True
-    ActiveWindow.Zoom = 115
-    ActiveWindow.Zoom = 130
-    ActiveWindow.Zoom = 145
-    ActiveWindow.Zoom = 130
-    ActiveWorkbook.Save
-End Sub
 
+    ' -----------------------------
+    ' Conditional formatting for Y in K-T area
+    ' -----------------------------
+    With ws.Range("K2:T" & lastRow)
+        .FormatConditions.Add Type:=xlTextString, String:="Y", TextOperator:=xlContains
+        With .FormatConditions(.FormatConditions.Count)
+            .Font.Color = -16383844
+            .Interior.Color = 13551615
+            .StopIfTrue = False
+        End With
+    End With
+
+    ' -----------------------------
+    ' Filter + HS sheet creation
+    ' -----------------------------
+    ws.Range("A1:W" & lastRow).AutoFilter
+
+    ws.Range("A1:W" & lastRow).AutoFilter Field:=9, Criteria1:="N/A"
+    ws.Range("A1:W" & lastRow).AutoFilter Field:=8, Criteria1:=">=500.00", Operator:=xlAnd
+    ws.Range("A1:W" & lastRow).AutoFilter Field:=21, Criteria1:="Y"
+
+    ws.Range("A1:W" & lastRow).Copy
+
+    Sheets.Add After:=ws
+    ActiveSheet.Name = "HS"
+    ActiveSheet.Range("A1").PasteSpecial xlPasteAll
+
+    Application.CutCopyMode = False
+
+    With Sheets("HS")
+        .Cells.Columns.AutoFit
+        .Columns("A:A").EntireColumn.Hidden = True
+        .Activate
+        ActiveWindow.Zoom = 130
+    End With
+
+    ' -----------------------------
+    ' Regular sheet creation
+    ' -----------------------------
+    ws.Range("A1:W" & lastRow).AutoFilter Field:=21, Criteria1:="N"
+    ws.Range("A1:W" & lastRow).Copy
+
+    Sheets.Add After:=ws
+    ActiveSheet.Name = "Regular"
+    ActiveSheet.Range("A1").PasteSpecial xlPasteAll
+    Application.CutCopyMode = False
+
+    With Sheets("Regular")
+        .Cells.Columns.AutoFit
+        .Range("A:A").EntireColumn.Hidden = True
+        .Activate
+        ActiveWindow.Zoom = 130
+    End With
+
+    ' Save
+    ActiveWorkbook.Save
+
+End Sub
 
